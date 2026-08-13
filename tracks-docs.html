@@ -1,0 +1,1677 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trilhas 4noobs · módulo tracks — PRD, System Design &amp; POC</title>
+<link rel="icon" href="https://heartdevs.com/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ECEFE9; --paper-2:#F6F8F4; --ink:#1B221E; --ink-2:#57615B; --ink-3:#879189;
+  --line:#D6DCD3; --pine:#1C3A2E; --pine-deep:#10251C; --signal:#E4572E; --signal-ink:#A43B1B;
+  --moss:#4E7A5B; --gold:#E9C46A; --purple:#7C3AED;
+  --gh-bg:#0D1117; --gh-raised:#161B22; --gh-border:#30363D; --gh-text:#C9D1D9;
+  --gh-muted:#8B949E; --gh-faint:#484F58; --gh-green:#3FB950;
+  --r:6px; --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
+  --disp:'Bricolage Grotesque',Inter,system-ui,sans-serif;
+  --body:Inter,system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px;border-radius:3px}
+::selection{background:rgba(228,87,46,.22)}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+a{color:var(--signal-ink)}
+.hidden{display:none!important}
+.flex{display:flex!important}
+
+.masthead{background:var(--pine-deep);color:#EAF0E9;position:relative;overflow:hidden}
+.masthead::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 82% 18%, rgba(228,87,46,.16), transparent 42%),
+             radial-gradient(circle at 12% 0%, rgba(124,58,237,.18), transparent 46%)}
+.mh-inner{position:relative;max-width:1120px;margin:0 auto;padding:30px 28px 34px}
+.mh-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.heart-mark{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#7C3AED,#5B21B6);box-shadow:0 6px 18px -6px rgba(124,58,237,.6)}
+.brand-title{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:-.01em}
+.brand-sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(234,240,233,.5)}
+.mh-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;padding:5px 10px;border-radius:99px;border:1px solid rgba(234,240,233,.22);color:rgba(234,240,233,.82)}
+.chip.mono{background:rgba(255,255,255,.05)}
+.chip.signal{border-color:rgba(228,87,46,.55);color:#FF9A72;background:rgba(228,87,46,.1)}
+.mh-title{margin-top:34px;max-width:760px}
+.mh-title h1{font-family:var(--disp);font-weight:700;font-size:clamp(30px,4.6vw,46px);line-height:1.04;letter-spacing:-.015em}
+.mh-title h1 em{font-style:normal;color:#FF9A72}
+.mh-title p{margin-top:14px;font-size:15.5px;color:rgba(234,240,233,.66);max-width:64ch;line-height:1.7}
+.mh-title p b{color:#EAF0E9;font-weight:600}
+
+.route{margin-top:36px;display:flex;align-items:flex-start;flex-wrap:wrap;row-gap:16px}
+.route-seg{display:flex;flex-direction:column;align-items:center;gap:9px;width:118px}
+.route-seg .dia{width:13px;height:13px;transform:rotate(45deg);border-radius:2px;background:var(--signal);box-shadow:0 0 0 3px rgba(228,87,46,.16)}
+.route-seg .rname{font-family:var(--mono);font-size:9.5px;line-height:1.4;color:rgba(234,240,233,.62);text-align:center;letter-spacing:.02em}
+.route-seg .rname i{font-style:normal;color:rgba(234,240,233,.36)}
+.rlink{width:26px;height:2px;background:rgba(228,87,46,.38);margin-top:5px;flex:0 0 auto}
+.rlink.fogline{background:repeating-linear-gradient(90deg,rgba(234,240,233,.4) 0 3px,transparent 3px 7px)}
+.route-seg.dest .dia{background:var(--gold);box-shadow:0 0 0 3px rgba(233,196,106,.18)}
+.route-seg.dest .rname{color:var(--gold);font-weight:600}
+.route-seg.fog .dia{background:transparent;border:1.5px dashed rgba(234,240,233,.5)}
+.route-seg.fog .rname{color:rgba(234,240,233,.42)}
+.flag-note{width:100%;margin-top:6px;font-family:var(--mono);font-size:10px;color:rgba(234,240,233,.45);letter-spacing:.06em}
+
+.tabs{position:sticky;top:0;z-index:40;background:rgba(236,239,233,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tabs-inner{max-width:1120px;margin:0 auto;padding:0 28px;display:flex;gap:6px}
+.tab{position:relative;display:flex;flex-direction:column;gap:2px;padding:15px 20px 13px;color:var(--ink-3);border-bottom:2px solid transparent;transition:color .15s;text-align:left}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--ink);border-bottom-color:var(--signal)}
+.tab-label{font-family:var(--disp);font-weight:700;font-size:15.5px;display:flex;align-items:center;gap:9px}
+.tab-diamond{width:8px;height:8px;transform:rotate(45deg);background:var(--line);transition:background .15s}
+.tab.active .tab-diamond{background:var(--signal)}
+.tab-sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.tab.active .tab-sub{color:var(--signal-ink)}
+
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px 90px}
+.doc-panel{display:none;animation:rise .28s ease}
+.doc-panel.active{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.panel-hero{padding:46px 0 10px}
+.panel-eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--signal-ink);display:flex;align-items:center;gap:9px;font-weight:600}
+.panel-eyebrow::before{content:'';width:11px;height:11px;transform:rotate(45deg);background:var(--signal)}
+.panel-title{font-family:var(--disp);font-weight:700;font-size:clamp(28px,3.8vw,40px);line-height:1.08;letter-spacing:-.015em;margin:14px 0 12px}
+.panel-lead{font-size:16px;color:var(--ink-2);line-height:1.7;max-width:76ch}
+.panel-lead code{font-family:var(--mono);font-size:.82em;color:var(--pine);background:rgba(28,58,46,.08);padding:1px 6px;border-radius:4px}
+
+.leg{display:grid;grid-template-columns:44px 1fr;column-gap:20px;padding:44px 0 0}
+.leg-rail{position:relative;display:flex;justify-content:center}
+.leg-rail::before{content:'';position:absolute;top:8px;bottom:-44px;width:2px;background:var(--line)}
+.leg:last-child .leg-rail::before{display:none}
+.blaze{position:relative;z-index:1;width:15px;height:15px;transform:rotate(45deg);border-radius:3px;background:var(--paper);border:3px solid var(--signal);box-shadow:0 0 0 1px var(--paper)}
+.leg-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.leg-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.leg-file{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--ink-3);border:1px solid var(--line);border-radius:99px;padding:3px 9px;background:var(--paper-2)}
+.leg-title{font-family:var(--disp);font-weight:700;font-size:clamp(21px,2.6vw,27px);letter-spacing:-.01em;margin-bottom:10px}
+.leg-body>p{color:var(--ink-2);line-height:1.7;max-width:78ch;margin-bottom:10px}
+.leg-body>p strong{color:var(--ink);font-weight:600}
+.lead-stat{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 6px}
+.lead-stat span{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);background:var(--paper-2);border:1px solid var(--line);border-radius:99px;padding:6px 12px}
+.lead-stat b{color:var(--signal-ink);font-weight:600}
+
+.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0 6px}
+.principle{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 16px}
+.principle .p-dia{width:11px;height:11px;transform:rotate(45deg);background:var(--signal);margin-bottom:12px}
+.principle h3{font-family:var(--disp);font-weight:700;font-size:15.5px;margin-bottom:6px}
+.principle p{font-size:13px;color:var(--ink-2);line-height:1.6}
+
+.stories{display:grid;gap:10px;margin:16px 0 6px}
+.story-group{border:1px solid var(--line);border-radius:var(--r);background:var(--paper-2);overflow:hidden}
+.story-group-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper)}
+.story-group-head .sg-dia{width:9px;height:9px;transform:rotate(45deg);background:var(--pine)}
+.story-group-head span{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.story-group-head i{font-style:normal;margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.story-row{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:9px 16px;border-bottom:1px solid var(--line);align-items:baseline}
+.story-row:last-child{border-bottom:none}
+.story-num{font-family:var(--mono);font-size:11px;color:var(--signal-ink);font-weight:600;text-align:right}
+.story-text{font-size:13.5px;color:var(--ink-2);line-height:1.55}
+.story-text b{color:var(--ink);font-weight:600}
+
+.oos{display:grid;gap:8px;margin-top:8px}
+.oos-item{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:var(--ink-3);line-height:1.55}
+.oos-item::before{content:'✕';font-family:var(--mono);font-size:11px;color:var(--signal);margin-top:2px}
+.oos-item b{color:var(--ink-2);font-weight:600}
+
+.arch{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0 4px}
+.arch-node{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px;display:flex;flex-direction:column}
+.arch-node .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--moss);font-weight:600}
+.arch-node h4{font-family:var(--disp);font-weight:700;font-size:16px;margin:5px 0 2px}
+.arch-node .sub{font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-bottom:10px}
+.arch-node ul{list-style:none;display:grid;gap:5px}
+.arch-node li{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);display:flex;gap:8px;align-items:center}
+.arch-node li::before{content:'';width:6px;height:6px;transform:rotate(45deg);background:var(--signal);opacity:.65;flex:0 0 auto}
+.arch-out{grid-column:1/-1;text-align:center;font-family:var(--mono);font-size:11px;color:var(--signal-ink);letter-spacing:.2em}
+.arch-ext{grid-column:1/-1;border:1px dashed var(--ink-3);border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.arch-ext span{font-family:var(--mono);font-size:11.5px;color:var(--ink-2)}
+.arch-ext .ext-dia{width:9px;height:9px;transform:rotate(45deg);background:var(--ink-3)}
+
+.model-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 4px}
+.mcard{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;overflow-x:auto}
+.mcard-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
+.mcard h3{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--pine)}
+.mcard .mc-k{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);letter-spacing:.08em;white-space:nowrap}
+.mcard table{width:100%;border-collapse:collapse;margin-top:8px}
+.mcard th{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:4px 6px 4px 0;border-bottom:1px solid var(--ink);font-weight:600}
+.mcard td{font-family:var(--mono);font-size:11px;color:var(--ink-2);padding:6px 6px 6px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.mcard tr:last-child td{border-bottom:none}
+.mcard td:last-child{color:var(--ink-3)}
+.mcard .q{color:var(--ink-3);font-size:10px}
+
+.flow{display:flex;align-items:stretch;gap:0;margin:18px 0 6px;flex-wrap:wrap}
+.flow-step{flex:1;min-width:180px;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px}
+.flow-step .fn{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--signal-ink);font-weight:600}
+.flow-step h4{font-family:var(--disp);font-weight:700;font-size:14.5px;margin:5px 0 6px}
+.flow-step p{font-size:12.5px;color:var(--ink-2);line-height:1.55}
+.flow-step p b{color:var(--ink)}
+.flow-arrow{display:flex;align-items:center;justify-content:center;padding:0 6px;color:var(--signal);font-family:var(--mono);font-weight:600;flex:0 0 auto}
+.flow-note{margin:10px 0 0;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);line-height:1.7}
+
+.doc-table-wrap{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);overflow-x:auto;margin:14px 0 4px}
+.doc-table{width:100%;border-collapse:collapse;font-size:13px}
+.doc-table th{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:10px 16px;border-bottom:1px solid var(--ink);white-space:nowrap}
+.doc-table td{padding:10px 16px;border-bottom:1px solid var(--line);color:var(--ink-2);vertical-align:top}
+.doc-table tr:last-child td{border-bottom:none}
+.doc-table td .k{font-family:var(--mono);font-size:11px;color:var(--pine);background:rgba(28,58,46,.07);padding:1px 5px;border-radius:3px;white-space:nowrap}
+.doc-table td b{color:var(--ink);font-weight:600}
+.doc-table .dull{color:var(--ink-3)}
+.doc-note{display:flex;gap:12px;align-items:flex-start;background:rgba(78,122,91,.08);border:1px solid rgba(78,122,91,.28);border-left:3px solid var(--moss);border-radius:var(--r);padding:14px 18px;margin-top:16px}
+.doc-note b{color:var(--pine)}
+.doc-note p{font-size:13.5px;color:var(--ink-2);line-height:1.6}
+.doc-note .dn-dia{width:10px;height:10px;transform:rotate(45deg);background:var(--moss);flex:0 0 auto;margin-top:5px}
+
+.seams{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 4px}
+.seam{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.seam .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--signal-ink);font-weight:600}
+.seam h3{font-family:var(--disp);font-weight:700;font-size:16px;margin:5px 0 8px}
+.seam p{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:8px}
+.seam code{font-family:var(--mono);font-size:11px;color:var(--pine);background:rgba(28,58,46,.07);padding:1px 5px;border-radius:3px}
+.seam .prior{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+
+.jump{display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:var(--signal);color:#fff;font-family:var(--disp);font-weight:700;font-size:13.5px;padding:10px 18px;border-radius:99px;transition:transform .12s,box-shadow .12s}
+.jump:hover{transform:translateY(-1px);box-shadow:0 8px 20px -8px rgba(228,87,46,.6)}
+.jump::after{content:'→';font-family:var(--mono)}
+
+.poc-panel{padding:0}
+.poc-frame{border:1px solid #21262d;border-radius:14px;overflow:hidden;box-shadow:0 30px 70px -34px rgba(16,37,28,.55);margin-top:44px;background:var(--gh-bg)}
+.poc-chrome{display:flex;align-items:center;gap:14px;background:#161B22;border-bottom:1px solid var(--gh-border);padding:10px 16px}
+.poc-dots{display:flex;gap:7px}
+.poc-dots i{width:11px;height:11px;border-radius:50%}
+.poc-dots i:nth-child(1){background:#FF5F57}
+.poc-dots i:nth-child(2){background:#FEBC2E}
+.poc-dots i:nth-child(3){background:#28C840}
+.poc-url{flex:1;background:var(--gh-bg);border:1px solid var(--gh-border);border-radius:7px;padding:5px 12px;font-family:var(--mono);font-size:11px;color:var(--gh-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.poc-url b{color:var(--gh-text);font-weight:400}
+.account{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--gh-muted);letter-spacing:.05em;white-space:nowrap}
+.switch{position:relative;width:34px;height:19px;border-radius:99px;background:var(--gh-border);transition:background .15s;flex:0 0 auto}
+.switch::after{content:'';position:absolute;top:2.5px;left:3px;width:14px;height:14px;border-radius:50%;background:#8B949E;transition:transform .15s,background .15s}
+.switch.on{background:#7C3AED}
+.switch.on::after{transform:translateX(14px);background:#fff}
+
+.poc-app{font-family:Inter,system-ui,sans-serif;background:var(--gh-bg);color:var(--gh-text)}
+.poc-inner{padding:26px}
+.poc-hero{position:relative;overflow:hidden;border-radius:12px;padding:30px 30px 26px;margin-bottom:18px;background:linear-gradient(135deg,#1A1040,#0D1117)}
+.poc-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 82% 30%,rgba(120,50,200,.32),transparent 52%),radial-gradient(circle at 18% 85%,rgba(50,80,180,.22),transparent 50%)}
+.poc-hero .z{position:relative}
+.poc-hero h2{font-family:var(--disp);font-size:23px;font-weight:700;color:#fff;margin-bottom:6px;letter-spacing:-.01em}
+.poc-hero p{color:var(--gh-muted);font-size:13px;line-height:1.6;max-width:52ch;margin-bottom:16px}
+.poc-search{display:flex;gap:8px;max-width:520px}
+.search-box{position:relative;flex:1}
+.search-box svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gh-faint);width:15px;height:15px}
+.search-box input{width:100%;background:var(--gh-raised);border:1px solid var(--gh-border);border-radius:8px;color:#fff;font-size:13px;padding:10px 12px 10px 36px}
+.search-box input::placeholder{color:var(--gh-faint)}
+.search-box input:focus{outline:none;border-color:#7C3AED}
+.poc-search .btn-buscar{background:#7C3AED;color:#fff;font-weight:600;font-size:13px;padding:10px 18px;border-radius:8px}
+.poc-search .btn-buscar:hover{background:#6d28d9}
+.poc-stats{display:flex;align-items:center;gap:18px;background:var(--gh-raised);border:1px solid var(--gh-border);border-radius:12px;padding:12px 20px;margin-bottom:22px;flex-wrap:wrap}
+.pstat{display:flex;align-items:baseline;gap:7px}
+.pstat b{color:#fff;font-size:13px;font-weight:600}
+.pstat span{color:var(--gh-muted);font-size:12px}
+.pstat svg{width:15px;height:15px;align-self:center;flex:0 0 auto}
+.pstat-sep{width:1px;height:18px;background:var(--gh-border)}
+.pstat.green b{color:var(--gh-green)}
+.pstat.green svg{color:var(--gh-green)}
+.pstat.purple b{color:#D2A8FF}
+.pstat.purple svg{color:#D2A8FF}
+
+.poc-layout{display:grid;grid-template-columns:218px 1fr;gap:20px}
+.poc-filters h4{font-size:13px;font-weight:600;color:#fff;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.poc-filters h4 .limpar{color:#D2A8FF;font-size:11px;font-weight:600;cursor:pointer}
+.poc-filters h4 .limpar:hover{color:#fff}
+.fgroup{margin-bottom:16px}
+.fgroup-title{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gh-muted);margin-bottom:8px}
+.fgroup label{display:flex;align-items:center;gap:8px;font-size:12px;color:#C9D1D9;padding:3px 0;cursor:pointer}
+.fgroup input{accent-color:#7C3AED}
+.fgroup .count{color:var(--gh-faint);font-size:10.5px;margin-left:auto}
+
+.poc-content{min-width:0}
+.poc-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.ptabs{display:flex;gap:4px}
+.ptab{display:flex;align-items:center;gap:7px;padding:9px 14px 10px;font-size:12.5px;font-weight:500;color:#8B949E;border-bottom:2px solid transparent}
+.ptab .pc{background:rgba(139,148,158,.14);border-radius:99px;padding:1px 7px;font-size:10px;font-family:var(--mono)}
+.ptab.active{color:#fff;border-bottom-color:#7C3AED}
+.ptab.active .pc{background:rgba(124,58,237,.3);color:#D2A8FF}
+.poc-sort{position:relative;margin-bottom:14px;}
+.poc-sort select{background:var(--gh-raised);border:1px solid var(--gh-border);border-radius:8px;color:#C9D1D9;font-size:12px;padding:8px 10px;width:100%}
+
+.poc-banner{display:grid;grid-template-columns:2fr 1fr;border-radius:12px;overflow:hidden;margin-bottom:18px;background:linear-gradient(135deg,#4C1D95,#1E1B4B);position:relative}
+.poc-banner .bz{position:relative;padding:24px 26px}
+.poc-banner .bz-badges{display:flex;gap:8px;margin-bottom:12px}
+.poc-banner .bz-badges span{font-size:10.5px;font-weight:600;border-radius:99px;padding:3px 10px}
+.poc-banner .bz-badges .nova{background:#7C3AED;color:#fff}
+.poc-banner .bz-badges .lanc{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.22)}
+.poc-banner h3{font-size:19px;font-weight:700;color:#fff;letter-spacing:-.01em;margin-bottom:6px}
+.poc-banner p{color:#C4B5FD;font-size:13px;max-width:44ch;margin-bottom:12px}
+.poc-banner .bz-meta{display:flex;gap:16px;color:#A78BFA;font-size:12px;margin-bottom:16px;flex-wrap:wrap}
+.poc-banner .bz-meta span{display:flex;align-items:center;gap:6px}
+.poc-banner .bz-meta svg{width:14px;height:14px}
+.poc-banner .btn-iniciar{background:#7C3AED;color:#fff;font-weight:700;font-size:13px;padding:9px 18px;border-radius:8px;display:inline-flex;align-items:center;gap:7px}
+.poc-banner .btn-iniciar:hover{background:#6d28d9}
+.poc-banner .bz-xp{position:relative;display:flex;align-items:center;justify-content:center;background:rgba(124,58,237,.22)}
+.poc-banner .bz-xp .xp-in{text-align:center;color:#fff}
+.poc-banner .bz-xp .xp-in b{display:block;font-size:26px;font-weight:700}
+.poc-banner .bz-xp .xp-in span{font-size:11px;opacity:.75}
+
+.poc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tcard{background:var(--gh-raised);border:1px solid var(--gh-border);border-radius:12px;padding:16px;cursor:pointer;transition:border-color .12s;position:relative;overflow:hidden}
+.tcard:hover{border-color:rgba(124,58,237,.45)}
+.tcard-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.tcard-icon{width:40px;height:40px;flex:0 0 auto;border-radius:9px;display:grid;place-items:center;color:#fff}
+.tcard-title{font-size:13.5px;font-weight:600;color:#fff;line-height:1.3}
+.tcard-creator{font-size:11.5px;color:var(--gh-muted);margin-top:2px}
+.tcard-actions{margin-left:auto;display:flex;gap:2px}
+.int-btn{width:26px;height:26px;border-radius:6px;display:grid;place-items:center;color:#D2A8FF;transition:background .12s,color .12s}
+.int-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.int-btn svg{width:15px;height:15px}
+.int-btn.on{color:#D2A8FF}
+.int-btn.on svg{fill:currentColor;stroke:currentColor}
+.tcard-meta{display:flex;gap:14px;color:var(--gh-muted);font-size:11.5px;margin-bottom:8px}
+.tcard-meta span{display:flex;align-items:center;gap:5px}
+.tcard-meta svg{width:13px;height:13px}
+.tcard-desc{font-size:12px;color:var(--gh-muted);line-height:1.5;margin-bottom:10px}
+.tcard-tags{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap}
+.tcard-tags span{font-size:10px;color:var(--gh-muted);border:1px solid var(--gh-border);border-radius:99px;padding:2px 8px}
+.tcard-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--gh-border);padding-top:10px}
+.tcard-foot .prog{flex:1;min-width:0}
+.tcard-foot .prog .bar{height:6px;border-radius:99px;background:#21262d;overflow:hidden;margin-bottom:5px;position:absolute;width:100%;top:0;left:0}
+.tcard-foot .prog .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#9F6BFF)}
+.tcard-foot .prog small{font-size:10.5px;color:var(--gh-muted)}
+.tcard-foot .prog .activity{font-size:12px;color:var(--gh-muted);display:flex;align-items:center;gap:4px}
+.tcard-btn{display:flex;align-items:center;gap:6px;background:#7C3AED;color:#fff;font-weight:600;font-size:12px;padding:8px 12px;border-radius:8px;white-space:nowrap}
+.tcard-btn:hover{background:#6d28d9}
+.tcard-btn svg{width:14px;height:14px}
+.tcard.starred{border-color:rgba(210,168,255,.4)}
+.empty{margin:40px 0;text-align:center;color:var(--gh-muted);font-size:13px}
+
+.and-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.pstat-card{background:var(--gh-raised);border:1px solid var(--gh-border);border-radius:12px;padding:14px 16px}
+.pstat-card .lbl{font-size:11.5px;color:var(--gh-muted)}
+.pstat-card .val{font-size:22px;font-weight:700;color:#fff;margin:2px 0}
+.pstat-card .sub{font-size:11px;color:var(--gh-muted)}
+.pstat-card .sub.green{color:var(--gh-green)}
+.acard{background:var(--gh-raised);border-radius:12px;overflow:hidden;margin-bottom:14px;cursor:pointer}
+.acard .ac-grid{display:grid;grid-template-columns:200px 1fr}
+.acard-left{background:linear-gradient(135deg,#3B2F63,#241D40);padding:20px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
+.acard-left .al-ic{display:flex;align-items:center;gap:10px}
+.acard-left .al-ic svg{width:20px;height:20px;opacity:.9}
+.acard-left h4{font-size:13.5px;font-weight:700;line-height:1.3;margin-top:6px}
+.acard-left .al-who{font-size:11px;opacity:.7;margin-top:2px}
+.acard-left .al-pct b{font-size:30px;font-weight:700;display:block;line-height:1}
+.acard-left .al-pct span{font-size:10px;opacity:.7}
+.acard-right{padding:16px 18px}
+.acard-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.acard-head .xp{background:#7C3AED;color:#fff;font-size:11px;font-weight:600;border-radius:6px;padding:3px 8px}
+.acard-head .meta{font-size:11.5px;color:var(--gh-muted)}
+.trillha-prog{margin-bottom:16px;}
+.trillha-prog .label-trillha-prog{margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:600;letter-spacing:.1em;}
+.trillha-prog .label-trillha-prog small{color:white;}
+.trillha-prog .bar{height:6px;border-radius:99px;background:#21262d;overflow:hidden;margin-bottom:5px;position:absolute;width:100%;top:0;left:0}
+.trillha-prog .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#9F6BFF)}
+.acard-segs-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gh-muted);margin-bottom:7px}
+.acard-segs{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:14px}
+.acard-seg{text-align:center}
+.acard-seg .seg-bar{height:6px;border-radius:99px;background:#30363D;margin-bottom:4px}
+.acard-seg .seg-bar.done{background:linear-gradient(90deg,#3FB950,#9F6BFF)}
+.acard-seg .seg-bar.active{background:#7C3AED}
+.acard-seg small{font-size:8.5px;color:var(--gh-faint)}
+.acard-seg.done small{color:var(--gh-muted)}
+.acard-next{background:var(--gh-bg);border-left:3px solid #7C3AED;border-radius:6px;padding:10px 12px;margin-bottom:14px}
+.acard-next .nl{font-size:10px;font-weight:600;color:#D2A8FF}
+.acard-next .nt{font-size:13px;font-weight:600;color:#fff}
+.acard-next .nm{font-size:11px;color:var(--gh-muted)}
+.acard-btns{display:flex;gap:8px}
+.acard-btns .b{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;font-weight:600;padding:9px;border-radius:8px}
+.acard-btns .b.primary{background:#7C3AED;color:#fff}
+.acard-btns .b.primary:hover{background:#6d28d9}
+.acard-btns .b.ghost{color:#C9D1D9;border:1px solid var(--gh-border)}
+.acard-btns .b.ghost:hover{background:rgba(255,255,255,.04)}
+
+.ccard{background:var(--gh-raised);border-radius:12px;overflow:hidden}
+.ccard .top-line{height:8px;background:linear-gradient(90deg,#3FB950,#9F6BFF)}
+.ccard .cc-body{padding:16px}
+.ccard-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.ccard-check{width:38px;height:38px;flex:0 0 auto;border-radius:9px;background:#3FB950;display:grid;place-items:center}
+.ccard-check svg{width:16px;height:16px;color:#fff}
+.ccard-title{font-size:13.5px;font-weight:600;color:#fff}
+.ccard-creator{font-size:11.5px;color:var(--gh-muted)}
+.ccard-xp{margin-left:auto;text-align:right}
+.ccard-xp b{color:var(--gh-green);font-size:13.5px}
+.ccard-xp span{display:block;font-size:10.5px;color:var(--gh-muted)}
+.ccard-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.ccard-col{background:var(--gh-bg);border-radius:8px;padding:8px;text-align:center}
+.ccard-col .cl{font-size:10px;color:var(--gh-muted)}
+.ccard-col .cv{font-size:12.5px;font-weight:700;color:#fff}
+.ccard-col .cv.gold{color:#EAB308}
+.ccard-badges{display:flex;gap:6px;margin-bottom:12px}
+.ccard-badges span{font-size:10.5px;border-radius:6px;padding:3px 8px}
+.ccard-badges .done{background:rgba(63,185,80,.15);color:var(--gh-green)}
+.ccard-badges .when{background:var(--gh-bg);color:var(--gh-muted)}
+.ccard-dots{display:flex;gap:4px;margin-bottom:12px}
+.ccard-dots i{height:5px;flex:1;border-radius:99px;background:linear-gradient(90deg,#3FB950,#9F6BFF)}
+.ccard-btns{display:flex;gap:8px}
+.ccard-btns .b{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;font-weight:600;padding:8px;border-radius:8px;border:1px solid var(--gh-border);color:#C9D1D9}
+.ccard-btns .b:hover{background:rgba(255,255,255,.04)}
+
+.poc-aside{position:absolute;top:0;right:0;bottom:0;width:430px;max-width:92%;background:var(--gh-raised);border-left:1px solid var(--gh-border);overflow-y:auto;z-index:20;box-shadow:-30px 0 60px -30px rgba(0,0,0,.6)}
+.aside-header{display:flex;gap:12px;align-items:flex-start;padding:20px;border-bottom:1px solid var(--gh-border)}
+.aside-header .tcard-icon{width:44px;height:44px}
+.aside-title{font-size:16px;font-weight:700;color:#fff;line-height:1.25}
+.aside-repo{font-family:var(--mono);font-size:11px;color:var(--gh-muted);margin-top:3px}
+.aside-close{margin-left:auto;width:28px;height:28px;border-radius:7px;display:grid;place-items:center;color:var(--gh-muted)}
+.aside-close:hover{background:rgba(255,255,255,.06);color:#fff}
+.aside-body{padding:20px;position:relative;}
+.aside-body .repo-share{position:absolute;bottom:16px;right:20px;color:var(--gh-muted);}
+.aside-desc{font-size:13px;color:var(--gh-muted);line-height:1.6;margin-bottom:16px}
+.aside-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.aside-badges span{font-size:10.5px;border:1px solid var(--gh-border);border-radius:99px;padding:3px 9px;color:var(--gh-muted)}
+.repo-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.repo-stat{background:var(--gh-bg);border:1px solid var(--gh-border);border-radius:9px;padding:10px;text-align:center}
+.repo-stat b{display:block;font-size:16px;font-weight:700;color:#fff}
+.repo-stat span{font-size:9.5px;color:var(--gh-muted);letter-spacing:.06em;text-transform:uppercase}
+.aside-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px}
+.a-btn{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:600;padding:9px;border-radius:8px;border:1px solid var(--gh-border);color:#C9D1D9;transition:all .12s;position:relative}
+.a-btn:hover{background:rgba(255,255,255,.04)}
+.a-btn svg{width:14px;height:14px}
+.a-btn .cnt{color:var(--gh-muted);font-size:11px}
+.a-btn.on{color:#D2A8FF;border-color:rgba(210,168,255,.4);background:rgba(210,168,255,.06)}
+.a-btn.primary{background:#7C3AED;border-color:#7C3AED;color:#fff}
+.a-btn.primary:hover{background:#6d28d9}
+.aside-section-title{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gh-muted);margin:0 0 10px}
+.aside-modules{display:grid;gap:6px;margin-bottom:22px}
+.amodule{background:var(--gh-bg);border:1px solid var(--gh-border);border-radius:9px;padding:10px 12px;cursor:pointer;transition:border-color .12s}
+.amodule:hover{border-color:rgba(124,58,237,.45)}
+.amodule-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.amodule-head b{font-size:12px;font-weight:600;color:#fff}
+.amodule-head span{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--gh-muted)}
+.amodule .pbar{height:5px;border-radius:99px;background:#30363D;overflow:hidden}
+.amodule .pbar i{display:block;height:100%;background:linear-gradient(90deg,#7C3AED,#9F6BFF)}
+.amodule-lessons{display:grid;gap:2px;margin-top:7px}
+.amodule-lessons button{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gh-muted);padding:4px 4px;border-radius:5px;text-align:left}
+.amodule-lessons button:hover{color:#fff;background:rgba(255,255,255,.04)}
+.amodule-lessons button .n{font-family:var(--mono);font-size:9.5px;color:var(--gh-faint);width:16px;flex:0 0 auto}
+.aside-contrib{display:grid;gap:8px}
+.acontrib{display:flex;align-items:center;gap:10px}
+.acontrib .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:10px;font-weight:600;color:#fff;flex:0 0 auto}
+.acontrib .ci{min-width:0;flex:1}
+.acontrib .ci b{display:block;font-family:var(--mono);font-size:11.5px;color:#fff;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acontrib .ci span{font-size:10.5px;color:var(--gh-muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acontrib .fol{font-size:11px;font-weight:600;color:#C9D1D9;flex:0 0 auto}
+.acontrib .fol.on{color:#D2A8FF}
+.aside-github{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid var(--gh-border);font-family:var(--mono);font-size:11px;color:var(--gh-muted)}
+.aside-github svg{width:14px;height:14px}
+
+.poc-reader{background:var(--gh-bg);color:var(--gh-text)}
+.reader-flex{display:flex;min-height:560px}
+.reader-side{width:248px;flex:0 0 auto;display:flex;flex-direction:column;width:auto;}
+.reader-side-top{padding:16px 16px 10px;border-bottom:1px solid var(--gh-border);width:100%}
+.reader-side-top .back{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--gh-muted);margin-bottom:12px}
+.reader-side-top .back:hover{color:#fff}
+.reader-track{display:flex;align-items:center;gap:10px}
+.reader-track .tcard-icon{width:34px;height:34px}
+.reader-track b{display:block;font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reader-track span{display:block;font-family:var(--mono);font-size:10px;color:var(--gh-muted)}
+.reader-side .progbar{margin:12px 0 0}
+.reader-side .progbar .bar{height:5px;border-radius:99px;background:#30363D;overflow:hidden}
+.reader-side .progbar .bar i{display:block;height:100%;background:linear-gradient(90deg,#7C3AED,#9F6BFF)}
+.reader-side .progbar small{display:block;margin-top:5px;font-size:10px;color:var(--gh-muted)}
+.reader-index{flex:1;overflow-y:auto;padding:14px 12px}
+.reader-index .il{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gh-muted);margin-bottom:8px}
+.reader-index a{display:block;font-size:12.5px;color:var(--gh-muted);padding:6px 10px;border-radius:6px;border-left:2px solid transparent}
+.reader-index a:hover{color:#fff;background:rgba(255,255,255,.03)}
+.reader-index a.cur{color:#fff;border-left-color:#7C3AED}
+.reader-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.reader-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 22px;border-bottom:1px solid var(--gh-border);height:50px;}
+.reader-crumb{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--gh-muted);min-width:0;overflow:hidden;white-space:nowrap}
+.reader-crumb b{color:#fff;font-weight:500}
+.reader-crumb .sep{opacity:.45}
+.reader-top-actions{display:flex;align-items:center;gap:12px;flex:0 0 auto}
+.reader-top-actions .pos{font-size:11px;color:var(--gh-muted)}
+.reader-progress{font-size:11px;color:var(--gh-muted)}
+.reader-scroll{overflow-y:auto;flex:1}
+.reader-content{margin:0 auto;padding:40px 44px 56px}
+.reader-content h1{font-size:30px;font-weight:700;color:#fff;letter-spacing:-.015em;line-height:1.15;margin-bottom:14px}
+.reader-github{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gh-muted);padding-bottom:12px;margin-bottom:18px}
+.reader-github svg{width:15px;height:15px}
+.reader-github span{border-bottom:1px solid var(--gh-border)}
+.reader-subtabs{display:flex;border-bottom:1px solid var(--gh-border);margin-bottom:26px}
+.reader-subtabs span{font-size:13px;padding:9px 16px;color:var(--gh-muted)}
+.reader-subtabs span.on{color:#fff;border-bottom:2px solid #fff}
+.rb{margin-bottom:20px}
+.rb p{color:#C9D1D9;font-size:15px;line-height:1.8}
+.rb p + p{margin-top:12px}
+.rb h2{font-size:21px;font-weight:700;color:#fff;letter-spacing:-.01em;margin:30px 0 12px;scroll-margin-top:20px}
+.rb h3{font-size:16px;font-weight:600;color:#fff;margin:22px 0 8px}
+.rb ul,.rb ol{padding-left:22px;color:#C9D1D9;font-size:15px;line-height:1.8}
+.rb li{margin-bottom:6px}
+.rb li b,.rb p b,.rb td b,.rb h2 b{color:#fff;font-weight:600}
+.rb code.inline{font-family:var(--mono);font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);padding:1px 6px;border-radius:5px;color:#D2A8FF}
+.rb-code{background:#0D1117;border:1px solid var(--gh-border);border-radius:10px;overflow:hidden;margin:18px 0}
+.rb-codehead{display:flex;align-items:center;justify-content:space-between;background:#161B22;border-bottom:1px solid var(--gh-border);padding:8px 14px}
+.rb-codehead span{font-family:var(--mono);font-size:11px;color:var(--gh-muted)}
+.rb-codehead button{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gh-muted);font-family:var(--mono)}
+.rb-codehead button:hover{color:#fff}
+.rb-codehead button svg{width:13px;height:13px}
+.rb-code pre{padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.7;color:#E6EDF3}
+.rb-code pre .c1{color:#FF7B72}
+.rb-code pre .c2{color:#A5D6FF}
+.rb-code pre .c3{color:#7EE787}
+.rb-code pre .c4{color:#D2A8FF}
+.rb-callout{display:flex;gap:12px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.3);border-left:3px solid #7C3AED;border-radius:9px;padding:14px 16px;margin:18px 0}
+.rb-callout .cd{width:10px;height:10px;transform:rotate(45deg);background:#7C3AED;flex:0 0 auto;margin-top:6px}
+.rb-callout p{color:#C4B5FD;font-size:13.5px;line-height:1.7}
+.rb-callout b{color:#fff}
+.rb-table{width:100%;border-collapse:collapse;font-size:13.5px;margin:16px 0;border:1px solid var(--gh-border);border-radius:10px;overflow:hidden}
+.rb-table th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gh-muted);text-align:left;background:#161B22;padding:10px 14px;border-bottom:1px solid var(--gh-border)}
+.rb-table td{padding:11px 14px;border-bottom:1px solid var(--gh-border);color:#C9D1D9;vertical-align:top}
+.rb-table tr:last-child td{border-bottom:none}
+.reader-nav{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px}
+.rnav{border:1px solid var(--gh-border);border-radius:11px;padding:14px 16px;text-align:left;transition:border-color .12s;background:transparent}
+.rnav:hover{border-color:rgba(124,58,237,.5)}
+.rnav .rl{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gh-muted);display:flex;align-items:center;gap:5px;margin-bottom:5px}
+.rnav .rt{font-size:13px;font-weight:500;color:#C9D1D9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rnav.next{text-align:right}
+.rnav.next .rl{justify-content:flex-end}
+.rnav:hover .rt{color:#fff}
+.complete-row{margin:30px 0 4px;display:flex;justify-content:center}
+.complete-btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:11px 22px;border-radius:10px;background:#7C3AED;color:#fff;transition:background .12s}
+.complete-btn:hover{background:#6d28d9}
+.complete-btn.on{background:rgba(63,185,80,.16);color:var(--gh-green);border:1px solid rgba(63,185,80,.4)}
+
+.toast{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);background:#fff;color:#0D1117;font-size:12.5px;font-weight:500;padding:11px 18px;border-radius:10px;box-shadow:0 14px 40px -12px rgba(0,0,0,.7);z-index:60;max-width:90%;text-align:center}
+.poc-frame{position:relative}
+
+.poc-footer-note{margin:16px 2px 0;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);display:flex;gap:16px;flex-wrap:wrap}
+.poc-footer-note span{display:flex;align-items:center;gap:7px}
+.poc-footer-note i{width:8px;height:8px;transform:rotate(45deg);background:var(--signal);display:inline-block}
+
+footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid var(--line)}
+.footer-in{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-top:22px;flex-wrap:wrap}
+.footer-in .fl{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.08em}
+.footer-in .fr{display:flex;gap:14px;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.footer-in .fr i{width:7px;height:7px;transform:rotate(45deg);display:inline-block}
+
+@media (max-width: 980px){
+  .arch{grid-template-columns:1fr}
+  .principles{grid-template-columns:1fr}
+  .model-grid{grid-template-columns:1fr}
+  .seams{grid-template-columns:1fr}
+  .poc-layout{grid-template-columns:1fr}
+  .poc-filters{display:grid;grid-template-columns:1fr 1fr;gap:4px 22px}
+  .acard .ac-grid{grid-template-columns:1fr}
+  .poc-grid{grid-template-columns:1fr}
+  .and-stats{grid-template-columns:1fr}
+  .poc-banner{grid-template-columns:1fr}
+  .poc-banner .bz-xp{display:none}
+  .flow-arrow{transform:rotate(90deg);padding:6px 0}
+  .flow{display:grid;grid-template-columns:1fr}
+  .reader-side{display:none}
+  .reader-crumb{display:none}
+}
+@media (max-width: 640px){
+  .wrap{padding:0 16px 60px}
+  .tabs-inner{padding:0 12px}
+  .tab{padding:12px 12px 10px}
+  .tab-sub{display:none}
+  .route-seg{width:86px}
+  .leg{grid-template-columns:34px 1fr;column-gap:14px}
+  .mh-inner{padding:24px 16px 30px}
+  .poc-inner{padding:16px}
+  .poc-stats{gap:12px}
+  .pstat-sep{display:none}
+  .repo-stats{grid-template-columns:repeat(2,1fr)}
+  .reader-content{padding:28px 20px 40px}
+  .aside-actions{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="mh-inner">
+    <div class="mh-top">
+      <div class="brand">
+        <span class="heart-mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M12 21s-7-4.6-9.3-8.9C.9 9.1 2.4 5.5 5.7 4.5c1.9-.6 4 .1 5.3 1.6 1.3-1.5 3.4-2.2 5.3-1.6 3.3 1 4.8 4.6 3 7.6C19 16.4 12 21 12 21z"/></svg>
+        </span>
+        <div>
+          <div class="brand-title">Trilhas 4noobs</div>
+          <div class="brand-sub">módulo tracks · He4rt devs</div>
+        </div>
+      </div>
+      <div class="mh-meta">
+        <span class="chip mono">app-modules/tracks</span>
+        <span class="chip mono">spec · ready-for-agent</span>
+        <span class="chip signal">wayfinder → destino</span>
+      </div>
+    </div>
+    <div class="mh-title">
+      <h1>O caminho até o conteúdo <em>4noobs</em></h1>
+      <p>Uma forma diferente de consumir o conteúdo do 4Noobs, com listagem, progressão, conteúdos concluídos e uma estrutura compatível com futuras expansões. Três artefatos representam diferentes etapas da mesma proposta: <b>PRD</b> (o destino — por quê), <b>System Design</b> (a rota — como) e <b>POC</b> (o terreno — prova).</p>
+    </div>
+    <div class="route" aria-label="Rota do wayfinding até o módulo tracks">
+      <div class="route-seg"><span class="dia"></span><span class="rname"><i>01 ·</i> Mapear repos 4noobs</span></div>
+      <span class="rlink"></span>
+      <div class="route-seg"><span class="dia"></span><span class="rname"><i>02 ·</i> Modelo de dados</span></div>
+      <span class="rlink"></span>
+      <div class="route-seg"><span class="dia"></span><span class="rname"><i>03 ·</i> Interações GitHub</span></div>
+      <span class="rlink"></span>
+      <div class="route-seg"><span class="dia"></span><span class="rname"><i>04 ·</i> ETL tracks:sync</span></div>
+      <span class="rlink"></span>
+      <div class="route-seg"><span class="dia"></span><span class="rname"><i>05 ·</i> Interações e estados</span></div>
+      <span class="rlink"></span>
+      <div class="route-seg"><span class="dia"></span><span class="rname"><i>06 ·</i> Protótipo UX/UI</span></div>
+      <span class="rlink"></span>
+      <div class="route-seg dest"><span class="dia"></span><span class="rname">módulo tracks</span></div>
+      <span class="rlink fogline"></span>
+      <div class="route-seg fog"><span class="dia"></span><span class="rname">fog · gamificação</span></div>
+      <div class="flag-note">▲ 6/6 tickets resolvidos — o que falta é pós-destino, fora desta rota</div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Artefatos do módulo tracks">
+  <div class="tabs-inner">
+    <button class="tab active" data-tab="prd" role="tab" aria-selected="true">
+      <span class="tab-label"><span class="tab-diamond"></span>PRD</span>
+      <span class="tab-sub">o destino · por quê</span>
+    </button>
+    <button class="tab" data-tab="system" role="tab" aria-selected="false">
+      <span class="tab-label"><span class="tab-diamond"></span>System Design</span>
+      <span class="tab-sub">a rota · como</span>
+    </button>
+    <button class="tab" data-tab="poc" role="tab" aria-selected="false">
+      <span class="tab-label"><span class="tab-diamond"></span>POC</span>
+      <span class="tab-sub">o terreno · provar</span>
+    </button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="doc-panel active" data-panel="prd" role="tabpanel">
+    <div class="panel-hero">
+      <div class="panel-eyebrow">PRD · o destino</div>
+      <h1 class="panel-title">Por que a plataforma precisa de trilhas 4noobs</h1>
+      <p class="panel-lead">A comunidade He4rt produz conteúdo open source em repositórios <code>{tema}4noobs</code> no GitHub, mantidos por membros da própria comunidade. Hoje, esse conteúdo é consumido diretamente nos repositórios, sem uma experiência unificada de leitura e acompanhamento. A proposta é criar uma plataforma que organize esse conteúdo em uma experiência de leitura mais adequada ao formato e à natureza do conteúdo, com listagem dos conteúdos, progressão, registro de conteúdos concluídos e uma navegação mais adequada ao aprendizado.</p>
+      <br/>
+      <p class="panel-lead">A plataforma também serviria como base para futuras expansões, permitindo a criação de trilhas de aprendizagem, organização de conteúdos por objetivos e níveis de conhecimento e mecanismos de gamificação para acompanhar, incentivar e reconhecer o progresso de quem consome o conteúdo.</p>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">PRD · leg 01</div>
+          <span class="leg-file">pesquisa · ticket 01</span>
+        </div>
+        <h2 class="leg-title">O terreno, medido</h2>
+        <div class="lead-stat">
+          <span><b>9</b> repos analisados</span>
+          <span><b>1</b> padrão dominante: README como TOC</span>
+          <span><b>1º nível</b> = módulos</span>
+          <span>variações em engine e nomenclatura</span>
+        </div>
+        <p>O mapeamento dos repositórios 4noobs encontrou um padrão comum — README como índice, módulos como diretórios de primeiro nível — mas também variações reais (estruturas de docs, extensões <code>.MD</code>, diretórios <code>Content/</code>) que obrigam o ETL a ser configurável, nunca assumido.</p>
+        <p>Para autores, o gold standard é o <strong><code>.all-contributorsrc</code></strong>; onde não existe, cai-se no parsing do README. É daí que vem a autoria confiável de cada trilha.</p>
+      </div>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">PRD · leg 02</div>
+          <span class="leg-file">spec.md · solução</span>
+        </div>
+        <h2 class="leg-title">O destino</h2>
+        <p>O módulo <strong>tracks</strong> agrega os conteúdos 4noobs, sincronizados via GitHub, e os exibe como trilhas navegáveis com módulos e aulas — lendo e apoiando o criador sem sair da plataforma. Três princípios guiam cada decisão:</p>
+        <div class="principles">
+          <div class="principle">
+            <div class="p-dia"></div>
+            <h3>Valorizar criadores</h3>
+            <p>Cada trilha tem owner e contribuidores identificáveis, com apoio real no GitHub — estrela, watch, follow, sponsor — acionado pela conta do usuário logado.</p>
+          </div>
+          <div class="principle">
+            <div class="p-dia"></div>
+            <h3>Não sobrecarregar a UI</h3>
+            <p>Descoberta, leitura e interação em fluxos limpos: grid que se escaneia, leitor focado, ações compactas no header e no aside.</p>
+          </div>
+          <div class="principle">
+            <div class="p-dia"></div>
+            <h3>Preparar o futuro</h3>
+            <p>Modelo polimórfico (<code>github</code> | <code>native</code>) para tracks criadas na plataforma e campos de XP já presentes para a gamificação futura.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">PRD · leg 03</div>
+          <span class="leg-file">spec.md · 25 histórias</span>
+        </div>
+        <h2 class="leg-title">O que o usuário precisa viver</h2>
+        <div class="stories">
+          <div class="story-group">
+            <div class="story-group-head"><span class="sg-dia"></span><span>Descobrir e estudar</span><i>histórias 1–11</i></div>
+            <div class="story-row"><span class="story-num">01</span><span class="story-text">Navegar por todas as trilhas 4noobs em uma página, sem depender do GitHub.</span></div>
+            <div class="story-row"><span class="story-num">02</span><span class="story-text">Ver um grid com <b>título, criador, linguagem, nível, duração, módulos e progresso</b> para escolher com um olhar.</span></div>
+            <div class="story-row"><span class="story-num">03</span><span class="story-text">Buscar trilhas por nome, tecnologia ou autor.</span></div>
+            <div class="story-row"><span class="story-num">04</span><span class="story-text">Ordernar por Mais populares mais recentes, salvas, em andamento e concluídas.</span></div>
+            <div class="story-row"><span class="story-num">05</span><span class="story-text">Filtrar por categoria, nível, duração e status.</span></div>
+            <div class="story-row"><span class="story-num">06</span><span class="story-text">Ver o próprio progresso por trilha — não iniciada, em andamento, concluída.</span></div>
+            <div class="story-row"><span class="story-num">07</span><span class="story-text">Abrir uma trilha e ver <b>metadados do repo, criador, descrição, tags e lista de módulos</b>.</span></div>
+            <div class="story-row"><span class="story-num">08</span><span class="story-text">Ver a árvore módulo/aula com progresso por módulo e por aula.</span></div>
+            <div class="story-row"><span class="story-num">09</span><span class="story-text">Ler uma aula num <b>leitor focado</b>, com breadcrumb, índice, código com copy, callouts e tabelas.</span></div>
+            <div class="story-row"><span class="story-num">10</span><span class="story-text">Navegar entre aulas (anterior/próxima) e seguir a trilha linearmente.</span></div>
+            <div class="story-row"><span class="story-num">11</span><span class="story-text">Marcar aulas como concluídas, com progresso persistido e refletido na trilha.</span></div>
+          </div>
+          <div class="story-group">
+            <div class="story-group-head"><span class="sg-dia"></span><span>Apoiar quem cria</span><i>histórias 12–20</i></div>
+            <div class="story-row"><span class="story-num">12</span><span class="story-text">Estrelar o repositório da trilha direto da plataforma.</span></div>
+            <div class="story-row"><span class="story-num">13</span><span class="story-text">Fazer <b>watch</b> do repositório para acompanhar atualizações e apoiar o criador.</span></div>
+            <div class="story-row"><span class="story-num">14</span><span class="story-text">Seguir um contribuidor no GitHub a partir da trilha.</span></div>
+            <div class="story-row"><span class="story-num">15</span><span class="story-text">Com conta não vinculada, ver os botões <b>desabilitados com tooltip</b> orientando a conexão.</span></div>
+            <div class="story-row"><span class="story-num">16</span><span class="story-text">Ver quais trilhas já estrelou ou salvou para voltar a elas.</span></div>
+            <div class="story-row"><span class="story-num">17</span><span class="story-text">Salvar/guardar uma trilha localmente, sem agir no GitHub.</span></div>
+            <div class="story-row"><span class="story-num">18</span><span class="story-text">Compartilhar o link externo da trilha no GitHub.</span></div>
+            <div class="story-row"><span class="story-num">19</span><span class="story-text">Ver um link de <b>Sponsor</b> para apoiar financeiramente o criador, caso disponível.</span></div>
+            <div class="story-row"><span class="story-num">20</span><span class="story-text">Estado de interação <b>verificado contra o GitHub</b> antes de mostrar como ativo (token expirado, repo deletado).</span></div>
+          </div>
+          <div class="story-group">
+            <div class="story-group-head"><span class="sg-dia"></span><span>Operar o conteúdo</span><i>histórias 21–24</i></div>
+            <div class="story-row"><span class="story-num">21</span><span class="story-text">Lidar com repos de estrutura atípica via <b>overrides configuráveis</b> (VuePress docs/, Content/, .MD).</span></div>
+            <div class="story-row"><span class="story-num">22</span><span class="story-text">Rodar um sync que puxa conteúdo novo e o normaliza.</span></div>
+            <div class="story-row"><span class="story-num">23</span><span class="story-text">Sync <b>incremental</b> (git pull no clone existente).</span></div>
+            <div class="story-row"><span class="story-num">24</span><span class="story-text">Descoberta automática de novos repos observando commits no README de <code>he4rt/4noobs</code>.</span></div>
+          </div>
+          <div class="story-group">
+            <div class="story-group-head"><span class="sg-dia"></span><span>Preparar o futuro</span><i>histórias 25-28</i></div>
+            <div class="story-row"><span class="story-num">25</span><span class="story-text">Dar feedback de aula (útil / desatualizada) sem poluir as issues do GitHub.</span></div>
+            <div class="story-row"><span class="story-num">26</span><span class="story-text">Modelo de dados pronto para <b>tracks nativas da plataforma</b>, sem migração estrutural.</span></div>
+            <div class="story-row"><span class="story-num">27</span><span class="story-text">Estrutura pensada na inserção da feature de <b>gamificação</b>.</span></div>
+            <div class="story-row"><span class="story-num">28</span><span class="story-text">Página dedicada para cada trilha e seus módulos, à medida que mais metadados forem coletados.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">PRD · leg 04</div>
+          <span class="leg-file">spec.md · fora de escopo</span>
+        </div>
+        <h2 class="leg-title">O que fica fora desta trilha</h2>
+        <div class="oos">
+          <div class="oos-item"><span><b>Feedback</b> de trilha, módulo e aula (<b>útil / desatualizada</b>) sem poluir as issues do GitHub.</span></div>
+          <div class="oos-item"><span><b>Páginas dedicadas</b> para cada trilha e seus módulos, à medida que novos metadados forem coletados.</span></div>
+          <div class="oos-item"><span><b>Gamificação</b> (XP, badges, streaks, ranking) — esforço futuro separado; os campos <code>xp_reward</code> só preparam o modelo.</span></div>
+          <div class="oos-item"><span><b>CRUD de tracks nativas</b> — o modelo polimórfico prepara, mas o fluxo de criação/curadoria/aprovação é posterior.</span></div>
+          <div class="oos-item"><span><b>Admin panel</b> (<code>panel-admin</code>) para gerenciar tracks.</span></div>
+          <div class="oos-item"><span><b>Comentários/issues via plataforma</b> — descartado pelo risco de poluir os repositórios.</span></div>
+          <div class="oos-item"><span><b>Timeline e perfil</b> — como trilhas aparecem no perfil e na timeline fica para um esforço posterior.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="doc-panel" data-panel="system" role="tabpanel">
+    <div class="panel-hero">
+      <div class="panel-eyebrow">System design · a rota</div>
+      <h1 class="panel-title">Como o módulo tracks é construído</h1>
+      <p class="panel-lead">Arquitetura, modelo de dados, ETL, interações GitHub e estratégia de teste. Onde uma decisão virou ADR, o ticket de origem guarda a discussão — aqui está o que ficou resolvido.</p>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">System design · leg 01</div>
+          <span class="leg-file">app-modules/tracks</span>
+        </div>
+        <h2 class="leg-title">Arquitetura em três módulos</h2>
+        <div class="arch">
+          <div class="arch-node">
+            <span class="tag">UI · Livewire / Filament</span>
+            <h4>panel-app</h4>
+            <div class="sub">modificado</div>
+            <ul>
+              <li>TracksPage <span class="dull">/tracks</span></li>
+              <li>TrackAside <span class="dull">render hook LAYOUT_END</span></li>
+              <li>LessonReader <span class="dull">/tracks/{id}/lesson</span></li>
+              <li>eventos tracks-page.* / tracks-aside.*</li>
+            </ul>
+          </div>
+          <div class="arch-node">
+            <span class="tag">domínio · Laravel</span>
+            <h4>tracks</h4>
+            <div class="sub">novo</div>
+            <ul>
+              <li>models Track · Module · Lesson</li>
+              <li>TrackContributor · UserTrackState</li>
+              <li>TrackCapabilities</li>
+              <li>comando <b>tracks:sync</b></li>
+              <li>actions Star · Watch · Follow</li>
+            </ul>
+          </div>
+          <div class="arch-node">
+            <span class="tag">transporte · Saloon</span>
+            <h4>integration-github</h4>
+            <div class="sub">modificado</div>
+            <ul>
+              <li>connector GitHub (token per-request)</li>
+              <li>Requests/Interactions/ — 9 endpoints</li>
+              <li>GetCurrentUser (validação)</li>
+            </ul>
+          </div>
+          <div class="arch-out">⇣ saloon + git clone/pull</div>
+          <div class="arch-ext"><span class="ext-dia"></span><span>GitHub REST API · git clone shallow · git pull incremental</span><span class="ext-dia"></span></div>
+        </div>
+        <div class="doc-note">
+          <span class="dn-dia"></span>
+          <p><b>Por que três camadas:</b> o domínio não fala HTTP diretamente — a interação passa pelo transporte Saloon reutilizando o padrão <code>GetCurrentUser</code> com token OAuth por requisição. A UI comunica-se por eventos Livewire (<code>tracks-page.*</code> / <code>tracks-aside.*</code>), mantendo listagem e aside sincronizados.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">System design · leg 02</div>
+          <span class="leg-file">docs/adr/0003</span>
+        </div>
+        <h2 class="leg-title">Modelo de dados</h2>
+        <p>Escolha central: <strong>sem tabelas polimórficas separadas</strong>. <code>source_type</code> + <code>source_data</code> JSONB cobre GitHub e tracks nativas sem JOINs opcionais nem migrações por nova fonte. Módulos e aulas usam <strong>UUID v5 determinístico</strong> (namespace da track + path): renomear um path muda o UUID e o registro antigo ganha <code>replaced_by_uuid</code>. Interações de usuário sempre amarram ao UUID, nunca ao path.</p>
+        <div class="model-grid">
+          <div class="mcard">
+            <div class="mcard-head"><h3>tracks</h3><span class="mc-k">fonte de conteúdo</span></div>
+            <table>
+              <tr><td>id</td><td>uuid</td></tr>
+              <tr><td>source_type</td><td>enum <span class="k">github | native</span></td></tr>
+              <tr><td>source_data</td><td>jsonb · repo_owner, repo_name, stars, language, default_branch</td></tr>
+              <tr><td>title · description</td><td>text</td></tr>
+              <tr><td>xp_reward</td><td class="q">nullable · futuro gamificação</td></tr>
+            </table>
+          </div>
+          <div class="mcard">
+            <div class="mcard-head"><h3>modules</h3><span class="mc-k">1º nível do repo</span></div>
+            <table>
+              <tr><td>id</td><td>uuid <span class="k">v5</span> (track + path)</td></tr>
+              <tr><td>track_id</td><td>fk</td></tr>
+              <tr><td>title · position</td><td>text · int</td></tr>
+              <tr><td>path</td><td class="q">fonte da verdade p/ UUID</td></tr>
+            </table>
+          </div>
+          <div class="mcard">
+            <div class="mcard-head"><h3>lessons</h3><span class="mc-k">aulas</span></div>
+            <table>
+              <tr><td>id</td><td>uuid <span class="k">v5</span></td></tr>
+              <tr><td>module_id</td><td>fk</td></tr>
+              <tr><td>processed_content</td><td>html pós-ETL</td></tr>
+              <tr><td>word_count · est. minutes</td><td class="q">≈ ceil(word/200)</td></tr>
+              <tr><td>xp_reward · replaced_by_uuid</td><td class="q">futuro · rename</td></tr>
+            </table>
+          </div>
+          <div class="mcard">
+            <div class="mcard-head"><h3>track_contributors</h3><span class="mc-k">autoria é entidade</span></div>
+            <table>
+              <tr><td>track_id · user_id</td><td>fk · <span class="q">nullable, seam nativo</span></td></tr>
+              <tr><td>github_username</td><td class="q">fonte da verdade p/ follow</td></tr>
+              <tr><td>is_owner</td><td>exatamente 1 por track</td></tr>
+              <tr><td>contribution_role</td><td>enum <span class="k">author · co-author · contributor</span></td></tr>
+            </table>
+          </div>
+          <div class="mcard">
+            <div class="mcard-head"><h3>user_track_state</h3><span class="mc-k">estado pessoal</span></div>
+            <table>
+              <tr><td>user_id · track_id</td><td>fk</td></tr>
+              <tr><td>bookmarked · progress</td><td>bool · int</td></tr>
+              <tr><td>feedback · rating</td><td class="q">local, nunca no GitHub</td></tr>
+            </table>
+          </div>
+          <div class="mcard">
+            <div class="mcard-head"><h3>track_capabilities</h3><span class="mc-k">ações por fonte</span></div>
+            <table>
+              <tr><td>source_type</td><td><span class="k">github | native</span></td></tr>
+              <tr><td>capabilities</td><td class="q">star · watch · follow · share · sponsor (extensível)</td></tr>
+            </table>
+          </div>
+        </div>
+        <p style="margin-top:6px">Ordenação de módulos/aulas: <strong>heurística via README</strong> (seções numeradas primeiro) → ordem alfabética → ordem do git tree.</p>
+      </div>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">System design · leg 03</div>
+          <span class="leg-file">docs/adr/0001–0002 · ticket 04</span>
+        </div>
+        <h2 class="leg-title">ETL: tracks:sync</h2>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="fn">1 · descobrir</div>
+            <h4>Novos repos</h4>
+            <p>Observa commits no README de <b>he4rt/4noobs</b> (polling da API; futuro webhook).</p>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step">
+            <div class="fn">2 · clonar</div>
+            <h4>Conteúdo</h4>
+            <p><b>git clone shallow</b> + metadados via API. Incremental com <b>git pull</b> no clone existente.</p>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step">
+            <div class="fn">3 · normalizar</div>
+            <h4>Estrutura</h4>
+            <p>Módulos = 1º nível; overrides p/ <b>docs/, Content/, src/</b>; <code>.MD</code>→<code>.md</code>; branch dinâmica; imagens → <b>raw.githubusercontent.com</b>.</p>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step">
+            <div class="fn">4 · persistir</div>
+            <h4>Banco</h4>
+            <p>UUID v5; rename → <b>replaced_by_uuid</b>; autores via <b>.all-contributorsrc</b> → config.json → README → avatares.</p>
+          </div>
+        </div>
+        <p class="flow-note">orquestração — fase 1: manual + observer · fase 2 (futuro): agendada + webhook · <code>tracks:sync</code> faz sync + normalize em um passo, com <code>--force</code> para refresh completo.</p>
+      </div>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">System design · leg 04</div>
+          <span class="leg-file">integration-github/Transport/Requests/Interactions/</span>
+        </div>
+        <h2 class="leg-title">Interações GitHub</h2>
+        <div class="doc-table-wrap">
+          <table class="doc-table">
+            <thead><tr><th>Ação</th><th>Endpoints REST</th><th>Scope OAuth necessário</th></tr></thead>
+            <tbody>
+              <tr><td><b>Estrelar</b></td><td><span class="k">PUT /DELETE /star</span> · <span class="k">GET check</span></td><td><span class="k">public_repo</span> <span class="dull">(a adicionar)</span></td></tr>
+              <tr><td><b>Watch</b></td><td><span class="k">PUT /DELETE /subscription</span> · <span class="k">GET check</span></td><td><span class="dull">coberto por public_repo</span></td></tr>
+              <tr><td><b>Seguir</b></td><td><span class="k">PUT /DELETE /following/{username}</span> · <span class="k">GET check</span></td><td><span class="k">user:follow</span> <span class="dull">(a adicionar)</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Os scopes atuais do OAuth (<code>read:user</code>, <code>user:email</code>) são insuficientes — <code>public_repo</code> e <code>user:follow</code> precisam ser adicionados. Token OAuth por requisição, recuperado de <code>ExternalIdentity</code>, no padrão <code>GetCurrentUser</code>.</p>
+        <div class="doc-table-wrap">
+          <table class="doc-table">
+            <thead><tr><th>Estado</th><th>Comportamento</th></tr></thead>
+            <tbody>
+              <tr><td>Conta não linkada</td><td>Botões desabilitados com tooltip: <b>"Conecte sua conta GitHub para interagir"</b></td></tr>
+              <tr><td>Repo deletado / owner trocado</td><td>Capabilities reavaliadas; interações ocultadas ou desabilitadas</td></tr>
+              <tr><td>Token expirado</td><td>Validação prévia via GET check; transição silenciosa em borda</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:10px"><b>Posição:</b> header da track (Star + contagem, Watch + contagem, Sponsor, Share — compactos) e, após o conteúdo, a seção de contribuidores com Follow por contribuidor.</p>
+      </div>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">System design · leg 05</div>
+          <span class="leg-file">panel-app/src/Pages/ · ticket 06</span>
+        </div>
+        <h2 class="leg-title">UX/UI escolhida</h2>
+        <div class="model-grid">
+          <div class="mcard">
+            <div class="mcard-head"><h3>Listagem · variante C</h3><span class="mc-k">TracksPage</span></div>
+            <p style="font-size:12.5px;color:var(--ink-2)">Tema dark GitHub (<code>#0D1117</code>/<code>#161B22</code>), Inter, hero + busca, stats bar (47h / 12h / concluídas / andamento), ordem, filtros, banner de destaque e grid de cards com progresso e badges de interação.</p>
+          </div>
+          <div class="mcard">
+            <div class="mcard-head"><h3>Detalhe · TrackAside</h3><span class="mc-k">render hook LAYOUT_END</span></div>
+            <p style="font-size:12.5px;color:var(--ink-2)">Abre por <code>selectTrack</code> (evento <code>tracks-aside.sync</code>): stats do repo, criador, descrição, badges, progresso, módulos/aulas, contribuidores e ações.</p>
+          </div>
+          <div class="mcard">
+            <div class="mcard-head"><h3>Leitor · variante A "Focus Reader"</h3><span class="mc-k">LessonReader</span></div>
+            <p style="font-size:12.5px;color:var(--ink-2)">Sidebar fina colapsável com índice h2, breadcrumb, conteúdo tipado (parágrafo, h2/h3, lista, code com copy, callout, tabela), prev/next.</p>
+          </div>
+          <div class="mcard">
+            <div class="mcard-head"><h3>Interações</h3><span class="mc-k">eventos Livewire</span></div>
+            <p style="font-size:12.5px;color:var(--ink-2)">Estrelar/salvar sincronizados entre listagem e aside via <code>tracks-page.*</code>/<code>tracks-aside.*</code>. XP/streak aceitos como mock no protótipo.</p>
+          </div>
+        </div>
+        <button class="jump" data-act="goto-tab" data-tab="poc">Ver a interface funcionando</button>
+      </div>
+    </div>
+
+    <div class="leg">
+      <div class="leg-rail"><span class="blaze"></span></div>
+      <div class="leg-body">
+        <div class="leg-head">
+          <div class="leg-eyebrow">System design · leg 06</div>
+          <span class="leg-file">testes · dois seams</span>
+        </div>
+        <h2 class="leg-title">Estratégia de teste</h2>
+        <div class="seams">
+          <div class="seam">
+            <span class="tag">seam 1 · domínio</span>
+            <h3>app-modules/tracks/tests</h3>
+            <p>Feature tests do ETL (<code>tracks:sync</code>) e das actions de interação. Cada request class do Saloon é mockada via <code>MockClient</code>; roda-se a action real e afirma-se as linhas resultantes no banco — idempotência, incremental, variações de payload.</p>
+            <code class="prior">prior art → integration-github/tests/Feature/BackfillRepositoryTest.php</code>
+          </div>
+          <div class="seam">
+            <span class="tag">seam 2 · apresentação</span>
+            <h3>app-modules/panel-app/tests</h3>
+            <p>Testes Livewire/Filament de renderização e wiring de eventos das páginas de tracks e do <code>TrackAside</code>.</p>
+            <code class="prior">prior art → panel-app/tests/Feature/ProfilePageTest.php (livewire() + Filament::setCurrentPanel + actingAs)</code>
+          </div>
+        </div>
+        <div class="doc-note">
+          <span class="dn-dia"></span>
+          <p><b>Bom teste = comportamento externo.</b> A regra: GitHub API → registros normalizados no banco; interação de usuário → estado persistido / ação no GitHub. Nunca detalhes de implementação.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="doc-panel" data-panel="poc" role="tabpanel">
+    <div class="panel-hero poc-panel-hero">
+      <div class="panel-eyebrow">POC · o terreno</div>
+      <h1 class="panel-title">A interface escolhida, em HTML puro</h1>
+      <p class="panel-lead">Variante C (tema dark GitHub), o <code>TrackAside</code> e o leitor "Focus Reader" — portados do protótipo do ticket <b>Protótipo UX/UI</b>. Sem backend: mock data em memória, como no protótipo original. Interaja — busque, filtre, estrela, salve, abra uma trilha e leia uma aula.</p>
+    </div>
+
+    <div class="poc-frame" id="pocFrame">
+      <div class="poc-chrome">
+        <div class="poc-dots"><i></i><i></i><i></i></div>
+        <div class="poc-url">he4rt.app<b>/app/trilhas</b></div>
+        <button class="account" id="accountToggle" aria-pressed="true">
+          <span class="switch on" id="switchEl"></span>
+          conta GitHub vinculada
+        </button>
+      </div>
+
+      <div id="pocList"></div>
+      <div id="pocReader" class="hidden"></div>
+      <div id="pocAside" class="poc-aside hidden"></div>
+      <div id="pocToast" class="toast hidden"></div>
+    </div>
+
+    <div class="poc-footer-note">
+      <span><i></i> mock data em memória</span>
+      <span><i></i> eventos: estrelar · salvar · abrir · ler</span>
+      <span><i></i> toggle acima simula conta GitHub não vinculada (história 14)</span>
+      <span><i></i> portado do blade `tracks-prototype` / `track-aside` / `lesson-reader`</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-in">
+    <span class="fl">he4rt · app-modules/tracks · trilhas 4noobs</span>
+    <span class="fr"><span><i></i> fonte: .scratch/4noobs-module</span><span><i></i> 6 tickets · 0 pendências</span></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  var IC = {
+    search: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1.007 1.007 0 00-.115-.1zM12 6.5a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0z"/></svg>',
+    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+    book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M8 11h8"/><path d="M8 7h6"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+    star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg>',
+    eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
+    bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',
+    share: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></svg>',
+    heart: '<svg height="16" width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+    github: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 1.7 2.7 1.2 3.3.9.1-.7.4-1.2.7-1.5-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17.9 4.3 18.9 4.6 18.9 4.6c.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5A11 11 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>',
+    arrowL: '<svg height="16" width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>',
+    arrowR: '<svg height="16" width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+    users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>',
+    copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>',
+    play: '<svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zM6.5 5.5v5a.5.5 0 00.75.43l4-2.5a.5.5 0 000-.86l-4-2.5a.5.5 0 00-.75.43z"/></svg>',
+    trend: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>',
+    cert: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M2.5 1.75a.25.25 0 01.25-.25h10.5a.25.25 0 01.25.25v10.5a.25.25 0 01-.25.25H2.75a.25.25 0 01-.25-.25V1.75zM6 10a2 2 0 100-4 2 2 0 000 4z"/></svg>',
+    activity: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity-icon lucide-activity"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>',
+    userPlus: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-plus-icon lucide-user-round-plus"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg>',
+    panelRight:'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-right-icon lucide-panel-right"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg>',
+    panelRightClose:'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-right-close-icon lucide-panel-right-close"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m8 9 3 3-3 3"/></svg>',
+    panelLeft:'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-left-icon lucide-panel-left"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>',
+  };
+
+  var MODS = [
+    { t:'Fundamentos', lessons:['O que é programação','Configurando o ambiente','Primeiro programa','Hello, mundo!','Como funciona o código'] },
+    { t:'Tipos e Variáveis', lessons:['Variáveis','Tipos primitivos','Constantes','Mutação de valores'] },
+    { t:'Estruturas de Controle', lessons:['Condicionais','Operadores lógicos','Laços for','Laços while'] },
+    { t:'Funções', lessons:['Declarando funções','Parâmetros','Escopo','Retorno','Arrow functions'] },
+    { t:'Estruturas de Dados', lessons:['Arrays','Objetos','Iteração','Map e Filter'] },
+    { t:'Manipulação', lessons:['Strings','Numbers','Datas','Entrada do usuário'] },
+    { t:'Programação Assíncrona', lessons:['Callbacks','Promises','Async/Await','Erros e exceções'] },
+    { t:'APIs e Requisições', lessons:['HTTP','GET e POST','JSON','Cliente HTTP'] },
+    { t:'Testes', lessons:['Por que testar','Testes unitários','Assertions'] },
+    { t:'Boas Práticas', lessons:['Nomes claros','Comentários','Versionamento'] },
+    { t:'Projeto Final', lessons:['Estruturando o projeto','Publicando'] }
+  ];
+
+  var TRACKS = [
+    { id:'track-1', title:'JavaScript 4noobs', icon:'JS', color:260, creator:'joaopedro', github:'joaopedrodev', category:'Front-end', level:'Iniciante', language:'JavaScript', tags:['JavaScript','Web','ES6','DOM'], duration:5, modules:12, lessons:48, stars:142, forks:55, status:'in_progress', progress:35, starred:true, saved:true, next:'Funções e Escopo', updated:'3 dias atrás' },
+    { id:'track-2', title:'Python 4noobs', icon:'PY', color:235, creator:'mariasilva', github:'mariasilva', category:'Back-end', level:'Iniciante', language:'Python', tags:['Python','Automação','Scripts','CLI'], duration:8, modules:15, lessons:62, stars:98, forks:32, status:'not_started', progress:0, starred:false, saved:true, next:'Introdução ao Python', updated:'1 semana atrás' },
+    { id:'track-3', title:'React 4noobs', icon:'RX', color:295, creator:'lucasdev', github:'lucasdev', category:'Front-end', level:'Intermediário', language:'TypeScript', tags:['React','TypeScript','Hooks','SPA'], duration:10, modules:18, lessons:75, stars:215, forks:89, status:'completed', progress:100, starred:true, saved:false, updated:'2 meses atrás', xp:350, nota:4.9 },
+    { id:'track-4', title:'Go 4noobs', icon:'GO', color:155, creator:'anabeatriz', github:'anabeatriz', category:'Back-end', level:'Intermediário', language:'Go', tags:['Go','Concorrência','CLI','APIs'], duration:6, modules:10, lessons:40, stars:76, forks:21, status:'not_started', progress:0, starred:false, saved:false, updated:'5 dias atrás', isNew:true },
+    { id:'track-5', title:'CSS 4noobs', icon:'CS', color:200, creator:'pedroh', github:'pedroh', category:'Front-end', level:'Iniciante', language:'CSS', tags:['CSS','Layout','Flexbox','Grid'], duration:4, modules:8, lessons:32, stars:54, forks:18, status:'in_progress', progress:60, starred:false, saved:true, next:'Flexbox e Grid', updated:'1 dia atrás' },
+    { id:'track-6', title:'Node.js 4noobs', icon:'NJ', color:145, creator:'rafaelt', github:'rafaelt', category:'Back-end', level:'Avançado', language:'JavaScript', tags:['Node.js','Express','API','Banco de Dados'], duration:12, modules:20, lessons:85, stars:187, forks:73, status:'not_started', progress:0, starred:true, saved:false, updated:'3 semanas atrás' }
+  ];
+
+  var state = {
+    tab: 'explorar',
+    search: '',
+    order: 'popular',
+    cat: 'todas',
+    levels: { iniciante: true, intermediario: true, avancado: true },
+    durs: { ate3: true, de3a6: true, de6a10: true, '10mais': true },
+    stat: { novas: true, populares: true, recentes: true },
+    starred: {},
+    saved: {},
+    account: true,
+    aside: null,
+    reader: null,
+    lessonIndex: 0,
+    completed: {}
+  };
+
+  TRACKS.forEach(function (t) { if (t.starred) state.starred[t.id] = true; if (t.saved) state.saved[t.id] = true; });
+
+  var $ = function (sel) { return document.querySelector(sel); };
+  var listEl = $('#pocList');
+  var readerEl = $('#pocReader');
+  var asideEl = $('#pocAside');
+  var toastEl = $('#pocToast');
+
+  function durLabel(d) { return d >= 10 ? '10h+' : d >= 6 ? '6h–10h' : d >= 3 ? '3h–6h' : '~' + d + 'h'; }
+  function durKey(d) { return d >= 10 ? '10mais' : d >= 6 ? 'de6a10' : d >= 3 ? 'de3a6' : 'ate3'; }
+
+  function matches(t) {
+    if (state.search) {
+      var q = state.search.toLowerCase();
+      var hay = (t.title + ' ' + t.creator + ' ' + t.language + ' ' + t.tags.join(' ')).toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    if (state.cat !== 'todas' && t.category !== state.cat) return false;
+    var lv = t.level === 'Iniciante' ? 'iniciante' : t.level === 'Intermediário' ? 'intermediario' : 'avancado';
+    if (!state.levels[lv]) return false;
+    if (!state.durs[durKey(t.duration)]) return false;
+    var isPop = t.stars >= 180, isNew = !!t.isNew, isRec = t.updated.indexOf('dia') !== -1 || t.updated.indexOf('semana') === -1 && t.updated.indexOf('mês') === -1;
+    if (!state.stat.novas && isNew) return false;
+    if (!state.stat.populares && isPop) return false;
+    if (!state.stat.recentes && isRec) return false;
+    return true;
+  }
+
+  function filtered() {
+    var arr = TRACKS.filter(matches);
+    var o = state.order;
+    arr.sort(function (a, b) {
+      if (o === 'recentes') return 0;
+      if (o === 'xp') return (b.xp || 0) - (a.xp || 0);
+      if (o === 'curta') return a.duration - b.duration;
+      return b.stars - a.stars;
+    });
+    return arr;
+  }
+
+  function iconBg(t) { return 'background:oklch(0.32 0.09 ' + t.color + ');color:oklch(0.72 0.14 ' + t.color + ')'; }
+
+  function actionBtns(t) {
+    var starOn = state.starred[t.id] ? ' on' : '';
+    var saveOn = state.saved[t.id] ? ' on' : '';
+    return '<div class="tcard-actions">' +
+      '<button class="int-btn" data-act="watch" data-id="' + t.id + '" title="Acompanhar" aria-label="Acompanhar">' + IC.eye + '</button>' +
+      '<button class="int-btn' + starOn + '" data-act="star" data-id="' + t.id + '" title="Estrelar" aria-label="Estrelar">' + IC.star + '</button>' +
+      '<button class="int-btn" data-act="save" data-id="' + t.id + '" title="Salvar" aria-label="Salvar">' + IC.bookmark + '</button>' +
+      '</div>';
+  }
+
+  function cardHTML(t) {
+    return '<div class="tcard' + (state.starred[t.id] ? ' starred' : '') + '" data-act="open" data-id="' + t.id + '">' +
+      '<div class="tcard-top">' +
+        '<div class="tcard-icon" style="' + iconBg(t) + '">' + t.icon + '</div>' +
+        '<div class="min-w-0" style="min-width:0;flex:1;">' +
+          '<div class="tcard-title">' + t.title + '</div>' +
+          '<div class="tcard-creator">' + t.creator + ' · ' + t.updated + '</div>' +
+        '</div>' +
+        '<div data-stop="1">' + actionBtns(t) + '</div>' +
+      '</div>' +
+      '<div class="tcard-meta">' +
+        '<span>' + IC.book + ' ' + t.modules + ' módulos</span>' +
+        '<span>' + IC.clock + ' ' + durLabel(t.duration) + '</span>' +
+        '<span>' + IC.star + ' ' + t.stars + '</span>' +
+      '</div>' +
+      '<div class="tcard-desc">' + t.language + ' — conteúdo do zero ao avançado, com exemplos práticos.</div>' +
+      '<div class="tcard-tags">' + t.tags.map(function (g) { return '<span>' + g + '</span>'; }).join('') + '</div>' +
+      '<div class="tcard-foot">' +
+        '<div class="prog">' + 
+          '<div class="bar"><i style="width:' + t.progress + '%"></i></div>' + 
+          '<div class="activity">' + IC.activity + '<small>' + (t.stars + t.forks) + ' Interações</small></div>' + 
+        '</div>' +
+        '<button class="tcard-btn" data-stop="1" data-act="open" data-id="' + t.id + '">' + IC.arrowR + ' Visualizar</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function bannerHTML() {
+    var t = TRACKS.find(function (x) { return x.isNew; });
+    if (!t) return '';
+    return '<div class="poc-banner" data-act="open" data-id="' + t.id + '">' +
+      '<div class="bz">' +
+        '<div class="bz-badges"><span class="nova">Nova trilha</span><span class="lanc">Lançamento</span></div>' +
+        '<h3>' + t.title + '</h3>' +
+        '<p>Do zero ao avançado em ' + t.language + ', com conteúdo gratuito da comunidade He4rt.</p>' +
+        '<div class="bz-meta">' +
+          '<span>' + IC.book + ' ' + t.modules + ' módulos</span>' +
+          '<span>' + IC.clock + ' ' + durLabel(t.duration) + '</span>' +
+          '<span>' + IC.users + ' 234 inscritos</span>' +
+        '</div>' +
+        '<button class="btn-iniciar" data-stop="1" data-act="open" data-id="' + t.id + '">Começar agora ' + IC.play + '</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function renderExplore() {
+    var list = filtered().filter(function (t) { return t.status !== 'completed'; });
+    var html = bannerHTML();
+    if (!list.length) html += '<div class="empty">Nenhuma trilha encontrada com esses filtros.</div>';
+    else html += '<div class="poc-grid">' + list.map(cardHTML).join('') + '</div>';
+    return html;
+  }
+
+  function renderAndamento() {
+    var list = filtered().filter(function (t) { return t.status === 'in_progress'; });
+    if (!list.length) return '<div class="empty">Nada em andamento — explore uma trilha para começar.</div>';
+    var html = '<div class="and-stats">' +
+      '<div class="pstat-card"><div class="lbl">Trilhas ativas</div><div class="val">' + TRACKS.filter(function (t) { return t.status === 'in_progress'; }).length + '</div><div class="sub">em andamento</div></div>' +
+      '<div class="pstat-card"><div class="lbl">Horas esta semana</div><div class="val">12h</div><div class="sub green">' + IC.trend + ' +3h vs semana passada</div></div>' +
+      '<div class="pstat-card"><div class="lbl">Próxima conquista</div><div class="val">📚</div><div class="sub">Complete 2 trilhas para "Estudante Dedicado"</div></div>' +
+      '</div>';
+    html += list.map(function (t) {
+      var segCount = Math.min(6, t.modules);
+      var done = Math.floor(t.modules * t.progress / 100);
+      var segs = '';
+      for (var i = 1; i <= segCount; i++) {
+        var cls = i <= done ? 'done' : (i === done + 1 ? 'active' : '');
+        segs += '<div class="acard-seg ' + cls + '"><div class="seg-bar"></div><small>' + (i <= done ? '✓' : 'M' + i) + '</small></div>';
+      }
+      return '<div class="acard" data-act="open" data-id="' + t.id + '">' +
+        '<div class="ac-grid">' +
+          '<div class="acard-left">' +
+            '<div><div class="al-ic">' + IC.book + ' <h4>' + t.title + '</h4></div><div class="al-who">' + t.creator + '</div></div>' +
+            '<div class="al-pct"><b>' + t.progress + '%</b><span>concluído</span></div>' +
+          '</div>' +
+          '<div class="acard-right">' +
+            '<div class="acard-head"><span class="xp">+' + (t.stars + 50) + ' XP</span><span class="meta">' + t.modules + ' módulos · ' + durLabel(t.duration) + '</span></div>' +
+            '<div class="acard-segs-label">Progresso dos módulos</div>' +
+            '<div class="acard-segs">' + segs + '</div>' +
+            '<div class="acard-next"><div class="nl">Próxima aula</div><div class="nt">' + (t.next || 'Iniciar módulo') + '</div><div class="nm">Módulo ' + Math.min(done + 1, t.modules) + ' de ' + t.modules + '</div></div>' +
+            '<div class="acard-btns">' +
+              '<button class="b primary" data-stop="1" data-act="open" data-id="' + t.id + '">Continuar de onde parou</button>' +
+              '<button class="b ghost" data-stop="1" data-act="open" data-id="' + t.id + '">Ver módulos</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    return html;
+  }
+
+  function renderConcluidas() {
+    var list = filtered().filter(function (t) { return t.status === 'completed'; });
+    if (!list.length) return '<div class="empty">Nenhuma trilha concluída ainda — continue estudando.</div>';
+    var totalXp = list.reduce(function (a, t) { return a + (t.xp || 0); }, 0);
+    var html = '<div class="and-stats">' +
+      '<div class="pstat-card"><div class="lbl">Total concluídas</div><div class="val">' + list.length + '</div><div class="sub">trilha(s) finalizada(s)</div></div>' +
+      '<div class="pstat-card"><div class="lbl">XP conquistado</div><div class="val" style="color:var(--gh-green)">' + totalXp + '</div><div class="sub">em trilhas concluídas</div></div>' +
+      '<div class="pstat-card"><div class="lbl">Tempo investido</div><div class="val">~' + list.reduce(function (a, t) { return a + t.duration; }, 0) + 'h</div><div class="sub">de estudo acumulado</div></div>' +
+      '</div>';
+    html += '<div class="poc-grid">' + list.map(function (t) {
+      return '<div class="ccard">' +
+        '<div class="top-line"></div>' +
+        '<div class="cc-body">' +
+          '<div class="ccard-head">' +
+            '<div class="ccard-check">' + IC.check + '</div>' +
+            '<div><div class="ccard-title">' + t.title + '</div><div class="ccard-creator">' + t.creator + '</div></div>' +
+            '<div class="ccard-xp"><b>+' + t.xp + ' XP</b><span>conquistado</span></div>' +
+          '</div>' +
+          '<div class="ccard-cols">' +
+            '<div class="ccard-col"><div class="cl">Módulos</div><div class="cv">' + t.modules + '/' + t.modules + '</div></div>' +
+            '<div class="ccard-col"><div class="cl">Duração</div><div class="cv">' + durLabel(t.duration) + '</div></div>' +
+            '<div class="ccard-col"><div class="cl">Nota</div><div class="cv gold">⭐ ' + t.nota + '</div></div>' +
+          '</div>' +
+          '<div class="ccard-badges"><span class="done">✓ Concluída</span><span class="when">' + t.updated + '</span></div>' +
+          '<div class="ccard-dots">' + new Array(Math.min(t.modules, 8)).fill(0).map(function () { return '<i></i>'; }).join('') + '</div>' +
+          '<div class="ccard-btns"><button class="b">' + IC.cert + ' Ver certificado</button><button class="b">Revisar trilha</button></div>' +
+        '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+    return html;
+  }
+
+  function subTabCounts() {
+    var all = TRACKS;
+    return {
+      explorar: all.filter(function (t) { return t.status !== 'completed'; }).length,
+      andamento: all.filter(function (t) { return t.status === 'in_progress'; }).length,
+      concluidas: all.filter(function (t) { return t.status === 'completed'; }).length
+    };
+  }
+
+  function renderList() {
+    var counts = subTabCounts();
+    var hero = '<div class="poc-hero"><div class="z">' +
+      '<h2>Encontre sua próxima trilha</h2>' +
+      '<p>Aprenda na prática com trilhas criadas por membros da comunidade. Cada trilha concluída garante XP e evolução no ranking.</p>' +
+      '<div class="poc-search"><div class="search-box">' + IC.search + '<input id="pocSearch" type="text" placeholder="Buscar por nome, tecnologia ou autor..." value="' + state.search.replace(/"/g, '&quot;') + '"></div><button class="btn-buscar">Buscar</button></div>' +
+    '</div></div>';
+
+    var stats = '<div class="poc-stats">' +
+      '<div class="pstat"><span>' + IC.clock + '</span><b>47h</b><span>estudadas</span></div>' +
+      '<span class="pstat-sep"></span>' +
+      '<div class="pstat green">' + IC.trend + '<b>12h</b><span>esta semana</span></div>' +
+      '<span class="pstat-sep"></span>' +
+      '<div class="pstat green">' + IC.check + '<b>' + counts.concluidas + '</b><span>trilha(s) concluída(s)</span></div>' +
+      '<span class="pstat-sep"></span>' +
+      '<div class="pstat purple">' + IC.book + '<b>' + counts.andamento + '</b><span>em andamento</span></div>' +
+    '</div>';
+
+    var orders = [['popular','Mais populares'],['recentes','Mais recentes'], ['progresso', 'Em andamento'], ['concluidas', 'Concluídas'],['curta','Menor duração']];
+
+    var orderSelect = '<div class="poc-sort"><select data-act="sort">' + orders.map(function (o) { return '<option value="' + o[0] + '"' + (state.order === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>';
+
+    var filters = '<div class="poc-filters">' +
+      '<h4>Ordenar por</h4>' +
+      orderSelect +
+      '<h4>Filtros <span class="limpar" data-act="clear-filters">Limpar</span></h4>' +
+      '<div class="fgroup"><div class="fgroup-title">Categoria</div>' +
+        [['todas','Todas'],['Front-end','Frontend'],['Back-end','Backend'],['Mobile','Mobile'],['DevOps','DevOps'],['Design','Design'],['Data','Data'],['QA','QA']].map(function (c) {
+          return '<label><input type="radio" name="cat" data-act="cat" data-v="' + c[0] + '"' + (state.cat === c[0] ? ' checked' : '') + '> ' + c[1] + '</label>';
+        }).join('') +
+      '</div>' +
+      '<div class="fgroup"><div class="fgroup-title">Nível</div>' +
+        [['iniciante','Iniciante'],['intermediario','Intermediário'],['avancado','Avançado']].map(function (l) {
+          return '<label><input type="checkbox" data-act="level" data-v="' + l[0] + '"' + (state.levels[l[0]] ? ' checked' : '') + '> ' + l[1] + '</label>';
+        }).join('') +
+      '</div>' +
+      '<div class="fgroup"><div class="fgroup-title">Duração</div>' +
+        [['ate3','Até 3h'],['de3a6','3h – 6h'],['de6a10','6h – 10h'],['10mais','10h+']].map(function (d) {
+          return '<label><input type="checkbox" data-act="dur" data-v="' + d[0] + '"' + (state.durs[d[0]] ? ' checked' : '') + '> ' + d[1] + '</label>';
+        }).join('') +
+      '</div>' +
+      '<div class="fgroup"><div class="fgroup-title">Status</div>' +
+        [['novas','Novas'],['populares','Populares'],['recentes','Recém atualizadas']].map(function (s) {
+          return '<label><input type="checkbox" data-act="stat" data-v="' + s[0] + '"' + (state.stat[s[0]] ? ' checked' : '') + '> ' + s[1] + '</label>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+
+    const content = renderExplore();
+
+    listEl.innerHTML = '<div class="poc-inner">' + hero + stats +
+      '<div class="poc-layout">' + filters + '<div class="poc-content">' + content + '</div></div></div>';
+  }
+
+  function modulesOf(t) {
+    var count = Math.min(6, t.modules);
+    var out = [];
+    for (var i = 0; i < count; i++) {
+      var m = MODS[i];
+      var prog = Math.max(0, Math.min(100, Math.round(t.progress - i * Math.floor(t.progress / count))));
+      if (i === 0) prog = t.progress;
+      out.push({ id: i + 1, title: m.t, lessons: m.lessons, progress: prog, minutes: m.lessons.length * 9 });
+    }
+    return out;
+  }
+
+  function lessonsOf(t) {
+    var out = [];
+    modulesOf(t).forEach(function (m) {
+      m.lessons.forEach(function (l) {
+        out.push({ id: 'l' + m.id + '-' + m.lessons.indexOf(l), title: l, moduleId: m.id, module: m.title, minutes: 9 });
+      });
+    });
+    return out;
+  }
+
+  function findLesson(t, title) {
+    var ls = lessonsOf(t);
+    if (!title) return ls[0];
+    var k = title.toLowerCase();
+    var f = ls.find(function (l) { return k.indexOf(l.title.toLowerCase().split(' ')[0]) !== -1; });
+    return f || ls[0];
+  }
+
+  function avatarBg(name) {
+    var hue = 0;
+    for (var i = 0; i < name.length; i++) hue = (hue * 31 + name.charCodeAt(i)) % 360;
+    return 'background:oklch(0.4 0.1 ' + hue + ')';
+  }
+
+  function renderAside(id) {
+    var t = TRACKS.find(function (x) { return x.id === id; });
+    if (!t) return;
+    state.aside = id;
+    var mods = modulesOf(t);
+    var contribs = [
+      { name: t.creator, role: 'Criador(a) do repositório' },
+      { name: 'mariasilva', role: 'Revisora técnica' },
+      { name: 'lucasdev', role: 'Tradutor' },
+      { name: 'anabeatriz', role: 'Colaboradora' }
+    ];
+    var starOn = state.starred[id] ? ' on' : '';
+    var lockedCls = state.account ? '' : ' locked';
+    var lockedAttr = state.account ? '' : ' disabled tabindex="-1"';
+    var starBtn = '<button class="a-btn' + starOn + '" data-act="star" data-id="' + id + '"' + lockedAttr + '>' + IC.star + ' <span>' + (state.starred[id] ? 'Estrelado' : 'Estrela') + '</span> <span class="cnt">' + t.stars + '</span></button>';
+    var watchBtn = '<button class="a-btn" data-act="watch" data-id="' + id + '"' + lockedAttr + '>' + IC.eye + ' Watch <span class="cnt">' + Math.round(t.stars * 0.27) + '</span></button>';
+    //var sponsorBtn = '<button class="a-btn"' + lockedAttr + '>' + IC.heart + ' Sponsor</button>';
+    var bookmarkBtn = '<button class="a-btn" data-act="watch" data-id="' + id + '"' + lockedAttr + '>' + IC.bookmark + ' Favoritados <span class="cnt">' + Math.round(t.stars * 0.27) + '</span></button>';
+    var subscribersBtn = '<button class="a-btn" data-act="subscribers" data-id="' + id + '"' + lockedAttr + '>' + IC.users + ' Inscritos <span class="cnt">' + Math.round(t.stars * 0.27) + '</span></button>';
+
+    var modulesHTML = mods.map(function (m) {
+      return '<div class="amodule" data-act="open-reader" data-id="' + id + '" data-lesson="' + m.id + '-0">' +
+        '<div class="amodule-head"><b>' + m.title + '</b><span>' + m.lessons.length + ' aulas · ~' + (m.minutes) + ' min</span></div>' +
+        '<div class="pbar"><i style="width:' + m.progress + '%"></i></div>' +
+        '<div class="amodule-lessons">' + m.lessons.map(function (l, j) {
+          return '<button data-stop="1" data-act="open-reader" data-id="' + id + '" data-lesson="' + m.id + '-' + j + '"><span class="n">' + (j + 1) + '</span>' + l + '</button>';
+        }).join('') + '</div>' +
+      '</div>';
+    }).join('');
+
+    var contribHTML = contribs.map(function (c) {
+      return '<div class="acontrib">' +
+        '<span class="av" style="' + avatarBg(c.name) + '">' + c.name.slice(0, 2).toUpperCase() + '</span>' +
+        '<div class="ci"><b>' + c.name + '</b><span>' + c.role + '</span></div>' +
+        '<button class="fol" data-act="follow" data-name="' + c.name + '"' + lockedAttr + ' title="Seguir">' + IC.userPlus + '</button>' +
+        '<button class="fol" data-act="sponsor" data-name="' + c.name + '"' + lockedAttr + ' title="Sponsor">' + IC.heart + '</button>' +
+      '</div>';
+    }).join('');
+
+    asideEl.innerHTML = '<div class="aside-header">' +
+      '<div class="tcard-icon" style="' + iconBg(t) + '">' + t.icon + '</div>' +
+      '<div><div class="aside-title">' + t.title + '</div><div class="aside-repo">' + t.github + '/' + t.title.toLowerCase().replace(/ /g, '-') + '</div></div>' +
+      '<button class="aside-close" data-act="close-aside" aria-label="Fechar">✕</button>' +
+    '</div>' +
+    '<div class="aside-body">' +
+      '<p class="aside-desc">Aprenda do zero com conteúdo gratuito criado pela comunidade He4rt. Aborda de conceitos básicos a tópicos avançados, com exemplos práticos e exercícios.</p>' +
+      '<div class="aside-badges">' +
+        '<span>' + t.language + '</span><span>' + t.level + '</span><span>' + t.category + '</span><span>' + durLabel(t.duration) + '</span><span>' + t.modules + ' módulos</span><span>atualizado ' + t.updated + '</span>' +
+      '</div>' +
+      '<div class="aside-actions">' + starBtn + watchBtn + bookmarkBtn + subscribersBtn + '</div>' +
+      '<div class="trillha-prog">' +
+          '<div class="label-trillha-prog">' +
+              '<span style="color:#8B949E">Seu progresso</span>' +
+              '<small >' + t.progress + '%</small>' +
+          '</div>' +
+          '<div class="bar" style="position:relative;"><i style="width:' + t.progress + '%"></i></div>' +
+      '</div>' +
+      '<div class="aside-section-title">Progresso dos módulos</div>' +
+      '<div class="aside-modules">' + modulesHTML + '</div>' +
+      '<div class="aside-section-title">Contribuidores</div>' +
+      '<div class="aside-contrib">' + contribHTML + '</div>' +
+      '<a class="aside-github" href="#" onclick="return false">' + IC.github + ' Ver repositório no GitHub</a>' +
+      '<div class="repo-share" title="Share github repo">' + IC.share + '</div>'
+    '</div>';
+
+    asideEl.classList.remove('hidden');
+  }
+
+  function buildBlocks(lessonTitle, moduleTitle) {
+    var slug = lessonTitle.toLowerCase().split(' ').slice(0, 3).join('-');
+    return '' +
+      '<div class="rb"><h2 id="sec-' + slug + '">O que você vai aprender</h2><ul>' +
+        '<li><b>Os fundamentos</b> de <code class="inline">' + moduleTitle + '</code> explicados sem jargão.</li>' +
+        '<li>Exemplos práticos para rodar no seu ambiente, do jeito 4noobs.</li>' +
+        '<li>Um exercício ao final para fixar o que foi visto.</li>' +
+      '</ul></div>' +
+      '<div class="rb"><h2 id="sec-' + slug + '-na-pratica">' + lessonTitle + ' na prática</h2>' +
+        '<p>Vamos direto ao ponto. O conceito central de <b>' + lessonTitle.toLowerCase() + '</b> é pequeno, mas muda a forma como você escreve código a partir de agora. Todo exemplo abaixo assume um ambiente já configurado — se ainda não fez isso, volte ao módulo <b>' + MODS[0].t + '</b>.</p>' +
+        '<div class="rb-code"><div class="rb-codehead"><span>exemplo.js</span><button data-act="copy"><span>' + IC.copy + '</span><span>Copiar</span></button></div>' +
+        '<pre><code><span class="c1">function</span> <span class="c2">cumprimentar</span>(nome) {\n  <span class="c3">return</span> <span class="c4">"Olá, "</span> + nome + <span class="c4">"! Bem-vindo ao 4noobs."</span>;\n}\n\n<span class="c2">console</span>.log(cumprimentar(<span class="c4">"dev"</span>));\n<span class="c4">// Olá, dev! Bem-vindo ao 4noobs.</span></code></pre></div>' +
+        '<div class="rb-callout"><span class="cd"></span><p><b>Dica da comunidade:</b> rode cada exemplo no seu editor antes de seguir. Copiar e colar é rápido — digitar é aprender.</p></div>' +
+      '</div>' +
+      '<div class="rb"><h2 id="sec-' + slug + '-tabela">Referência rápida</h2>' +
+        '<table class="rb-table"><thead><tr><th>Conceito</th><th>O que significa</th><th>Exemplo</th></tr></thead><tbody>' +
+          '<tr><td>Escopo</td><td>onde uma variável é visível</td><td><code class="inline">let</code> dentro do bloco</td></tr>' +
+          '<tr><td>Hoisting</td><td>declarações movidas ao topo</td><td><code class="inline">function</code> declaration</td></tr>' +
+          '<tr><td>Closure</td><td>função que lembra o escopo externo</td><td><code class="inline">() =&gt; valor</code></td></tr>' +
+        '</tbody></table>' +
+      '</div>' +
+      '<div class="rb"><h2 id="sec-' + slug + '-resumo">Resumo</h2>' +
+        '<p>Se você saiu desta aula sabendo explicar <b>' + lessonTitle.toLowerCase() + '</b> para outra pessoa, o objetivo foi cumprido. Marque como concluída e siga para a próxima — o conteúdo encadeia.</p>' +
+      '</div>';
+  }
+
+  function openReader(trackId, lessonSel) {
+    var t = TRACKS.find(function (x) { return x.id === trackId; });
+    if (!t) return;
+    var ls = lessonsOf(t);
+    var idx = 0;
+    if (lessonSel) {
+      var parts = String(lessonSel).split('-');
+      idx = ls.findIndex(function (l) { return l.id === 'l' + parts[0] + '-' + parts[1]; });
+      if (idx < 0) idx = 0;
+    }
+    state.reader = trackId;
+    state.lessonIndex = idx;
+    renderReader();
+  }
+
+  function renderReader() {
+    var t = TRACKS.find(function (x) { return x.id === state.reader; });
+    if (!t) return;
+    var ls = lessonsOf(t);
+    var cur = ls[state.lessonIndex];
+    var prev = ls[state.lessonIndex - 1] || null;
+    var next = ls[state.lessonIndex + 1] || null;
+    var done = state.completed[cur.id];
+
+    var indexHtml = '<div class="reader-side-top reader-topbar">' +
+      '<button style="display:flex;" data-act="close-reader-guide">' + IC.panelRightClose + '</button>' + 
+    '</div>' +
+    '<div class="reader-index"><div class="il">Nesta aula</div>' +
+      ['sec-' + cur.title.toLowerCase().split(' ').slice(0, 3).join('-')].map(function () { return '<a class="cur" data-act="reader-index" data-id="sec-' + cur.title.toLowerCase().split(' ').slice(0, 3).join('-') + '">Início</a>'; }).join('') +
+      '<a data-act="reader-index" data-id="sec-' + cur.title.toLowerCase().split(' ').slice(0, 3).join('-') + '">O que você vai aprender</a>' +
+      '<a data-act="reader-index" data-id="sec-' + cur.title.toLowerCase().split(' ').slice(0, 3).join('-') + '-na-pratica">' + cur.title + ' na prática</a>' +
+      '<a data-act="reader-index" data-id="sec-' + cur.title.toLowerCase().split(' ').slice(0, 3).join('-') + '-tabela">Referência rápida</a>' +
+      '<a data-act="reader-index" data-id="sec-' + cur.title.toLowerCase().split(' ').slice(0, 3).join('-') + '-resumo">Resumo</a>' +
+    '</div>';
+
+    readerEl.innerHTML = '<div class="poc-reader"><div class="reader-flex">' +
+      '<div class="reader-side">' + indexHtml + '</div>' +
+      '<div class="reader-main">' +
+        '<div class="reader-topbar">' +
+          '<div class="reader-crumb"><button id="open-reader-guide" class="hidden" data-act="open-reader-guide">' + IC.panelLeft + '</button><button class="back" data-act="reader-back"><b>Trilhas</b></button><span class="sep">/</span><span>' + t.title + '</span><span class="sep">/</span>' + cur.module + '<span class="sep">/</span><span>' + cur.title + '</span></div>' +
+          '<div class="reader-top-actions">' +
+            '<span class="pos">Progresso </span>' +
+            '<button style="display:flex;" data-stop="1" data-act="open" data-id="' + t.id + '">' + IC.panelRight + '</button>' + 
+          '</div>' +
+        '</div>' +
+        '<div class="reader-scroll"><div class="reader-content">' +
+          '<h1>' + cur.title + '</h1>' +
+          '<div class="reader-github">' + IC.github + ' <span>Ver material no GitHub</span></div>' +
+          '<div class="reader-subtabs"><span class="on">Conteúdo</span><span>Extra</span></div>' +
+          buildBlocks(cur.title, cur.module) +
+          '<div class="complete-row"><button class="complete-btn' + (done ? ' on' : '') + '" data-act="toggle-complete">' + (done ? '✓ Concluída' : 'Marcar como concluída') + '</button></div>' +
+          '<div class="reader-nav">' +
+            (prev ? '<button class="rnav" data-act="reader-lesson" data-id="' + (state.lessonIndex - 1) + '"><div class="rl">' + IC.arrowL + ' Anterior</div><div class="rt">' + prev.title + '</div></button>' : '<span></span>') +
+            (next ? '<button class="rnav next" data-act="reader-lesson" data-id="' + (state.lessonIndex + 1) + '"><div class="rl">Próxima ' + IC.arrowR + '</div><div class="rt">' + next.title + '</div></button>' : '<span></span>') +
+          '</div>' +
+        '</div></div>' +
+      '</div>' +
+    '</div></div>';
+
+    listEl.classList.add('hidden');
+    readerEl.classList.remove('hidden');
+    asideEl.classList.add('hidden');
+    state.aside = null;
+  }
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.remove('hidden');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { toastEl.classList.add('hidden'); }, 2400);
+  }
+
+  function render() {
+    renderList();
+    if (state.reader) renderReader();
+    if (state.aside) renderAside(state.aside);
+  }
+
+  function showTab(name) {
+    document.querySelectorAll('.tab').forEach(function (b) {
+      var on = b.getAttribute('data-tab') === name;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.doc-panel').forEach(function (p) {
+      p.classList.toggle('active', p.getAttribute('data-panel') === name);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.querySelectorAll('.tab').forEach(function (b) {
+    b.addEventListener('click', function () { showTab(b.getAttribute('data-tab')); });
+  });
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-act]');
+    if (!el) return;
+    var act = el.getAttribute('data-act');
+    var stop = e.target.closest('[data-stop]');
+    if (stop) e.stopPropagation();
+
+    if (act === 'goto-tab') { showTab(el.getAttribute('data-tab')); return; }
+
+    if (act === 'tab') { state.tab = el.getAttribute('data-v'); render(); return; }
+    if (act === 'cat') { state.cat = el.getAttribute('data-v'); render(); return; }
+    if (act === 'level') { var lv = el.getAttribute('data-v'); state.levels[lv] = !state.levels[lv]; render(); return; }
+    if (act === 'dur') { var du = el.getAttribute('data-v'); state.durs[du] = !state.durs[du]; render(); return; }
+    if (act === 'stat') { var st = el.getAttribute('data-v'); state.stat[st] = !state.stat[st]; render(); return; }
+    if (act === 'clear-filters') {
+      state.cat = 'todas';
+      state.levels = { iniciante: true, intermediario: true, avancado: true };
+      state.durs = { ate3: true, de3a6: true, de6a10: true, '10mais': true };
+      state.stat = { novas: true, populares: true, recentes: true };
+      render(); return;
+    }
+    if (act === 'sort') { state.order = el.value; render(); return; }
+
+    if (act === 'star' || act === 'watch') {
+      var id = el.getAttribute('data-id');
+      if (!state.account) { toast('Conecte sua conta GitHub para interagir'); return; }
+      var on = !!state.starred[id];
+      state.starred[id] = !on;
+      render(); return;
+    }
+    if (act === 'save') {
+      var sid = el.getAttribute('data-id');
+      state.saved[sid] = !state.saved[sid];
+      render(); return;
+    }
+    if (act === 'follow') {
+      if (!state.account) { toast('Conecte sua conta GitHub para interagir'); return; }
+      toast('Você agora segue ' + el.getAttribute('data-name') + ' no GitHub'); return;
+    }
+
+    if (act === 'open') { state.aside = el.getAttribute('data-id'); renderAside(state.aside); return; }
+    if (act === 'close-aside') { asideEl.classList.add('hidden'); state.aside = null; return; }
+    if (act === 'open-reader') { openReader(el.getAttribute('data-id'), el.getAttribute('data-lesson')); return; }
+    if (act === 'reader-back') { listEl.classList.remove('hidden'); readerEl.classList.add('hidden'); state.reader = null; state.aside = null; render(); return; }
+    if (act === 'reader-lesson') { state.lessonIndex = parseInt(el.getAttribute('data-id'), 10); renderReader(); return; }
+    if (act === 'reader-index') {
+      var sec = document.getElementById(el.getAttribute('data-id'));
+      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    if (act === 'toggle-complete') {
+      var t = TRACKS.find(function (x) { return x.id === state.reader; });
+      var ls = lessonsOf(t);
+      var c = ls[state.lessonIndex];
+      if (state.completed[c.id]) delete state.completed[c.id];
+      else state.completed[c.id] = true;
+      renderReader(); return;
+    }
+    if (act === 'copy') {
+      var pre = el.closest('.rb-code').querySelector('pre');
+      var txt = pre.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt);
+      el.querySelector('span:last-child').textContent = 'Copiado ✓';
+      setTimeout(function () { el.querySelector('span:last-child').textContent = 'Copiar'; }, 1500);
+      return;
+    }
+
+    const readerSide = document.querySelector('.reader-side')
+    const readerSideOpen = document.querySelector('#open-reader-guide')
+    if (act === 'open-reader-guide') {
+      console.log('open')
+      readerSide.classList.remove('hidden')
+      readerSideOpen.classList.remove('flex')
+    }
+    if (act === 'close-reader-guide') {
+      console.log('close')
+
+      readerSide.classList.add('hidden')
+      readerSideOpen.classList.add('flex')
+    }
+  });
+
+  document.addEventListener('input', function (e) {
+    if (e.target.id === 'pocSearch') {
+      state.search = e.target.value;
+      renderList();
+      var pos = e.target.selectionStart;
+      var inp = document.getElementById('pocSearch');
+      if (inp) inp.setSelectionRange(pos, pos);
+      inp.focus();
+    }
+  });
+
+  document.addEventListener('change', function (e) {
+    if (e.target.hasAttribute('data-act') && e.target.tagName === 'SELECT') {
+      state.order = e.target.value;
+      render();
+    }
+  });
+
+  var accountToggle = document.getElementById('accountToggle');
+  var switchEl = document.getElementById('switchEl');
+  accountToggle.addEventListener('click', function () {
+    state.account = !state.account;
+    switchEl.classList.toggle('on', state.account);
+    accountToggle.setAttribute('aria-pressed', state.account ? 'true' : 'false');
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
