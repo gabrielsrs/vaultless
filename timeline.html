@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<!--
+  PROTÓTIPO DESCARTÁVEL — He4rt Devs
+  Pergunta: como deve ficar a seção "timeline de eventos da comunidade" com trilha de imagens no cursor?
+  Plano: 4 variantes radicais na mesma página, trocáveis via ?variant=A..D + barra flutuante (setas ou teclado).
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protótipo · Timeline de Eventos — He4rt Devs</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23ff3b5c' d='M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root{
+    --bg:#0b0b0f;
+    --painel:#13131a;
+    --texto:#f2f2f5;
+    --muted:#9a9aa6;
+    --accent:#ff3b5c;
+    --accent-1:#ff3b5c75;
+    --linha:#26262e;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--texto);
+    font-family:"Space Grotesk",system-ui,sans-serif;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:radial-gradient(900px 480px at 18% -10%,rgba(255,59,92,.09),transparent 65%);
+    pointer-events:none;
+    z-index:0;
+  }
+  ::selection{background:var(--accent);color:#fff}
+  ::-webkit-scrollbar{height:8px;width:8px}
+  ::-webkit-scrollbar-thumb{background:#2c2c36;border-radius:99px}
+  ::-webkit-scrollbar-track{background:transparent}
+
+  #app{position:relative;z-index:1}
+
+  .selo{
+    position:fixed;top:14px;right:16px;z-index:100;
+    font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);border:1px solid var(--linha);border-radius:999px;
+    padding:7px 12px;background:rgba(19,19,26,.7);backdrop-filter:blur(6px);
+    pointer-events:none;
+  }
+
+  .kicker{
+    font:600 12px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:18px;
+  }
+  h1{
+    font-size:clamp(2.2rem,5vw,4rem);
+    line-height:1.02;font-weight:700;letter-spacing:-.02em;
+  }
+  h1 em{font-style:italic;color:var(--accent)}
+  .sub{color:var(--muted);max-width:52ch;margin-top:16px;font-size:15px;line-height:1.6}
+  .sub strong{color:var(--texto)}
+  .cabeca{padding:48px 6vw 8px;user-select:none}
+
+  .btn{
+    appearance:none;border:1px solid var(--accent);color:var(--accent);
+    background:transparent;border-radius:999px;padding:13px 26px;
+    font:600 14px/1 "Space Grotesk",sans-serif;letter-spacing:.02em;cursor:pointer;
+    transition:background .2s,color .2s,transform .15s;
+  }
+  .btn:hover{background:var(--accent);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .btn.grande{padding:17px 38px;font-size:16px}
+
+  .mini-btn{
+    appearance:none;background:transparent;border:none;color:var(--accent);
+    font:600 13px/1 "Space Grotesk",sans-serif;cursor:pointer;padding:0;
+    margin-top:14px;opacity:0;transform:translateY(4px);
+    transition:opacity .2s,transform .2s;
+  }
+  .vb-card:hover .mini-btn,.vb-row:focus-within .mini-btn{opacity:1;transform:none}
+  .mini-btn:hover{text-decoration:underline}
+
+  .local{display:block;color:var(--muted);font:400 12px/1.4 var(--mono);margin-top:6px}
+
+  .chip{
+    position:fixed;z-index:60;pointer-events:none;opacity:0;
+    background:#17171d;border:1px solid #2c2c36;border-radius:12px;
+    padding:9px 14px;box-shadow:0 10px 34px rgba(0,0,0,.55);
+    white-space:nowrap;
+  }
+  .chip strong{display:block;font-size:13px;font-weight:600}
+  .chip span{display:block;font:400 11px/1.5 var(--mono);color:var(--muted);margin-top:2px}
+
+  .trail-img,.seg-img,.lei{
+    position:fixed;border-radius:12px;pointer-events:none;
+    background-color:#1a1a22;background-size:cover;background-position:center;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 18px 50px rgba(0,0,0,.55);
+    will-change:transform;z-index:50;
+  }
+  .trail-img{width:190px;height:135px;margin:-68px 0 0 -95px}
+  .seguidor{
+    position:fixed;left:0;top:0;width:220px;height:150px;
+    margin:-75px 0 0 -110px;z-index:50;pointer-events:none;will-change:transform;
+  }
+  .seguidor .seg-img{inset:0;width:100%;height:100%;margin:0}
+  .seguidor .s0{transform:rotate(-7deg) translate(-8px,-6px)}
+  .seguidor .s1{transform:rotate(2deg)}
+  .seguidor .s2{transform:rotate(8deg) translate(8px,6px)}
+  .leque{position:fixed;left:0;top:0;width:0;height:0;z-index:50;pointer-events:none;will-change:transform}
+  .lei{width:220px;height:150px;margin:-75px 0 0 -110px}
+
+  .btn-flutuante{
+    position:fixed;left:0;top:0;z-index:1000;
+    appearance:none;border:none;cursor:pointer;
+    background:var(--accent-1);color:#fff;border-radius:999px;
+    padding:13px 22px;font:600 13.5px/1 "Space Grotesk",sans-serif;letter-spacing:.02em;
+    box-shadow:0 10px 34px rgba(255,59,92,.4),0 2px 0 rgba(0,0,0,.25) inset;
+    white-space:nowrap;will-change:transform;
+  }
+  .btn-flutuante::after{content:"";position:absolute;inset:-14px;border-radius:999px}
+  .btn-flutuante:hover{filter:brightness(1.08)}
+
+  .progresso{width:180px;height:3px;background:#232330;border-radius:99px;overflow:hidden}
+  .progresso span{display:block;height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
+
+  /* ---------- nós de timeline (compartilhado A e D) ---------- */
+  .va-no{position:relative;min-width:225px;height:270px;display:flex;flex-direction:column;padding:0 12px;cursor:pointer;flex:none}
+  .va-no.cima .va-info{margin-bottom:auto}
+  .va-no.baixo .va-info{margin-top:auto}
+  .va-info time{font:600 12px/1 var(--mono);letter-spacing:.14em;color:var(--accent)}
+  .va-info h3{font-size:19px;font-weight:600;margin-top:8px;line-height:1.25;transition:color .2s}
+  .va-no:hover h3,.va-no.ativo h3{color:var(--accent)}
+  .va-no .dot{
+    position:absolute;left:12px;top:50%;width:14px;height:14px;border-radius:50%;
+    background:var(--bg);border:3px solid var(--accent);transform:translateY(-50%);
+    transition:box-shadow .25s,transform .25s;
+  }
+  .va-no:hover .dot,.va-no.ativo .dot{box-shadow:0 0 0 7px rgba(255,59,92,.16);transform:translateY(-50%) scale(1.25)}
+
+  .va-pe,.vd-pe,.ve-pe{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    padding:18px 6vw 30px;
+  }
+  .dica{font:400 12px/1.4 var(--mono);color:var(--muted)}
+
+  /* ---------- Variante A · trilha horizontal com scroll ---------- */
+  .va{display:flex;flex-direction:column;height:100dvh;user-select:none}
+  .va .cabeca{padding-bottom:0}
+  .va-trilho{flex:1;display:flex;align-items:center}
+  .va-lista{display:flex;gap:3vw;position:relative;padding:30px 14vw;width:max-content;list-style:none}
+  .va-linha{
+    position:absolute;left:0;right:0;top:50%;height:2px;
+    background:linear-gradient(90deg,transparent,var(--linha) 4%,var(--linha) 96%,transparent);
+  }
+
+  /* ---------- Variante B · linha vertical ---------- */
+  .vb{padding-bottom:130px;user-select:none}
+  .vb .cabeca{text-align:center;display:flex;flex-direction:column;align-items:center}
+  .vb-corpo{max-width:960px;margin:40px auto 0;padding:0 5vw;position:relative}
+  .vb-lista{list-style:none;position:relative;display:flex;flex-direction:column;gap:30px}
+  .vb-lista::before{
+    content:"";position:absolute;left:50%;top:-24px;bottom:-24px;width:2px;
+    background:linear-gradient(180deg,transparent,var(--linha) 6%,var(--linha) 94%,transparent);
+  }
+  .vb-row{display:grid;grid-template-columns:1fr 64px 1fr;align-items:center;cursor:pointer}
+  .vb-eixo{grid-column:2;display:flex;justify-content:center;position:relative;z-index:1}
+  .vb-eixo .dot{
+    width:16px;height:16px;border-radius:50%;background:var(--bg);
+    border:3px solid var(--accent);transition:box-shadow .25s,transform .25s;
+  }
+  .vb-row:hover .vb-eixo .dot{box-shadow:0 0 0 7px rgba(255,59,92,.16);transform:scale(1.2)}
+  .vb-card{
+    background:var(--painel);border:1px solid var(--linha);border-radius:16px;
+    padding:22px 24px;transition:border-color .2s,transform .2s;
+  }
+  .vb-row:hover .vb-card{border-color:rgba(255,59,92,.5);transform:translateY(-3px)}
+  .vb-card time{font:600 12px/1 var(--mono);letter-spacing:.14em;color:var(--accent)}
+  .vb-card h3{font-size:20px;font-weight:600;margin-top:8px}
+  .vb-card p{color:var(--muted);font-size:13.5px;line-height:1.55;margin-top:8px}
+  .vb-row.esq .vb-card{grid-column:1;grid-row:1;text-align:right}
+  .vb-row.esq .vb-card .local{direction:rtl}
+  .vb-row.esq .vb-vazio{grid-column:3;grid-row:1}
+  .vb-row.dir .vb-card{grid-column:3;grid-row:1}
+  .vb-row.dir .vb-vazio{grid-column:1;grid-row:1}
+  .vb-fim{text-align:center;margin-top:48px}
+
+  /* ---------- Variante C · tipografia gigante ---------- */
+  .vc{padding-bottom:130px;user-select:none}
+  .vc-lista{list-style:none;margin-top:44px;border-bottom:1px solid var(--linha)}
+  .vc-row{
+    display:flex;align-items:baseline;gap:3vw;
+    padding:26px 6vw;border-top:1px solid var(--linha);cursor:pointer;
+    transition:background .2s;position:relative;
+  }
+  .vc-row:hover{background:linear-gradient(90deg,rgba(255,59,92,.07),transparent 60%)}
+  .vc-ano{font:600 13px/1 var(--mono);letter-spacing:.1em;color:var(--muted);min-width:96px}
+  .vc-row h2{
+    flex:1;font-size:clamp(1.7rem,4.6vw,3.6rem);font-weight:700;
+    letter-spacing:-.02em;line-height:1.05;transition:color .2s,transform .25s;
+  }
+  .vc-row:hover h2{color:var(--accent);transform:translateX(10px)}
+  .vc-local{font:400 12px/1.4 var(--mono);color:var(--muted)}
+  .seta{
+    color:var(--accent);font-size:22px;opacity:0;transform:translateX(-12px);
+    transition:opacity .2s,transform .25s;
+  }
+  .vc-row:hover .seta{opacity:1;transform:none}
+  .vc-fim{text-align:center;margin-top:56px}
+
+  /* ---------- Variante D · serpentina adaptativa ---------- */
+  .vd{user-select:none}
+  .vd-pin{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+  .vd .cabeca{padding:32px 6vw 0}
+  .vd-cena{flex:1;display:flex;align-items:center;justify-content:center;padding:0 3vw;min-height:0}
+  .vd-faixa{
+    --curva:72px;--no-h:150px;
+    position:relative;width:min(1240px,94vw);height:100%;max-height:620px;
+  }
+  .vd-linha{position:absolute;height:2px;background:var(--linha)}
+  .vd-curva{position:absolute;width:var(--curva);border:2px solid var(--linha)}
+  .vd-curva-d{right:0;border-left:none;border-radius:0 999px 999px 0}
+  .vd-curva-e{left:0;border-right:none;border-radius:999px 0 0 999px}
+  .vd-fileira{position:absolute;display:flex;justify-content:space-between;transform:translateY(-50%);list-style:none;padding:0 8px}
+  .vd-reversa{flex-direction:row-reverse}
+  .vd .va-no{min-width:112px;height:var(--no-h);padding:0 8px;flex:none}
+  .vd .va-info time{font-size:10.5px}
+  .vd .va-info h3{font-size:15px;margin-top:6px;line-height:1.25}
+  .vd .va-no .local{font-size:10.5px;margin-top:4px}
+  .vd .va-no .dot{left:8px;width:12px;height:12px;border-width:2.5px}
+  .vd-sentido{
+    position:absolute;font:600 10.5px/1 var(--mono);letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .vd-fim-ponto{
+    position:absolute;width:12px;height:12px;border-radius:50%;
+    background:var(--accent);transform:translateY(-50%);
+    box-shadow:0 0 0 5px rgba(255,59,92,.15),0 0 18px rgba(255,59,92,.7);
+  }
+  .vd-fim-label{
+    position:absolute;font:600 10.5px/1 var(--mono);letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);
+  }
+  .vd-faixa.l4 .va-no .local,.vd-faixa.l5 .va-no .local{display:none}
+  .vd-faixa.l4 .va-info h3{font-size:13.5px}
+  .vd-faixa.l5 .va-info h3{font-size:12.5px;margin-top:4px}
+  .vd-faixa.l5 .va-info time{font-size:9.5px}
+
+  /* ---------- Barra de troca (protótipo) ---------- */
+  .switcher{
+    position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:100;
+    display:flex;align-items:center;gap:4px;
+    background:#101016;border:1px solid #33333f;border-radius:999px;
+    padding:6px;box-shadow:0 14px 44px rgba(0,0,0,.6);
+  }
+  .switcher button{
+    appearance:none;border:none;background:transparent;color:var(--texto);
+    width:38px;height:38px;border-radius:50%;font-size:17px;cursor:pointer;
+    transition:background .15s,color .15s;
+  }
+  .switcher button:hover{background:var(--accent);color:#fff}
+  .switcher .rotulo{
+    font:600 12.5px/1 var(--mono);letter-spacing:.04em;color:var(--texto);
+    padding:0 14px;min-width:236px;text-align:center;
+  }
+  .switcher .rotulo b{color:var(--accent)}
+
+  .toast{
+    position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:110;
+    background:#17171d;border:1px solid #33333f;color:var(--texto);
+    font:500 13.5px/1.4 "Space Grotesk",sans-serif;
+    padding:12px 20px;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.55);
+    opacity:0;pointer-events:none;white-space:nowrap;
+  }
+
+  @media (max-width:720px){
+    .vb-lista::before{left:8px}
+    .vb-row{grid-template-columns:34px 1fr}
+    .vb-eixo{grid-column:1;grid-row:1}
+    .vb-row.esq .vb-card,.vb-row.dir .vb-card{grid-column:2;grid-row:1;text-align:left}
+    .vb-row.esq .vb-card .local{direction:ltr}
+    .vb-row .vb-vazio{display:none}
+    .vc-local,.seta{display:none}
+    .switcher .rotulo{min-width:150px}
+    .va-no{min-width:170px;height:220px}
+    .va-info h3{font-size:15px}
+    .progresso{width:110px}
+  }
+</style>
+</head>
+<body>
+
+<div class="selo">protótipo · descartável</div>
+<div id="app"></div>
+
+<nav class="switcher" aria-label="Trocar variante do protótipo">
+  <button id="sw-prev" aria-label="Variante anterior">&#8592;</button>
+  <span class="rotulo" id="sw-rotulo"></span>
+  <button id="sw-next" aria-label="Próxima variante">&#8594;</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const aleatorio = (a, b) => a + Math.random() * (b - a);
+const limitar = (v, min, max) => Math.min(max, Math.max(min, v));
+
+const fotos = (id, n) =>
+  Array.from({ length: n }, (_, i) => `https://picsum.photos/seed/he4rt-${id}-${i}/480/340`);
+
+const EVENTOS = [
+  { id: "abertura",  mes: "MAR", ano: "2022", titulo: "Meetup de Abertura",      local: "Discord · Online",        desc: "A primeira live da He4rt: apresentando a comunidade e seus projetos.", fotos: fotos("abertura", 6) },
+  { id: "hackathon", mes: "JUL", ano: "2022", titulo: "1º Hackathon He4rt",      local: "Discord · Online",        desc: "48 horas de código, equipes sorteadas e muito café.",                  fotos: fotos("hackathon", 6) },
+  { id: "carreira",  mes: "NOV", ano: "2022", titulo: "Semana de Carreira",      local: "Transmissão ao vivo",     desc: "Palestrantes convidados sobre carreira, portfólio e primeiras vagas.", fotos: fotos("carreira", 6) },
+  { id: "opensource",mes: "ABR", ano: "2023", titulo: "Workshop de Open Source", local: "GitHub + Discord",        desc: "Mãos à obra: primeiro PR, code review e contribuição em projetos reais.", fotos: fotos("opensource", 6) },
+  { id: "conf1",     mes: "AGO", ano: "2023", titulo: "He4rt Conf #1",           local: "São Paulo · SP",          desc: "Nosso primeiro grande encontro presencial, com talks e networking.",   fotos: fotos("conf1", 6) },
+  { id: "amigo",     mes: "DEZ", ano: "2023", titulo: "Amigo Secreto Dev",       local: "Discord · Online",        desc: "Sorteios, presentes e a retro da comunidade para fechar o ano.",       fotos: fotos("amigo", 6) },
+  { id: "mentorias", mes: "MAI", ano: "2024", titulo: "Mentorias ao Vivo",       local: "Discord · Online",        desc: "Mentores da comunidade em sessões abertas de carreira e código.",      fotos: fotos("mentorias", 6) },
+  { id: "conf2",     mes: "OUT", ano: "2024", titulo: "He4rt Conf #2",           local: "São Paulo · SP",          desc: "Duas etapas, mais palestras e uma comunidade que não para de crescer.", fotos: fotos("conf2", 6) },
+  { id: "maratona",  mes: "FEV", ano: "2025", titulo: "Maratona de Projetos",    local: "Discord · Online",        desc: "Uma semana intensa de builds, demos e feedback entre equipes.",        fotos: fotos("maratona", 6) },
+  { id: "encontro",  mes: "JUN", ano: "2025", titulo: "Encontro Presencial",     local: "Campinas · SP",           desc: "Encontro cara a cara: churrasco, código e comunidade.",                fotos: fotos("encontro", 6) },
+];
+
+const POOL_GERAL = EVENTOS.flatMap((e) => [e.fotos[0], e.fotos[1]]);
+
+EVENTOS.forEach((e) => e.fotos.forEach((src) => { const im = new Image(); im.src = src; }));
+
+const raiz = $("#app");
+let timers = [];
+let limpar = [];
+
+const depois = (ms, fn) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
+const cada = (ms, fn) => { const t = setInterval(fn, ms); timers.push(t); return t; };
+
+function entrada(sel, pai = raiz) {
+  gsap.from($$(sel, pai), { y: 26, autoAlpha: 0, duration: .6, stagger: .05, ease: "power3.out" });
+}
+
+function criarChip(pai) {
+  const c = document.createElement("div");
+  c.className = "chip";
+  pai.appendChild(c);
+  gsap.set(c, { xPercent: -50 });
+  return c;
+}
+function mostrarChip(c, x, y, ev) {
+  c.innerHTML = ev
+    ? `<strong>${ev.titulo}</strong><span>${ev.mes} ${ev.ano} · ${ev.local}</span>`
+    : `<strong>Comunidade He4rt</strong><span>passe sobre um evento</span>`;
+  c.style.left = x + "px";
+  c.style.top = y + "px";
+  gsap.to(c, { autoAlpha: 1, y: 0, duration: .25 });
+}
+function esconderChip(c) {
+  gsap.to(c, { autoAlpha: 0, y: 6, duration: .2 });
+}
+
+const toastEl = $("#toast");
+function toast(msg) {
+  toastEl.textContent = msg;
+  gsap.killTweensOf(toastEl);
+  gsap.fromTo(toastEl, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .3 });
+  gsap.to(toastEl, { autoAlpha: 0, y: 10, delay: 2.4, duration: .3 });
+}
+
+const nosHTML = (de, ate) => EVENTOS.slice(de, ate).map((ev, i) => `
+  <li class="va-no ${i % 2 ? "baixo" : "cima"}" data-i="${de + i}">
+    <div class="va-info">
+      <time>${ev.mes} ${ev.ano}</time>
+      <h3>${ev.titulo}</h3>
+      <span class="local">${ev.local}</span>
+    </div>
+    <span class="dot"></span>
+  </li>`).join("");
+
+/* ================= Motor da trilha de imagens (A e D) ================= */
+
+function criarTrilha(sec) {
+  const chip = criarChip(sec);
+
+  const btn = document.createElement("button");
+  btn.className = "btn-flutuante";
+  btn.innerHTML = "Ver na galeria &#8599;";
+  sec.appendChild(btn);
+  gsap.set(btn, { xPercent: -50, yPercent: -50, autoAlpha: 0, scale: .7 });
+
+  let pool = POOL_GERAL;
+  let pi = 0;
+  let evAtual = null;
+  let ultima = { x: -1e4, y: -1e4 };
+  let cursorAtual = { x: -1e4, y: -1e4 };
+  let ultimoFollow = { x: -1e4, y: -1e4 };
+  let vivas = [];
+  let zTop = 50;
+  let segurada = null;
+  let origem = null;
+  let timerFix = null;
+
+  const soltar = (img) => {
+    gsap.to(img, {
+      autoAlpha: 0, y: "+=48", scale: .82, rotate: aleatorio(-16, 16),
+      duration: .4, ease: "power2.in", onComplete: () => img.remove(),
+    });
+  };
+
+  const criar = (x, y) => {
+    const src = pool[pi++ % pool.length];
+    const el = document.createElement("div");
+    el.className = "trail-img";
+    el.style.backgroundImage = `url(${src})`;
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+    el.style.zIndex = ++zTop;
+    sec.appendChild(el);
+    const rot = aleatorio(-14, 14);
+    gsap.fromTo(el, { scale: .25, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, rotate: rot, duration: .5, ease: "back.out(1.6)" });
+    vivas.push(el);
+    if (vivas.length > 14) {
+      const velho = vivas.shift();
+      gsap.killTweensOf(velho);
+      velho.remove();
+    }
+    depois(850, () => {
+      if (segurada === el) return;
+      soltar(el);
+      const ix = vivas.indexOf(el);
+      if (ix > -1) vivas.splice(ix, 1);
+    });
+  };
+
+  const fixar = () => {
+    if (segurada || !vivas.length) return;
+    const item = vivas[vivas.length - 1];
+    segurada = item;
+    origem = { ...cursorAtual };
+    ultimoFollow = { ...cursorAtual };
+    gsap.to(item, { scale: 1.16, duration: .35, ease: "power2.out" });
+    mostrarChip(chip, parseFloat(item.style.left), parseFloat(item.style.top) + 92, evAtual);
+    gsap.set(btn, { x: cursorAtual.x, y: cursorAtual.y });
+    gsap.to(btn, { autoAlpha: 1, scale: 1, duration: .32, ease: "back.out(1.6)", overwrite: "auto" });
+  };
+
+  const desfixar = () => {
+    if (!segurada) return;
+    esconderChip(chip);
+    gsap.to(btn, { autoAlpha: 0, scale: .7, duration: .2, overwrite: "auto" });
+    gsap.to(segurada, { scale: 1, duration: .25 });
+    soltar(segurada);
+    const ix = vivas.indexOf(segurada);
+    if (ix > -1) vivas.splice(ix, 1);
+    segurada = null;
+  };
+
+  sec.addEventListener("mousemove", (e) => {
+    clearTimeout(timerFix);
+    cursorAtual = { x: e.clientX, y: e.clientY };
+    if (segurada) {
+      if (Math.hypot(e.clientX - origem.x, e.clientY - origem.y) < 70) {
+        if (Math.hypot(e.clientX - ultimoFollow.x, e.clientY - ultimoFollow.y) > 5) {
+          ultimoFollow = { x: e.clientX, y: e.clientY };
+          gsap.to(btn, { x: e.clientX, y: e.clientY, duration: .5, ease: "power3", overwrite: "auto" });
+        }
+        timerFix = depois(300, fixar);
+        return;
+      }
+      desfixar();
+    }
+    const d = Math.hypot(e.clientX - ultima.x, e.clientY - ultima.y);
+    if (d > 75) {
+      ultima = { x: e.clientX, y: e.clientY };
+      criar(e.clientX, e.clientY);
+    }
+    timerFix = depois(300, fixar);
+  });
+
+  sec.addEventListener("mouseleave", () => desfixar());
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toast(evAtual ? `Abrindo a galeria de “${evAtual.titulo}”…` : "Abrindo a galeria da comunidade…");
+  });
+
+  $$(".va-no", sec).forEach((no) => {
+    const ev = EVENTOS[+no.dataset.i];
+    no.addEventListener("mouseenter", () => { pool = ev.fotos; pi = 0; evAtual = ev; no.classList.add("ativo"); });
+    no.addEventListener("mouseleave", () => { no.classList.remove("ativo"); evAtual = null; pool = POOL_GERAL; });
+    no.addEventListener("click", () => toast(`A galeria do evento “${ev.titulo}” abriria aqui.`));
+  });
+
+  return { desfixar };
+}
+
+/* ================= Variante A · trilha horizontal com scroll ================= */
+
+function montarA() {
+  const sec = document.createElement("section");
+  sec.className = "va";
+  sec.innerHTML = `
+    <div class="cabeca">
+      <p class="kicker">He4rt Developers · eventos</p>
+      <h1>Linha do tempo<br><em>da comunidade</em></h1>
+      <p class="sub">Role a página — a linha do tempo anda para o lado e as fotos seguem o cursor.<br><strong>Pare sobre um evento</strong> para fixar a foto e ver o botão da galeria.</p>
+    </div>
+    <div class="va-trilho">
+      <ol class="va-lista">
+        <div class="va-linha"></div>
+        ${nosHTML(0, 10)}
+      </ol>
+    </div>
+    <div class="va-pe">
+      <span class="dica">role a página para percorrer a linha do tempo</span>
+      <div class="progresso"><span></span></div>
+      <button class="btn" data-galeria>Ver galeria completa</button>
+    </div>`;
+  raiz.appendChild(sec);
+
+  gsap.from($(".cabeca", sec), { y: 20, autoAlpha: 0, duration: .6 });
+  const trilha = criarTrilha(sec);
+
+  const lista = $(".va-lista", sec);
+  const dist = () => -(lista.scrollWidth - window.innerWidth);
+  gsap.to(lista, {
+    x: dist,
+    ease: "none",
+    scrollTrigger: {
+      trigger: sec,
+      start: "top top",
+      end: () => "+=" + (-dist()),
+      pin: true,
+      scrub: 1,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        trilha.desfixar();
+        $(".progresso span", sec).style.transform = `scaleX(${self.progress})`;
+      },
+    },
+  });
+
+  $$("[data-galeria]", sec).forEach((b) =>
+    b.addEventListener("click", (e) => { e.stopPropagation(); toast("Aqui entraria o link para a galeria da comunidade."); })
+  );
+}
+
+/* ================= Variante B · linha vertical ================= */
+
+function montarB() {
+  const sec = document.createElement("section");
+  sec.className = "vb";
+  sec.innerHTML = `
+    <div class="cabeca">
+      <p class="kicker">He4rt Developers · eventos</p>
+      <h1>Linha do tempo <em>da comunidade</em></h1>
+      <p class="sub">Passe o cursor sobre um evento: as fotos seguem o cursor.<br><strong>Pare</strong> para ver a foto com calma.</p>
+    </div>
+    <div class="vb-corpo">
+      <ol class="vb-lista">
+        ${EVENTOS.map((ev, i) => `
+          <li class="vb-row ${i % 2 ? "dir" : "esq"}" data-i="${i}">
+            <div class="vb-card">
+              <time>${ev.mes} ${ev.ano}</time>
+              <h3>${ev.titulo}</h3>
+              <p>${ev.desc}</p>
+              <span class="local">${ev.local}</span>
+              <button class="mini-btn" data-galeria>Ver galeria &#8594;</button>
+            </div>
+            <div class="vb-eixo"><span class="dot"></span></div>
+            <div class="vb-vazio"></div>
+          </li>`).join("")}
+      </ol>
+      <div class="vb-fim"><button class="btn" data-galeria>Ver galeria completa</button></div>
+    </div>`;
+  raiz.appendChild(sec);
+
+  gsap.from($(".cabeca", sec), { y: 20, autoAlpha: 0, duration: .6 });
+  entrada(".vb-card", sec);
+
+  const chip = criarChip(sec);
+  const seg = document.createElement("div");
+  seg.className = "seguidor";
+  seg.innerHTML = `<div class="seg-img s0"></div><div class="seg-img s1"></div><div class="seg-img s2"></div>`;
+  sec.appendChild(seg);
+  const slots = $$(".seg-img", seg);
+  gsap.set(seg, { autoAlpha: 0, scale: .85 });
+
+  let pool = [];
+  let ciclo = null;
+  let ativo = 0;
+  let timerFix = null;
+  let ultX = null;
+
+  const destacar = (i) => {
+    ativo = i;
+    slots.forEach((s, j) => gsap.to(s, { autoAlpha: j === i ? 1 : 0, scale: j === i ? 1 : .9, duration: .3 }));
+  };
+
+  $$(".vb-row", sec).forEach((row) => {
+    const ev = EVENTOS[+row.dataset.i];
+
+    row.addEventListener("mouseenter", (e) => {
+      pool = ev.fotos;
+      slots.forEach((s, i) => { s.style.backgroundImage = `url(${pool[i % pool.length]})`; });
+      destacar(0);
+      gsap.killTweensOf(seg);
+      gsap.set(seg, { x: e.clientX, y: e.clientY });
+      gsap.to(seg, { autoAlpha: 1, scale: .95, duration: .3 });
+      clearInterval(ciclo);
+      ciclo = cada(520, () => destacar((ativo + 1) % slots.length));
+    });
+
+    row.addEventListener("mousemove", (e) => {
+      const dx = e.clientX - (ultX ?? e.clientX);
+      ultX = e.clientX;
+      gsap.to(seg, { x: e.clientX, y: e.clientY, rotate: limitar(dx * .5, -12, 12), duration: .45, ease: "power3", overwrite: "auto" });
+      clearTimeout(timerFix);
+      gsap.to(seg, { scale: .95, duration: .3, overwrite: "auto" });
+      timerFix = depois(320, () => {
+        gsap.to(seg, { scale: 1.12, duration: .35, ease: "power2.out", overwrite: "auto" });
+        mostrarChip(chip, e.clientX, e.clientY - 100, ev);
+      });
+    });
+
+    row.addEventListener("mouseleave", () => {
+      clearInterval(ciclo);
+      clearTimeout(timerFix);
+      ultX = null;
+      esconderChip(chip);
+      gsap.to(seg, { autoAlpha: 0, scale: .85, duration: .25 });
+    });
+
+    row.addEventListener("click", (e) => {
+      if (e.target.closest("button")) return;
+      toast(`A galeria do evento “${ev.titulo}” abriria aqui.`);
+    });
+  });
+
+  $$("[data-galeria]", sec).forEach((b) =>
+    b.addEventListener("click", (e) => { e.stopPropagation(); toast("Aqui entraria o link para a galeria do evento."); })
+  );
+}
+
+/* ================= Variante C · tipografia gigante ================= */
+
+function montarC() {
+  const sec = document.createElement("section");
+  sec.className = "vc";
+  sec.innerHTML = `
+    <div class="cabeca">
+      <p class="kicker">He4rt Developers · arquivo de eventos</p>
+      <h1>Cada evento,<br><em>uma história.</em></h1>
+      <p class="sub">Deslize pelos nomes — as fotos voam até o cursor.<br><strong>Pare</strong> para revelar a foto.</p>
+    </div>
+    <ul class="vc-lista">
+      ${EVENTOS.map((ev, i) => `
+        <li class="vc-row" data-i="${i}">
+          <span class="vc-ano">${ev.ano} · ${ev.mes}</span>
+          <h2>${ev.titulo}</h2>
+          <span class="vc-local">${ev.local}</span>
+          <span class="seta">&#8594;</span>
+        </li>`).join("")}
+    </ul>
+    <div class="vc-fim"><button class="btn grande" data-galeria>Ver galeria completa</button></div>`;
+  raiz.appendChild(sec);
+
+  gsap.from($(".cabeca", sec), { y: 20, autoAlpha: 0, duration: .6 });
+  entrada(".vc-row", sec);
+
+  const chip = criarChip(sec);
+  const leque = document.createElement("div");
+  leque.className = "leque";
+  leque.innerHTML = `<div class="lei l0"></div><div class="lei l1"></div><div class="lei l2"></div>`;
+  sec.appendChild(leque);
+  const folhas = $$(".lei", leque);
+  const BASE = [
+    { x: -84, y: -6, r: -11, s: .94 },
+    { x: 0,   y: -26, r: 2,   s: 1 },
+    { x: 78,  y: 4,  r: 10,  s: .97 },
+  ];
+  folhas.forEach((f, i) => gsap.set(f, { x: BASE[i].x, y: BASE[i].y, rotate: BASE[i].r, scale: BASE[i].s }));
+  gsap.set(leque, { autoAlpha: 0, scale: .9 });
+
+  let pool = [];
+  let pi = 0;
+  let ciclo = null;
+  let timerFix = null;
+  let aberto = false;
+  let prevX = null;
+
+  const distribuir = () => {
+    folhas.forEach((f, i) => { f.style.backgroundImage = `url(${pool[(pi + i) % pool.length]})`; });
+  };
+  const folhaPara = (i, x, y, r, s) =>
+    gsap.to(folhas[i], { x, y, rotate: r, scale: s, duration: .38 + i * .14, ease: "power3.out", overwrite: "auto" });
+  const abrir = () => folhas.forEach((f, i) => folhaPara(i, BASE[i].x, BASE[i].y, BASE[i].r, BASE[i].s));
+  const fechar = () => folhas.forEach((f, i) => folhaPara(i, 0, 0, (i - 1) * 5, i === 1 ? 1.1 : .96));
+
+  $$(".vc-row", sec).forEach((row) => {
+    const ev = EVENTOS[+row.dataset.i];
+
+    row.addEventListener("mouseenter", (e) => {
+      pool = ev.fotos;
+      pi = 0;
+      distribuir();
+      gsap.killTweensOf(leque);
+      gsap.set(leque, { x: e.clientX, y: e.clientY });
+      gsap.to(leque, { autoAlpha: 1, scale: 1, duration: .3 });
+      aberto = true;
+      abrir();
+      clearInterval(ciclo);
+      ciclo = cada(420, () => { pi++; distribuir(); });
+    });
+
+    row.addEventListener("mousemove", (e) => {
+      const dx = e.clientX - (prevX ?? e.clientX);
+      prevX = e.clientX;
+      gsap.to(leque, { x: e.clientX, y: e.clientY, rotate: limitar(dx * .55, -16, 16), duration: .5, ease: "power3", overwrite: "auto" });
+      clearTimeout(timerFix);
+      if (!aberto) { aberto = true; abrir(); }
+      timerFix = depois(330, () => {
+        aberto = false;
+        fechar();
+        mostrarChip(chip, e.clientX, e.clientY - 122, ev);
+      });
+    });
+
+    row.addEventListener("mouseleave", () => {
+      prevX = null;
+      clearInterval(ciclo);
+      clearTimeout(timerFix);
+      esconderChip(chip);
+      gsap.to(leque, { autoAlpha: 0, scale: .9, duration: .25 });
+    });
+
+    row.addEventListener("click", () => toast(`A galeria do evento “${ev.titulo}” abriria aqui.`));
+  });
+
+  $$("[data-galeria]", sec).forEach((b) =>
+    b.addEventListener("click", (e) => { e.stopPropagation(); toast("Aqui entraria o link para a galeria da comunidade."); })
+  );
+}
+
+/* ================= Variante D · serpentina adaptativa ================= */
+
+function montarD() {
+  const sec = document.createElement("section");
+  sec.className = "vd";
+  sec.innerHTML = `
+    <div class="vd-pin">
+      <div class="cabeca">
+        <p class="kicker">He4rt Developers · eventos</p>
+        <h1>Linha do tempo<br><em>da comunidade</em></h1>
+        <p class="sub">O caminho vai, desce na curva e volta — quantas curvas forem precisas para caber na sua tela.<br><strong>Pare sobre um evento</strong> para fixar a foto e ver o botão da galeria.</p>
+      </div>
+      <div class="vd-cena"><div class="vd-faixa"></div></div>
+      <div class="vd-pe">
+        <span class="dica">tela mais estreita? a linha ganha mais curvas — sem rolar para os lados</span>
+        <button class="btn" data-galeria>Ver galeria completa</button>
+      </div>
+    </div>`;
+  raiz.appendChild(sec);
+
+  gsap.from($(".cabeca", sec), { y: 20, autoAlpha: 0, duration: .6 });
+
+  const cena = $(".vd-cena", sec);
+  const faixa = $(".vd-faixa", sec);
+  const linhasPara = (w) => (w >= 660 ? 3 : w >= 480 ? 4 : 5);
+
+  const construir = () => {
+    const w = cena.clientWidth;
+    const h = cena.clientHeight;
+    const n = linhasPara(w);
+    const C = n >= 4 ? 46 : Math.round(limitar(w * 0.07, 56, 110));
+    const gapPx = (h * (100 / n)) / 100;
+    const noH = Math.round(limitar(gapPx - 18, 84, 185));
+
+    faixa.className = "vd-faixa l" + n;
+    faixa.style.setProperty("--curva", C + "px");
+    faixa.style.setProperty("--no-h", noH + "px");
+
+    const base = Math.floor(EVENTOS.length / n);
+    const extras = EVENTOS.length % n;
+    let inicio = 0;
+    let html = "";
+    for (let i = 0; i < n; i++) {
+      const qtd = base + (i < extras ? 1 : 0);
+      const centro = ((i + 0.5) * 100) / n;
+      const esq = (i > 0 && (i - 1) % 2 === 1) || (i % 2 === 1 && i < n - 1) ? "var(--curva)" : "0px";
+      const dir = (i > 0 && (i - 1) % 2 === 0) || (i % 2 === 0 && i < n - 1) ? "var(--curva)" : "0px";
+      html += `<div class="vd-linha" style="top:${centro}%;left:${esq};right:${dir}"></div>`;
+      if (i < n - 1) {
+        html += `<div class="vd-curva ${i % 2 === 0 ? "vd-curva-d" : "vd-curva-e"}" style="top:${centro}%;height:${100 / n+0.3}%"></div>`;
+      }
+      html += `<ol class="vd-fileira ${i % 2 ? "vd-reversa" : ""}" style="top:${centro}%;left:${esq};right:${dir}">${nosHTML(inicio, inicio + qtd)}</ol>`;
+      inicio += qtd;
+    }
+    const fimReverso = (n - 1) % 2 === 1;
+    const centroFim = ((n - 0.5) * 100) / n;
+    html += `<span class="vd-fim-ponto" style="top:${centroFim}%;${fimReverso ? "left:-2px" : "right:-2px"}"></span>`;
+    html += `<span class="vd-fim-label" style="top:calc(${centroFim}% - 22px);${fimReverso ? "left:0" : "right:0"}">hoje</span>`;
+    html += `<span class="vd-sentido" style="left:0;top:calc(${50 / n}% + 10px)">2022 &#8594;</span>`;
+    faixa.innerHTML = html;
+  };
+
+  construir();
+  entrada(".va-no", sec);
+  criarTrilha(sec);
+
+  let ultimoN = linhasPara(cena.clientWidth);
+  const aoRedimensionar = () => {
+    if (linhasPara(cena.clientWidth) !== ultimoN) montar("D");
+  };
+  window.addEventListener("resize", aoRedimensionar);
+  limpar.push(() => window.removeEventListener("resize", aoRedimensionar));
+
+  $$("[data-galeria]", sec).forEach((b) =>
+    b.addEventListener("click", (e) => { e.stopPropagation(); toast("Aqui entraria o link para a galeria da comunidade."); })
+  );
+}
+
+/* ================= Troca de variantes ================= */
+
+const ORDEM = ["A", "B", "C", "D"];
+const NOMES = {
+  A: "Trilha com scroll",
+  B: "Linha vertical",
+  C: "Tipografia gigante",
+  D: "Curva em S",
+};
+const rotulo = $("#sw-rotulo");
+let chaveAtual = "A";
+
+function varianteDaURL() {
+  const p = new URLSearchParams(location.search).get("variant");
+  return ORDEM.includes(p) ? p : "A";
+}
+
+function montar(chave) {
+  limpar.forEach((f) => f());
+  limpar = [];
+  timers.forEach((t) => { clearTimeout(t); clearInterval(t); });
+  timers = [];
+  ScrollTrigger.getAll().forEach((st) => st.kill());
+  gsap.globalTimeline.getChildren(true, true, true).forEach((t) => t.kill());
+  raiz.innerHTML = "";
+  ({ A: montarA, B: montarB, C: montarC, D: montarD })[chave]();
+  window.scrollTo(0, 0);
+  ScrollTrigger.refresh();
+}
+
+function trocar(chave) {
+  chaveAtual = chave;
+  history.replaceState(null, "", "?variant=" + chave);
+  rotulo.innerHTML = `<b>${chave}</b> · ${NOMES[chave]}`;
+  montar(chave);
+}
+
+const anterior = () => trocar(ORDEM[(ORDEM.indexOf(chaveAtual) + ORDEM.length - 1) % ORDEM.length]);
+const proxima = () => trocar(ORDEM[(ORDEM.indexOf(chaveAtual) + 1) % ORDEM.length]);
+
+$("#sw-prev").addEventListener("click", anterior);
+$("#sw-next").addEventListener("click", proxima);
+
+window.addEventListener("keydown", (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const t = e.target;
+  if (t && (t.matches?.("input,textarea,[contenteditable]"))) return;
+  if (e.key === "ArrowLeft") { e.preventDefault(); anterior(); }
+  if (e.key === "ArrowRight") { e.preventDefault(); proxima(); }
+});
+
+trocar(varianteDaURL());
+</script>
+</body>
+</html>
