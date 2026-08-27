@@ -1,0 +1,93 @@
+# 05 — feat(tracks): `SyncTracks` — ETL de conteúdo (working copy → módulos e aulas normalizadas)
+
+**Labels (GitHub):** `type:feat` · `mod:tracks` · `difficulty:hard`
+**Status:** ready-for-agent
+
+## Contexto
+
+O conteúdo de uma trilha é uma **árvore de markdown**: o pipeline deve mapear a estrutura encontrada para a hierarquia track → module → lesson. A pesquisa dos 9 repos 4noobs catalogou as variações que o pipeline precisa absorver:
+
+| Aspecto | Variações encontradas |
+|---|---|
+| Estrutura | flat, `docs/`, `src/`, `Content/`, VuePress, mdbook |
+| Extensão | `.md` e `.MD` |
+| Branch | `master` ou `main` |
+| Imagens | links relativos quebrariam fora do GitHub |
+
+Duas decisões estruturais já consolidadas nos ADRs do módulo guiam este ticket:
+
+1. **Identidade estável (ADR 0001):** módulo e aula recebem UUID determinístico (v5) derivado do namespace UUID da trilha + source path. Progresso/interações vinculam ao UUID — nunca ao caminho. Rename de path → registro antigo soft-deleted com ponteiro `replaced_by_uuid`.
+2. **Flat + override (ADR 0002):** detecção de engine foi recusada como frágil; variação estrutural se resolve com mapa de override configurável por repo.
+
+## O que construir
+
+- Analisar a estrutura dos repos 4noobs reais (mínimo: 3–5 repos com variações diferentes) para validar o mapeamento estrutural antes de implementar o pipeline
+- Capability `ProvidesWorkingCopy` no `GithubTrackProvider`: shallow clone na primeira sincronização em storage dedicado; `git pull` incremental nas seguintes; opção de refresh completo re-clonando.
+- Pipeline de normalização no comando `tracks:sync`:
+  - Módulos = diretórios de topo, ignorando `.github/`, pastas de imagens e configs
+  - Override map por repo para desvios (ex.: trilha com conteúdo sob `Content/`)
+  - Extensões normalizadas (`.MD` → `.md`)
+  - Branch lida da metadata já sincronizada (`default_branch`)
+  - Links relativos de imagem reescritos para `raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}`
+  - Em casos de borda (aulas com seção extra de conteúdo complementar), lesson pode ter um campo `extra_content` para esse conteúdo adicional sem quebrar o modelo — ver [`../schema.md`](../schema.md)
+  - Markdown → HTML sanitizado em `lessons.processed_content`
+  - Métricas: `word_count`; `estimated_minutes = ceil(word_count / 200)`
+- Ordenação heurística em cascata: seções numeradas do ROADMAP do README → alfabética → ordem da git tree; resultado persistido em coluna de posição
+- Identidade: UUIDv5 estável; rename entre syncs → soft-delete + `replaced_by_uuid` apontando ao sucessor
+
+Schema resumido das duas tabelas novas (`tracks` já existe do ticket 04):
+
+```
+modules: id uuid pk · track_id fk · title · slug · position int · replaced_by_uuid null · timestampsTz
+lessons: id uuid pk · module_id fk · title · position int · processed_content text
+         · word_count int · estimated_minutes int · replaced_by_uuid null · timestampsTz
+```
+
+## Critérios de aceite
+
+- [ ] Primeiro sync de uma trilha real popula módulos e aulas na ordem correta, com HTML processado legível
+- [ ] UUIDs são determinísticos: mesmo input produz mesmos ids (testado contra fixtures)
+- [ ] Rename de arquivo/diretório preserva progresso via ponteiro de substituição
+- [ ] Sync incremental não refaz clone; flag de refresh completo existe
+- [ ] Override map aplicado quando configurado; sem config, regra flat padrão vale
+- [ ] Idempotência: segunda passada sem mudanças na fonte = zero alterações estruturais
+- [ ] Domínio chama a capability — nenhum uso direto de git/HTTP no módulo tracks
+
+## Teste
+
+### BDD
+
+```gherkin
+# language: pt
+Funcionalidade: Sincronização de conteúdo das trilhas
+
+  Cenário: Primeiro sync de uma trilha
+    Quando o sync roda para uma trilha recém-catalogada
+    Então módulos e aulas nascem com UUIDs determinísticos e posições da heurística do README
+    E cada aula guarda HTML processado, word_count e duração estimada
+
+  Cenário: Aula renomeada entre syncs
+    Dado que "introducao.md" virou "fundamentos.md" no repo
+    Quando o sync roda novamente
+    Então a aula antiga fica inativa apontando para a nova
+    E qualquer progresso existente continua válido pelo UUID imutável
+
+  Cenário: Repo com estrutura atípica
+    Dado que uma trilha guarda o conteúdo sob "Content/" em vez de diretórios de topo
+    E existe override configurado para ela
+    Quando o sync roda
+    Então os módulos são extraídos da raiz do override, não da estrutura bruta
+
+  Cenário: Sync incremental
+    Dado um clone já existente da trilha
+    Quando o sync roda novamente
+    Então apenas um pull incremental acontece e só o que mudou é atualizado
+```
+
+## Bloqueada por
+
+- #04 — GithubTrackProvider descobrindo fontes
+
+---
+
+[← Anterior: 04](04-github-provider-descoberta-metadados.md) · [issues/README](README.md) · [Próxima: 06 →](06-contribuidores-adocao-orfaos.md)
