@@ -5,11 +5,11 @@
 - **Status:** Proposto
 - **Data:** 2026-08-24
 - **Relaciona:** [0001](0001-content-identity-via-stable-uuid.md), [0002](0002-etl-normalization-strategy.md), [0003](0003-modelo-de-dados.md); spec do módulo `contents` (`contents/docs/specs/2026-08-19-modulo-contents-artigos.md`, branch 4.x)
-- **Procedência:** decisões produzidas pelo processo wayfinder em `.scratch/4noobs-module/` — tickets 01–06 (2 pesquisas, 3 grilling, 1 protótipo), todos resolvidos — revisadas contra as regras da casa consolidadas pelo `contents`
+- **Procedência:** decisões produzidas pelo processo da skill /wayfinder — tickets 01–06 (2 pesquisas, 3 rodadas de decisão, 1 protótipo), todos resolvidos — revisadas contra as regras da casa consolidadas pelo `contents`
 
 ## Contexto
 
-O desenho do `tracks` nasceu de um ciclo estruturado de decisão: pesquisa empírica sobre 9 repositórios `{topic}4noobs` (css, php, cpp, rust, python, typescript, swift, git, qa — owners individuais), auditoria do que a `integration-github` já oferece (10 requests, todos GET; nenhuma interação de escrita), três sessões de grilling (modelo de dados, ETL, interações) e um protótipo aprovado entre seis variantes.
+O desenho do `tracks` nasceu de um ciclo estruturado de decisão: pesquisa empírica sobre 9 repositórios `{topic}4noobs` (css, php, cpp, rust, python, typescript, swift, git, qa — owners individuais), auditoria do que a `integration-github` já oferece (10 requests, todos GET; nenhuma interação de escrita), três rodadas de decisão (modelo de dados, ETL, interações) e um protótipo aprovado entre seis variantes.
 
 Esse desenho antecedeu a consolidação do módulo `contents` no upstream, que fixou as regras da casa para conteúdo de fontes externas. Este documento consolida **todas** as decisões num lugar só — para proposta upstream e para onboard de contribuidores — marcando onde o alinhamento ao `contents` alterou o desenho original e onde o tracks deliberadamente difere. Os ADRs 0001–0003 permanecem válidos como registros focados; este os referencia e registra suas emendas.
 
@@ -24,6 +24,8 @@ Esse desenho antecedeu a consolidação do módulo `contents` no upstream, que f
 ## D2 — Fonte única com discriminador: `source_type` + `source_data` JSONB *(ADR 0003, nuance pós-contents)*
 
 **Decisão:** tabela `tracks` com enum `source_type` (`github` | `native`) e JSONB nullable `source_data` (repo_owner, repo_name, default_branch, language, stars). Metadados consultáveis cruzando a hierarquia ficam colunas; o que é específico de fonte fica no JSONB.
+
+> **Emendado pelo ADR 0005, E-D11:** no reescopo do agregador o `source_data` JSONB foi **removido** — todos os metadados de fonte foram promovidos a colunas planas consultáveis (repo_owner, repo_name, repo_url, default_branch, language, category, stars, forks, watchers), como registrado no `schema.md`. O racional de "específico de fonte vs colunas" permanece histórico; hoje não há payload de fonte que não seja coluna.
 
 **Recusado:**
 - *Tabelas polimórficas por fonte* (`track_github_sources`, `track_native_sources`) — JOIN opcional em toda query, migration nova a cada fonte.

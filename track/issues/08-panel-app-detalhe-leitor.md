@@ -1,4 +1,4 @@
-# 08 — feat(panel-app): detalhe da trilha (`TrackAside`) + leitor de aulas com progresso
+# 08 — feat(panel-app): detalhe da trilha (`TrackAside`) + leitor de aulas focado
 
 **Labels (GitHub):** `type:feat` · `mod:panel-app` · `mod:tracks` · `difficulty:hard`
 **Status:** ready-for-agent
@@ -7,10 +7,12 @@
 
 O detalhe da trilha foi desenhado como um **aside sobreposto** (não página própria): o usuário navega a listagem e abre a trilha sem perder o contexto do grid. A leitura acontece numa segunda superfície, o **"Focus Reader"** — variante aprovada entre quatro protótipos —, que serve o HTML já processado pelo ETL com foco total no texto. Ambos foram prototipados no fork com dados em memória; este ticket torna-os reais.
 
-Visual de referência completo em [`../artefatos/tracks-docs.html?poc=1`](../artefatos/tracks-docs.html?poc=1) (POC em tela cheia), seções "Detalhe · TrackAside" e "Leitor · variante Focus Reader". Resumo:
+Visual de referência completo em [`../artefatos/tracks-docs.html?poc=1`](../artefatos/tracks-docs.html?poc=1) (POC em tela cheia), seções "Detalhe · TrackAside" e "Leitor · variante Focus Reader". Resumo (emendado pelo reescopo agregador — ADR 0005, E-D8):
 
-- **Aside**: header com stats do repo (stars/forks/watchers), criador, descrição, badges de metadados (linguagem/nível/duração), progresso geral, árvore módulos → aulas com check de concluída, lista de contribuidores
-- **Reader**: breadcrumb `Trilha > Módulo > Aula`, sidebar fina colapsável com índice dos h2 da aula atual, blocos tipados (código com botão copiar, callout, tabela), navegação anterior/próxima respeitando a ordenação persistida pelo ETL
+- **Aside**: header com stats do repo (stars/forks/watchers), criador, descrição, badges de metadados (linguagem/categoria), árvore módulos → aulas (**sem check de conclusão**), lista de contribuidores com Follow/Sponsor
+- **Reader**: breadcrumb `Trilha > Módulo > Aula`, sidebar fina colapsável com índice dos h2 da aula atual, blocos tipados (código com botão copiar, callout, tabela), navegação anterior/próxima respeitando a ordenação persistida pelo ETL. **Sem marcar concluída e sem feedback por aula.**
+
+> Removidos no agregador: progresso geral, níveis/duração nos badges, check de conclusão nas aulas, ação "concluir aula" (`user_completed_lessons` saiu do modelo), auto-marcação por scroll.
 
 ## O que construir
 
@@ -20,19 +22,17 @@ Visual de referência completo em [`../artefatos/tracks-docs.html?poc=1`](../art
   - reader pode abrir outro aside direto (`tracks-aside.open`)
   - fechar o aside devolve estado à listagem (`tracks-page.clear`)
 - Leitor servindo `lessons.processed_content` com os blocos tipados estilizados
-- Progresso: ação "concluir aula" grava estado pessoal vinculado ao **UUID da aula** na tabela `user_completed_lessons` (ver [`../schema.md`](../schema.md)); checks aparecem na árvore do aside e na barra da listagem. Opcionalmente, detecção automática por scroll (~90% da aula lida) pode marcar como concluída sem ação manual — implementação a critério do dev, não bloqueante
-- Navegação prev/next pela coluna de posição persistida; Devendo apenas existir casos haja prev/next.
+- Navegação prev/next pela coluna de posição persistida; apenas existindo casos haja prev/next.
 - Estados vazios: trilha sem conteúdo sincronizado ainda, aula removida entre syncs (ponteiro `replaced_by_uuid` redireciona)
 
 ## Critérios de aceite
 
 - [ ] Aside abre da listagem e do reader pelos eventos definidos, fecha limpando estado
-- [ ] Árvore de módulos/aulas espelha exatamente o ETL (ordem e agrupamento)
-- [ ] Concluir aula persiste e reflete no aside e na listagem imediatamente
+- [ ] Árvore de módulos/aulas espelha exatamente o ETL (ordem e agrupamento) — sem check de conclusão
 - [ ] Prev/next atravessam limites de módulo corretamente
-- [ ] Rename de path entre syncs não perde progresso (UUID estável provado em teste)
+- [ ] Rename de path entre syncs não quebra a árvore nem os vínculos (UUID estável provado em teste)
 - [ ] Code blocks têm botão copiar funcional; callouts e tabelas estilizados
-- [ ] Testes Livewire cobrindo eventos, conclusão de aula e navegação
+- [ ] Testes Livewire cobrindo eventos e navegação
 
 ## Teste
 
@@ -40,18 +40,17 @@ Visual de referência completo em [`../artefatos/tracks-docs.html?poc=1`](../art
 
 ```gherkin
 # language: pt
-Funcionalidade: Ler uma trilha e acompanhar progresso
+Funcionalidade: Ler uma trilha no leitor focado
 
   Cenário: Abrir o detalhe da trilha
     Dado que estou na listagem de trilhas
     Quando seleciono uma trilha
     Então o aside abre com stats do repo, criador e árvore de conteúdo
 
-  Cenário: Concluir uma aula
-    Dado que estou lendo a primeira aula de um módulo
-    Quando marco a aula como concluída
-    Então o check aparece na árvore do aside
-    E a barra de progresso da listagem aumenta
+  Cenário: Ler uma aula sem rastro
+    Dado que estou lendo uma aula de um módulo
+    Quando o leitor renderiza
+    Então o conteúdo é servido tipado, sem marcar nada como concluído
 
   Cenário: Navegar linearmente
     Dado que estou na última aula de um módulo
@@ -64,9 +63,9 @@ Funcionalidade: Ler uma trilha e acompanhar progresso
     Então o botão "Próxima" não aparece
 
   Cenário: Aula renomeada entre syncs
-    Dado que marquei uma aula como concluída e ela foi renomeada no repo
+    Dado que uma aula foi renomeada no repo
     Quando o próximo sync roda e eu reabro a trilha
-    Então meu check continua presente na aula sucessora
+    Então a árvore continua íntegra via ponteiro de substituição
 ```
 
 ## Bloqueada por
@@ -75,4 +74,4 @@ Funcionalidade: Ler uma trilha e acompanhar progresso
 
 ---
 
-[← Anterior: 07](07-panel-app-listagem-trilhas.md) · [issues/README](README.md) · [Próxima: 09 →](09-user-track-state-salvar-avaliar-feedback.md)
+[← Anterior: 07](07-panel-app-listagem-trilhas.md) · [issues/README](README.md) · [Próxima: 09 →](09-github-interaction-endpoints.md)

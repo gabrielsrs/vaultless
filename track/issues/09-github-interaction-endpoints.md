@@ -1,11 +1,11 @@
-# 10 — feat(integration-github): requests de interação (star, watch, follow) com escopo elevado
+# 09 — feat(integration-github): requests de interação (star, watch, follow) com escopo elevado
 
 **Labels (GitHub):** `type:feat` · `mod:integration-github` · `difficulty:medium`
 **Status:** ready-for-agent
 
 ## Contexto
 
-A integração GitHub da plataforma hoje é **somente leitura** (users, PRs, issues, commits — 10 requests GET). Nenhuma ação em nome do usuário existe. Para valorizar criadores de trilhas dentro do site (#11), precisamos dos verbos de escrita mapeados na pesquisa:
+A integração GitHub da plataforma hoje é **somente leitura** (users, PRs, issues, commits — 10 requests GET). Nenhuma ação em nome do usuário existe. Para valorizar criadores de trilhas dentro do site (#10), precisamos dos verbos de escrita mapeados na pesquisa:
 
 | Ação | Verbos GitHub |
 |---|---|
@@ -28,7 +28,7 @@ Dois detalhes estruturais:
 - Semântica dos checks: `GET` devolve `204` quando ativo e `404` quando inativo — encapsular isso num retorno booleano claro para o domínio
 - Actions wrappers finas (ex.: `StarRepositoryAction`) no estilo das actions já existentes da integration, para que panel-app nunca monte URL
 - Config: acrescentar `public_repo` e `user:follow` aos scopes em `services.github.scopes`
-- Nota de migração documentada na issue: conexões antigas foram feitas sem os novos escopos — usuários precisarão reconectar (re-consent) para interagir; a UI trata token insuficiente como estado neutro (#11)
+- Nota de migração documentada na issue: conexões antigas foram feitas sem os novos escopos — usuários precisarão reconectar (re-consent) para interagir; a UI trata token insuficiente como estado neutro (#10)
 - Testes MockClient cobrindo sucesso (`204`/`200`), check negativo (`404`) e `401` de token expirado sinalizado como erro tratável (não exceção crua)
 
 ## Critérios de aceite
@@ -71,4 +71,4 @@ Nada — pode começar imediatamente (paralela ao ETL).
 
 ---
 
-[← Anterior: 09](09-user-track-state-salvar-avaliar-feedback.md) · [issues/README](README.md) · [Próxima: 11 →](11-panel-app-acoes-github-ui.md)
+[← Anterior: 08](08-panel-app-detalhe-leitor.md) · [issues/README](README.md) · [Próxima: 10 →](10-panel-app-acoes-github-ui.md)

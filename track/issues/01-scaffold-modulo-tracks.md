@@ -7,7 +7,7 @@
 
 A comunidade He4rt mantém o programa **4noobs**: repositórios `{topic}4noobs` hospedados no GitHub, cada um em um owner individual (ex.: `he4rt/css4noobs`, `danielhe4rt/php4noobs`), com conteúdo educacional 100% markdown. Hoje esse acervo não existe para a plataforma: não há catálogo, navegação, progresso de leitura, valorização dos criadores nem modo dedicado a leitura dentro do site.
 
-O módulo **`tracks`** resolve isso como um bounded context próprio: agrega as trilhas sincronizadas dos repos, estrutura o conteúdo em trilha → módulo → aula, guarda estado pessoal do aluno e expõe interações GitHub (star/watch/follow) que valorizam quem cria. O desenho consolidado está em [`../spec.md`](../spec.md), no ADR [`../adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md`](../adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md) e nas estruturas detalhadas em [`../schema.md`](../schema.md).
+O módulo **`tracks`** resolve isso como um bounded context próprio: agrega as trilhas sincronizadas dos repos, estrutura o conteúdo em trilha → módulo → aula, expõe interações GitHub (star/watch/follow) que valorizam quem cria e serve leitura focado. É um **agregador, não um LMS** — não rastreia estado pessoal do aluno (ADR 0005). O desenho consolidado está em [`../spec.md`](../spec.md), nos ADRs [`../adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md`](../adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md) e [`../adr/0005-reescopo-para-agregador.md`](../adr/0005-reescopo-para-agregador.md), e nas estruturas detalhadas em [`../schema.md`](../schema.md).
 
 Este ticket é o nascimento do módulo — o mesmo tipo de commit que criou o módulo `contents`: estrutura canônica, registro nas regras da casa, zero funcionalidade.
 
@@ -23,9 +23,9 @@ Este ticket é o nascimento do módulo — o mesmo tipo de commit que criou o m�
   - **Módulo / Aula** — os dois níveis abaixo da trilha (diretório / arquivo markdown na origem)
   - **Fonte de Conteúdo (Source)** — de onde a trilha veio; identificada por `(source_type, external_id)`
   - **Contribuidor** — pessoa autora de conteúdo, resolvida por handle GitHub
-  - **Órfão / Adoção** — contribuidor sem conta He4rt vinculada / ato de vinculá-lo retroativamente
-  - **TrackCapabilities** — ações disponíveis por tipo de fonte
-  - **UserTrackState** — estado pessoal usuário↔trilha (progresso, salvo, avaliação, feedback)
+  - **Órfão / Adoção** — contribuidor sem conta He4rt vinculada / ato de vinculá-lo retroativamente ao conectar a conta
+  - **TrackCapabilities / Capacidades** — ações disponíveis por tipo de fonte, expressas por interfaces (`instanceof`), nunca por flags
+  - **Allowlist + Purpose** — repos `github_repositories` cadastrados para ingestão; `purpose=Tracks` é a categoria de projeção que os direciona ao agregador (padrão ADR-0002 do onboarding)
 - Registro no `CONTEXT-MAP.md`:
   - Linha na tabela de contextos
   - Regras de dependência: `integration-github` implementa os contratos definidos pelo tracks; tracks depende de identity; presentation lê de tracks, nunca o reverso; activity/gamification podem escutar eventos do tracks

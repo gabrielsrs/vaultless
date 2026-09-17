@@ -1,4 +1,4 @@
-# 11 — feat(panel-app): ações GitHub na UI do aside com matriz de estados
+# 10 — feat(panel-app): ações GitHub na UI do aside com matriz de estados
 
 **Labels (GitHub):** `type:feat` · `mod:panel-app` · `mod:integration-github` · `difficulty:medium`
 **Status:** ready-for-agent
@@ -22,7 +22,7 @@ A matriz de estados acordada:
   - **Watch** — ícone + contagem; toggle inscrever/cancelar
   - **Share** — Web Share API com fallback para clipboard
 - **Follow + Sponsor por contribuidor**: botões junto a cada contribuidor na seção de autores do aside; check prévio de follow antes de exibir estado; **Sponsor** só exibe se `GET /users/{login}/sponsorship` retornar que o owner tem sponsor ativo (abre em nova aba)
-- Check prévio: ao abrir/sincronizar o aside, consultas booleanas (`GET` starred/watch/following do ticket #10) definem estado inicial dos toggles
+- Check prévio: ao abrir/sincronizar o aside, consultas booleanas (`GET` starred/watch/following do ticket #09) definem estado inicial dos toggles
 - Aplicação integral da matriz de estados acima; contagem base vem da metadata sincronizada (#04), atualização otimista após confirmação da ação
 - Estados de carregamento: skeleton nos checks prévios para não piscar estado errado
 
@@ -64,8 +64,8 @@ Funcionalidade: Interações GitHub dentro do aside
 ## Bloqueada por
 
 - #08 — aside existe como superfície
-- #10 — endpoints de escrita disponíveis
+- #09 — endpoints de escrita disponíveis
 
 ---
 
-[← Anterior: 10](10-github-interaction-endpoints.md) · [issues/README](README.md) · [Próxima: 12 →](12-agendamento-descoberta-automatica.md)
+[← Anterior: 09](09-github-interaction-endpoints.md) · [issues/README](README.md) · [Próxima: 11 →](11-agendamento-descoberta-automatica.md)

@@ -221,16 +221,6 @@ a{color:var(--signal-ink)}
 .search-box input:focus{outline:none;border-color:#7C3AED}
 .poc-search .btn-buscar{background:#7C3AED;color:#fff;font-weight:600;font-size:13px;padding:10px 18px;border-radius:8px}
 .poc-search .btn-buscar:hover{background:#6d28d9}
-.poc-stats{display:flex;align-items:center;gap:18px;background:var(--gh-raised);border:1px solid var(--gh-border);border-radius:12px;padding:12px 20px;margin-bottom:22px;flex-wrap:wrap}
-.pstat{display:flex;align-items:baseline;gap:7px}
-.pstat b{color:#fff;font-size:13px;font-weight:600}
-.pstat span{color:var(--gh-muted);font-size:12px}
-.pstat svg{width:15px;height:15px;align-self:center;flex:0 0 auto}
-.pstat-sep{width:1px;height:18px;background:var(--gh-border)}
-.pstat.green b{color:var(--gh-green)}
-.pstat.green svg{color:var(--gh-green)}
-.pstat.purple b{color:#D2A8FF}
-.pstat.purple svg{color:#D2A8FF}
 
 .poc-layout{display:grid;grid-template-columns:218px 1fr;gap:20px}
 .poc-filters h4{font-size:13px;font-weight:600;color:#fff;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
@@ -252,7 +242,7 @@ a{color:var(--signal-ink)}
 .poc-sort{position:relative;margin-bottom:14px;}
 .poc-sort select{background:var(--gh-raised);border:1px solid var(--gh-border);border-radius:8px;color:#C9D1D9;font-size:12px;padding:8px 10px;width:100%}
 
-.poc-banner{display:grid;grid-template-columns:2fr 1fr;border-radius:12px;overflow:hidden;margin-bottom:18px;background:linear-gradient(135deg,#4C1D95,#1E1B4B);position:relative}
+.poc-banner{display:grid;grid-template-columns:1fr;border-radius:12px;overflow:hidden;margin-bottom:18px;background:linear-gradient(135deg,#4C1D95,#1E1B4B);position:relative}
 .poc-banner .bz{position:relative;padding:24px 26px}
 .poc-banner .bz-badges{display:flex;gap:8px;margin-bottom:12px}
 .poc-banner .bz-badges span{font-size:10.5px;font-weight:600;border-radius:99px;padding:3px 10px}
@@ -265,10 +255,6 @@ a{color:var(--signal-ink)}
 .poc-banner .bz-meta svg{width:14px;height:14px}
 .poc-banner .btn-iniciar{background:#7C3AED;color:#fff;font-weight:700;font-size:13px;padding:9px 18px;border-radius:8px;display:inline-flex;align-items:center;gap:7px}
 .poc-banner .btn-iniciar:hover{background:#6d28d9}
-.poc-banner .bz-xp{position:relative;display:flex;align-items:center;justify-content:center;background:rgba(124,58,237,.22)}
-.poc-banner .bz-xp .xp-in{text-align:center;color:#fff}
-.poc-banner .bz-xp .xp-in b{display:block;font-size:26px;font-weight:700}
-.poc-banner .bz-xp .xp-in span{font-size:11px;opacity:.75}
 
 .poc-grid{display:grid;grid-template-columns:repeat(3, minmax(300px, 1fr));gap:12px}
 .tcard{background:var(--gh-raised);border:1px solid var(--gh-border);border-radius:12px;padding:16px;cursor:pointer;transition:border-color .12s;position:relative;overflow:hidden}
@@ -291,84 +277,12 @@ a{color:var(--signal-ink)}
 .tcard-tags span{font-size:10px;color:var(--gh-muted);border:1px solid var(--gh-border);border-radius:99px;padding:2px 8px}
 .tcard-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--gh-border);padding-top:10px}
 .tcard-foot .prog{flex:1;min-width:0}
-.tcard-foot .prog .bar{height:6px;border-radius:99px;background:#21262d;overflow:hidden;margin-bottom:5px;position:absolute;width:100%;top:0;left:0}
-.tcard-foot .prog .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#9F6BFF)}
-.tcard-foot .prog small{font-size:10.5px;color:var(--gh-muted)}
 .tcard-foot .prog .activity{font-size:12px;color:var(--gh-muted);display:flex;align-items:center;gap:4px}
 .tcard-btn{display:flex;align-items:center;gap:6px;background:#7C3AED;color:#fff;font-weight:600;font-size:12px;padding:8px 12px;border-radius:8px;white-space:nowrap}
 .tcard-btn:hover{background:#6d28d9}
 .tcard-btn svg{width:14px;height:14px}
 .tcard.starred{border-color:rgba(210,168,255,.4)}
 .empty{margin:40px 0;text-align:center;color:var(--gh-muted);font-size:13px}
-
-.and-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-.pstat-card{background:var(--gh-raised);border:1px solid var(--gh-border);border-radius:12px;padding:14px 16px}
-.pstat-card .lbl{font-size:11.5px;color:var(--gh-muted)}
-.pstat-card .val{font-size:22px;font-weight:700;color:#fff;margin:2px 0}
-.pstat-card .sub{font-size:11px;color:var(--gh-muted)}
-.pstat-card .sub.green{color:var(--gh-green)}
-.acard{background:var(--gh-raised);border-radius:12px;overflow:hidden;margin-bottom:14px;cursor:pointer}
-.acard .ac-grid{display:grid;grid-template-columns:200px 1fr}
-.acard-left{background:linear-gradient(135deg,#3B2F63,#241D40);padding:20px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
-.acard-left .al-ic{display:flex;align-items:center;gap:10px}
-.acard-left .al-ic svg{width:20px;height:20px;opacity:.9}
-.acard-left h4{font-size:13.5px;font-weight:700;line-height:1.3;margin-top:6px}
-.acard-left .al-who{font-size:11px;opacity:.7;margin-top:2px}
-.acard-left .al-pct b{font-size:30px;font-weight:700;display:block;line-height:1}
-.acard-left .al-pct span{font-size:10px;opacity:.7}
-.acard-right{padding:16px 18px}
-.acard-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.acard-head .xp{background:#7C3AED;color:#fff;font-size:11px;font-weight:600;border-radius:6px;padding:3px 8px}
-.acard-head .meta{font-size:11.5px;color:var(--gh-muted)}
-.trillha-prog{margin-bottom:16px;}
-.trillha-prog .label-trillha-prog{margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:600;letter-spacing:.1em;}
-.trillha-prog .label-trillha-prog small{color:white;}
-.trillha-prog .bar{height:6px;border-radius:99px;background:#21262d;overflow:hidden;margin-bottom:5px;position:absolute;width:100%;top:0;left:0}
-.trillha-prog .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#9F6BFF)}
-.acard-segs-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gh-muted);margin-bottom:7px}
-.acard-segs{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:14px}
-.acard-seg{text-align:center}
-.acard-seg .seg-bar{height:6px;border-radius:99px;background:#30363D;margin-bottom:4px}
-.acard-seg .seg-bar.done{background:linear-gradient(90deg,#3FB950,#9F6BFF)}
-.acard-seg .seg-bar.active{background:#7C3AED}
-.acard-seg small{font-size:8.5px;color:var(--gh-faint)}
-.acard-seg.done small{color:var(--gh-muted)}
-.acard-next{background:var(--gh-bg);border-left:3px solid #7C3AED;border-radius:6px;padding:10px 12px;margin-bottom:14px}
-.acard-next .nl{font-size:10px;font-weight:600;color:#D2A8FF}
-.acard-next .nt{font-size:13px;font-weight:600;color:#fff}
-.acard-next .nm{font-size:11px;color:var(--gh-muted)}
-.acard-btns{display:flex;gap:8px}
-.acard-btns .b{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;font-weight:600;padding:9px;border-radius:8px}
-.acard-btns .b.primary{background:#7C3AED;color:#fff}
-.acard-btns .b.primary:hover{background:#6d28d9}
-.acard-btns .b.ghost{color:#C9D1D9;border:1px solid var(--gh-border)}
-.acard-btns .b.ghost:hover{background:rgba(255,255,255,.04)}
-
-.ccard{background:var(--gh-raised);border-radius:12px;overflow:hidden}
-.ccard .top-line{height:8px;background:linear-gradient(90deg,#3FB950,#9F6BFF)}
-.ccard .cc-body{padding:16px}
-.ccard-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
-.ccard-check{width:38px;height:38px;flex:0 0 auto;border-radius:9px;background:#3FB950;display:grid;place-items:center}
-.ccard-check svg{width:16px;height:16px;color:#fff}
-.ccard-title{font-size:13.5px;font-weight:600;color:#fff}
-.ccard-creator{font-size:11.5px;color:var(--gh-muted)}
-.ccard-xp{margin-left:auto;text-align:right}
-.ccard-xp b{color:var(--gh-green);font-size:13.5px}
-.ccard-xp span{display:block;font-size:10.5px;color:var(--gh-muted)}
-.ccard-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.ccard-col{background:var(--gh-bg);border-radius:8px;padding:8px;text-align:center}
-.ccard-col .cl{font-size:10px;color:var(--gh-muted)}
-.ccard-col .cv{font-size:12.5px;font-weight:700;color:#fff}
-.ccard-col .cv.gold{color:#EAB308}
-.ccard-badges{display:flex;gap:6px;margin-bottom:12px}
-.ccard-badges span{font-size:10.5px;border-radius:6px;padding:3px 8px}
-.ccard-badges .done{background:rgba(63,185,80,.15);color:var(--gh-green)}
-.ccard-badges .when{background:var(--gh-bg);color:var(--gh-muted)}
-.ccard-dots{display:flex;gap:4px;margin-bottom:12px}
-.ccard-dots i{height:5px;flex:1;border-radius:99px;background:linear-gradient(90deg,#3FB950,#9F6BFF)}
-.ccard-btns{display:flex;gap:8px}
-.ccard-btns .b{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;font-weight:600;padding:8px;border-radius:8px;border:1px solid var(--gh-border);color:#C9D1D9}
-.ccard-btns .b:hover{background:rgba(255,255,255,.04)}
 
 .poc-aside{height:calc(100vh - 51px);position:sticky;top:51px;display:flex;flex-direction:column;min-width:300px;max-width:430px;background:var(--gh-raised);border-left:1px solid var(--gh-border);overflow-y:auto;z-index:20;box-shadow:-30px 0 60px -30px rgba(0,0,0,.6)}
 .aside-header{display:flex;gap:12px;align-items:flex-start;padding:20px;border-bottom:1px solid var(--gh-border)}
@@ -403,8 +317,6 @@ a{color:var(--signal-ink)}
 .amodule-info{min-width:0;flex:1}
 .amodule-info .mtitle{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .amodule-info .msub{font-size:10px;color:#8B949E}
-.amodule-pbar{height:4px;width:48px;border-radius:99px;background:#30363D;overflow:hidden;flex-shrink:0}
-.amodule-pbar i{display:block;height:100%;border-radius:99px;background:#7C3AED}
 .amodule-lessons{border-top:1px solid #30363D;padding:4px 8px;display:grid;gap:0;overflow:hidden;max-height:500px;transition:max-height .2s ease,padding .2s ease}
 .amodule.collapsed .amodule-lessons{max-height:0;padding-top:0;padding-bottom:0;border-top-color:transparent}
 .amodule-lessons button{display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px;font-size:13px;color:#C9D1D9;padding:8px 10px;border-radius:7px;text-align:left;background:none;border:none;cursor:pointer;transition:background .1s}
@@ -413,13 +325,6 @@ a{color:var(--signal-ink)}
 .amodule-lessons button .ln{width:18px;height:18px;border-radius:50%;border:1px solid #30363D;display:grid;place-items:center;font-size:9px;font-weight:600;color:#8B949E;flex-shrink:0}
 .amodule-lessons button .lname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .amodule-lessons button svg{width:16px;height:16px;color:#8B949E;flex-shrink:0}
-.lstatus{position:relative;width:22px;height:22px;display:grid;place-items:center;flex-shrink:0;border-radius:50%}
-.lstatus svg{position:relative;z-index:1}
-.lstatus .lring{position:absolute;inset:-1px;border-radius:50%;background:conic-gradient(#3FB950 var(--pct,0%), transparent var(--pct,0%));-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px));opacity:0;transition:opacity .15s}
-.lstatus.holding .lring{opacity:1}
-.lstatus.completed svg{color:#3FB950}
-.amodule-lessons button.highlight{background:rgba(124,58,237,.18);transition:background .3s}
-.amodule-lessons button.highlight-out{background:transparent;transition:background 3s}
 .aside-contrib{display:grid;gap:8px;margin-bottom: 22px;}
 .acontrib{display:flex;align-items:center;gap:10px}
 .acontrib .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:10px;font-weight:600;color:#fff;flex:0 0 auto}
@@ -443,10 +348,6 @@ a{color:var(--signal-ink)}
 .reader-track .tcard-icon{width:34px;height:34px}
 .reader-track b{display:block;font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .reader-track span{display:block;font-family:var(--mono);font-size:10px;color:var(--gh-muted)}
-.reader-side .progbar{margin:12px 0 0}
-.reader-side .progbar .bar{height:5px;border-radius:99px;background:#30363D;overflow:hidden}
-.reader-side .progbar .bar i{display:block;height:100%;background:linear-gradient(90deg,#7C3AED,#9F6BFF)}
-.reader-side .progbar small{display:block;margin-top:5px;font-size:10px;color:var(--gh-muted)}
 .reader-index{flex:1;overflow-y:auto;padding:14px 12px}
 .reader-index .il{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gh-muted);margin-bottom:8px}
 .reader-index a{display:block;font-size:12.5px;color:var(--gh-muted);padding:6px 10px;border-radius:6px;border-left:2px solid transparent}
@@ -458,8 +359,6 @@ a{color:var(--signal-ink)}
 .reader-crumb b{color:#fff;font-weight:500}
 .reader-crumb .sep{opacity:.45}
 .reader-top-actions{display:flex;align-items:center;gap:12px;flex:0 0 auto}
-.reader-top-actions .pos{font-size:11px;color:var(--gh-muted)}
-.reader-progress{font-size:11px;color:var(--gh-muted)}
 .reader-scroll{overflow-y:auto;flex:1}
 .reader-content{margin:0 auto;padding:40px 44px 56px}
 .reader-content h1{font-size:30px;font-weight:700;color:#fff;letter-spacing:-.015em;line-height:1.15;margin-bottom:14px}
@@ -505,10 +404,6 @@ a{color:var(--signal-ink)}
 .rnav.next{text-align:right}
 .rnav.next .rl{justify-content:flex-end}
 .rnav:hover .rt{color:#fff}
-.complete-row{margin:30px 0 4px;display:flex;justify-content:center}
-.complete-btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:11px 22px;border-radius:10px;background:#7C3AED;color:#fff;transition:background .12s}
-.complete-btn:hover{background:#6d28d9}
-.complete-btn.on{background:rgba(63,185,80,.16);color:var(--gh-green);border:1px solid rgba(63,185,80,.4)}
 
 .toast{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);background:#fff;color:#0D1117;font-size:12.5px;font-weight:500;padding:11px 18px;border-radius:10px;box-shadow:0 14px 40px -12px rgba(0,0,0,.7);z-index:60;max-width:90%;text-align:center}
 .poc-frame{position:relative}
@@ -534,10 +429,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
   .seams{grid-template-columns:1fr}
   .poc-layout{grid-template-columns:1fr}
   .poc-filters{display:grid;grid-template-columns:1fr 1fr;gap:4px 22px}
-  .acard .ac-grid{grid-template-columns:1fr}
-  .and-stats{grid-template-columns:1fr}
   .poc-banner{grid-template-columns:1fr}
-  .poc-banner .bz-xp{display:none}
   .flow-arrow{transform:rotate(90deg);padding:6px 0}
   .flow{display:grid;grid-template-columns:1fr}
   .reader-side{display:none}
@@ -552,8 +444,6 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
   .leg{grid-template-columns:34px 1fr;column-gap:14px}
   .mh-inner{padding:24px 16px 30px}
   .poc-inner{padding:16px}
-  .poc-stats{gap:12px}
-  .pstat-sep{display:none}
   .repo-stats{grid-template-columns:repeat(2,1fr)}
   .reader-content{padding:28px 20px 40px}
   .aside-actions{grid-template-columns:1fr}
@@ -580,14 +470,14 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
       <div class="mh-meta">
         <span class="chip mono">app-modules/tracks</span>
         <span class="chip mono">spec · ready-for-agent</span>
-        <span class="chip signal">wayfinder → destino</span>
+        <span class="chip signal">proposta → destino</span>
       </div>
     </div>
     <div class="mh-title">
       <h1>O caminho até o conteúdo <em>4noobs</em></h1>
-      <p>Uma forma diferente de consumir o conteúdo do 4Noobs, com listagem, progressão, conteúdos concluídos e uma estrutura compatível com futuras expansões. Três artefatos representam diferentes etapas da mesma proposta: <b>PRD</b> (o destino — por quê), <b>System Design</b> (a rota — como) e <b>POC</b> (o terreno — prova).</p>
+      <p>Uma forma diferente de consumir o conteúdo do 4Noobs: um agregador que lista o acervo, oferece leitura focada e interações reais com quem cria, sem rastrear progresso pessoal. Três artefatos representam diferentes etapas da mesma proposta: <b>PRD</b> (o destino — por quê), <b>System Design</b> (a rota — como) e <b>POC</b> (o terreno — prova).</p>
     </div>
-    <div class="route" aria-label="Rota do wayfinding até o módulo tracks">
+    <div class="route" aria-label="Rota da proposta até o módulo tracks">
       <div class="route-seg"><span class="dia"></span><span class="rname"><i>01 ·</i> Mapear repos 4noobs</span></div>
       <span class="rlink"></span>
       <div class="route-seg"><span class="dia"></span><span class="rname"><i>02 ·</i> Modelo de dados</span></div>
@@ -596,14 +486,14 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
       <span class="rlink"></span>
       <div class="route-seg"><span class="dia"></span><span class="rname"><i>04 ·</i> ETL tracks:sync</span></div>
       <span class="rlink"></span>
-      <div class="route-seg"><span class="dia"></span><span class="rname"><i>05 ·</i> Interações e estados</span></div>
+      <div class="route-seg"><span class="dia"></span><span class="rname"><i>05 ·</i> Adoção de órfãos</span></div>
       <span class="rlink"></span>
       <div class="route-seg"><span class="dia"></span><span class="rname"><i>06 ·</i> Protótipo UX/UI</span></div>
       <span class="rlink"></span>
       <div class="route-seg dest"><span class="dia"></span><span class="rname">módulo tracks</span></div>
       <span class="rlink fogline"></span>
       <div class="route-seg fog"><span class="dia"></span><span class="rname">fog · gamificação</span></div>
-      <div class="flag-note">▲ 6/6 tickets resolvidos — o que falta é pós-destino, fora desta rota</div>
+      <div class="flag-note">▲ 11/11 tickets resolvidos — o que falta é pós-destino, fora desta rota</div>
     </div>
   </div>
 </header>
@@ -631,9 +521,9 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     <div class="panel-hero">
       <div class="panel-eyebrow">PRD · o destino</div>
       <h1 class="panel-title">Por que a plataforma precisa de trilhas 4noobs</h1>
-      <p class="panel-lead">A comunidade He4rt produz conteúdo open source em repositórios <code>{tema}4noobs</code> no GitHub, mantidos por membros da própria comunidade. Hoje, esse conteúdo é consumido diretamente nos repositórios, sem uma experiência unificada de leitura e acompanhamento. A proposta é criar uma plataforma que organize esse conteúdo em uma experiência de leitura mais adequada ao formato e à natureza do conteúdo, com listagem dos conteúdos, progressão, registro de conteúdos concluídos e uma navegação mais adequada ao aprendizado.</p>
+      <p class="panel-lead">A comunidade He4rt produz conteúdo open source em repositórios <code>{tema}4noobs</code> no GitHub, mantidos por membros da própria comunidade. Hoje, esse conteúdo é consumido diretamente nos repositórios, sem uma experiência unificada de leitura e descoberta. A proposta é criar uma plataforma que agregue esse conteúdo em uma experiência de leitura focada — listar trilhas, ler aulas e apoiar quem cria — sem rastrear o progresso pessoal de quem lê.</p>
       <br/>
-      <p class="panel-lead">A plataforma também serviria como base para futuras expansões, permitindo a criação de trilhas de aprendizagem, organização de conteúdos por objetivos e níveis de conhecimento e mecanismos de gamificação para acompanhar, incentivar e reconhecer o progresso de quem consome o conteúdo.</p>
+      <p class="panel-lead">O agregador também serve como base para futuras expansões: curadoria via allowlist, descoberta automática de novos repos e eventos de domínio que outros módulos (como gamificação) poderão escutar — sem que o conteúdo carregue vocabulário de recompensa.</p>
     </div>
 
     <div class="leg">
@@ -678,7 +568,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
           <div class="principle">
             <div class="p-dia"></div>
             <h3>Preparar o futuro</h3>
-            <p>Modelo polimórfico (<code>github</code> | <code>native</code>) para tracks criadas na plataforma e campos de XP já presentes para a gamificação futura.</p>
+            <p>Modelo com <code>source_type</code> de fonte única (<code>github</code> hoje; nativo reservado em docs) e eventos de domínio prontos para quem quiser escutar (atividade, gamificação) — sem vocabulário de recompensa no conteúdo.</p>
           </div>
         </div>
       </div>
@@ -689,49 +579,40 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
       <div class="leg-body">
         <div class="leg-head">
           <div class="leg-eyebrow">PRD · leg 03</div>
-          <span class="leg-file">spec.md · 25 histórias</span>
+          <span class="leg-file">spec.md · 22 histórias</span>
         </div>
         <h2 class="leg-title">O que o usuário precisa viver</h2>
         <div class="stories">
           <div class="story-group">
-            <div class="story-group-head"><span class="sg-dia"></span><span>Descobrir e estudar</span><i>histórias 1–11</i></div>
+            <div class="story-group-head"><span class="sg-dia"></span><span>Descobrir e ler</span><i>histórias 1–9</i></div>
             <div class="story-row"><span class="story-num">01</span><span class="story-text">Navegar por todas as trilhas 4noobs em uma página, sem depender do GitHub.</span></div>
-            <div class="story-row"><span class="story-num">02</span><span class="story-text">Ver um grid com <b>título, criador, linguagem, nível, duração, módulos e progresso</b> para escolher com um olhar.</span></div>
+            <div class="story-row"><span class="story-num">02</span><span class="story-text">Ver cards com <b>título, criador, linguagem, número de módulos e estado de interação</b> para escolher com um olhar.</span></div>
             <div class="story-row"><span class="story-num">03</span><span class="story-text">Buscar trilhas por nome, tecnologia ou autor.</span></div>
-            <div class="story-row"><span class="story-num">04</span><span class="story-text">Ordernar por Mais populares mais recentes, salvas, em andamento e concluídas.</span></div>
-            <div class="story-row"><span class="story-num">05</span><span class="story-text">Filtrar por categoria, nível, duração e status.</span></div>
-            <div class="story-row"><span class="story-num">06</span><span class="story-text">Ver o próprio progresso por trilha — não iniciada, em andamento, concluída.</span></div>
-            <div class="story-row"><span class="story-num">07</span><span class="story-text">Abrir uma trilha e ver <b>metadados do repo, criador, descrição, tags e lista de módulos</b>.</span></div>
-            <div class="story-row"><span class="story-num">08</span><span class="story-text">Ver a árvore módulo/aula com progresso por módulo e por aula.</span></div>
-            <div class="story-row"><span class="story-num">09</span><span class="story-text">Ler uma aula num <b>leitor focado</b>, com breadcrumb, índice, código com copy, callouts e tabelas.</span></div>
-            <div class="story-row"><span class="story-num">10</span><span class="story-text">Navegar entre aulas (anterior/próxima) e seguir a trilha linearmente.</span></div>
-            <div class="story-row"><span class="story-num">11</span><span class="story-text">Marcar aulas como concluídas, com progresso persistido e refletido na trilha.</span></div>
+            <div class="story-row"><span class="story-num">04</span><span class="story-text">Filtrar por categoria e status (novas, populares, recém-atualizadas).</span></div>
+            <div class="story-row"><span class="story-num">05</span><span class="story-text">Abrir uma trilha e ver <b>metadados do repo (stars, forks, watchers), criador, descrição e árvore de módulos</b>.</span></div>
+            <div class="story-row"><span class="story-num">06</span><span class="story-text">Ver a árvore módulo/aula com listagem por módulo e por aula.</span></div>
+            <div class="story-row"><span class="story-num">07</span><span class="story-text">Ler uma aula num <b>leitor focado</b>, com breadcrumb, índice, código com copy, callouts e tabelas.</span></div>
+            <div class="story-row"><span class="story-num">08</span><span class="story-text">Navegar entre aulas (anterior/próxima) e seguir a trilha linearmente.</span></div>
+            <div class="story-row"><span class="story-num">09</span><span class="story-text">Lidar com repos de estrutura atípica via <b>overrides configuráveis</b>, para toda trilha ser legível.</span></div>
           </div>
           <div class="story-group">
-            <div class="story-group-head"><span class="sg-dia"></span><span>Apoiar quem cria</span><i>histórias 12–20</i></div>
-            <div class="story-row"><span class="story-num">12</span><span class="story-text">Estrelar o repositório da trilha direto da plataforma.</span></div>
-            <div class="story-row"><span class="story-num">13</span><span class="story-text">Fazer <b>watch</b> do repositório para acompanhar atualizações e apoiar o criador.</span></div>
-            <div class="story-row"><span class="story-num">14</span><span class="story-text">Seguir um contribuidor no GitHub a partir da trilha.</span></div>
-            <div class="story-row"><span class="story-num">15</span><span class="story-text">Com conta não vinculada, ver os botões <b>desabilitados com tooltip</b> orientando a conexão.</span></div>
-            <div class="story-row"><span class="story-num">16</span><span class="story-text">Ver quais trilhas já estrelou ou salvou para voltar a elas.</span></div>
-            <div class="story-row"><span class="story-num">17</span><span class="story-text">Salvar/guardar uma trilha localmente, sem agir no GitHub.</span></div>
-            <div class="story-row"><span class="story-num">18</span><span class="story-text">Compartilhar o link externo da trilha no GitHub.</span></div>
-            <div class="story-row"><span class="story-num">19</span><span class="story-text">Ver um link de <b>Sponsor</b> para apoiar financeiramente o criador, caso disponível.</span></div>
-            <div class="story-row"><span class="story-num">20</span><span class="story-text">Estado de interação <b>verificado contra o GitHub</b> antes de mostrar como ativo (token expirado, repo deletado).</span></div>
+            <div class="story-group-head"><span class="sg-dia"></span><span>Apoiar quem cria</span><i>histórias 10–16</i></div>
+            <div class="story-row"><span class="story-num">10</span><span class="story-text">Estrelar o repositório da trilha direto da plataforma.</span></div>
+            <div class="story-row"><span class="story-num">11</span><span class="story-text">Fazer <b>watch</b> do repositório para acompanhar atualizações e apoiar o criador.</span></div>
+            <div class="story-row"><span class="story-num">12</span><span class="story-text">Seguir um contribuidor no GitHub a partir da trilha.</span></div>
+            <div class="story-row"><span class="story-num">13</span><span class="story-text">Com conta não vinculada, ver os botões <b>desabilitados com tooltip</b> orientando a conexão.</span></div>
+            <div class="story-row"><span class="story-num">14</span><span class="story-text">Compartilhar o link externo da trilha no GitHub.</span></div>
+            <div class="story-row"><span class="story-num">15</span><span class="story-text">Ver um link de <b>Sponsor</b> para apoiar financeiramente o criador, caso disponível.</span></div>
+            <div class="story-row"><span class="story-num">16</span><span class="story-text">Autoria atribuída <b>retroativamente</b> quando o mantenedor conecta sua conta GitHub — o trabalho passado vira dele.</span></div>
           </div>
           <div class="story-group">
-            <div class="story-group-head"><span class="sg-dia"></span><span>Operar o conteúdo</span><i>histórias 21–24</i></div>
-            <div class="story-row"><span class="story-num">21</span><span class="story-text">Lidar com repos de estrutura atípica via <b>overrides configuráveis</b> (VuePress docs/, Content/, .MD).</span></div>
-            <div class="story-row"><span class="story-num">22</span><span class="story-text">Rodar um sync que puxa conteúdo novo e o normaliza.</span></div>
-            <div class="story-row"><span class="story-num">23</span><span class="story-text">Sync <b>incremental</b> (git pull no clone existente).</span></div>
-            <div class="story-row"><span class="story-num">24</span><span class="story-text">Descoberta automática de novos repos observando commits no README de <code>he4rt/4noobs</code>.</span></div>
-          </div>
-          <div class="story-group">
-            <div class="story-group-head"><span class="sg-dia"></span><span>Preparar o futuro</span><i>histórias 25-28</i></div>
-            <div class="story-row"><span class="story-num">25</span><span class="story-text">Dar feedback de aula (útil / desatualizada) sem poluir as issues do GitHub.</span></div>
-            <div class="story-row"><span class="story-num">26</span><span class="story-text">Modelo de dados pronto para <b>tracks nativas da plataforma</b>, sem migração estrutural.</span></div>
-            <div class="story-row"><span class="story-num">27</span><span class="story-text">Estrutura pensada na inserção da feature de <b>gamificação</b>.</span></div>
-            <div class="story-row"><span class="story-num">28</span><span class="story-text">Página dedicada para cada trilha e seus módulos, à medida que mais metadados forem coletados.</span></div>
+            <div class="story-group-head"><span class="sg-dia"></span><span>Operar o conteúdo</span><i>histórias 17–22</i></div>
+            <div class="story-row"><span class="story-num">17</span><span class="story-text">Adicionar um repo 4noobs à <b>allowlist</b> (<code>purpose=Tracks</code>) a partir do admin panel.</span></div>
+            <div class="story-row"><span class="story-num">18</span><span class="story-text"><b>Publicar/despublicar</b> uma trilha, controlando o que fica visível sem parar a ingestão.</span></div>
+            <div class="story-row"><span class="story-num">19</span><span class="story-text">Rodar um sync que puxa metadados e normaliza o conteúdo em um passo.</span></div>
+            <div class="story-row"><span class="story-num">20</span><span class="story-text">Sync <b>incremental</b> (git pull no clone existente) para re-syncs rápidos.</span></div>
+            <div class="story-row"><span class="story-num">21</span><span class="story-text">Descoberta automática de novos repos observando commits no README de <code>he4rt/4noobs</code> — <b>propõe, nunca publica</b>.</span></div>
+            <div class="story-row"><span class="story-num">22</span><span class="story-text">Logs estruturados por execução de sync (descobertas, atualizações, falhas) para auditar a saúde do catálogo.</span></div>
           </div>
         </div>
       </div>
@@ -746,11 +627,11 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
         </div>
         <h2 class="leg-title">O que fica fora desta trilha</h2>
         <div class="oos">
+          <div class="oos-item"><span><b>Estado pessoal do aluno</b> — progresso, bookmark, avaliação e feedback por aula (escopo LMS removido).</span></div>
           <div class="oos-item"><span><b>Feedback</b> de trilha, módulo e aula (<b>útil / desatualizada</b>) sem poluir as issues do GitHub.</span></div>
           <div class="oos-item"><span><b>Páginas dedicadas</b> para cada trilha e seus módulos, à medida que novos metadados forem coletados.</span></div>
-          <div class="oos-item"><span><b>Gamificação</b> (XP, badges, streaks, ranking) — esforço futuro separado; os campos <code>xp_reward</code> só preparam o modelo.</span></div>
-          <div class="oos-item"><span><b>CRUD de tracks nativas</b> — o modelo polimórfico prepara, mas o fluxo de criação/curadoria/aprovação é posterior.</span></div>
-          <div class="oos-item"><span><b>Admin panel</b> (<code>panel-admin</code>) para gerenciar tracks.</span></div>
+          <div class="oos-item"><span><b>Gamificação</b> (XP, badges, streaks, ranking) — esforço futuro separado; tracks emite fatos e gamificação decide (E-D6).</span></div>
+          <div class="oos-item"><span><b>CRUD de tracks nativas</b> — fora; <code>source_type</code> tem só <code>github</code> hoje (E-D10), nativo é reservado em docs.</span></div>
           <div class="oos-item"><span><b>Comentários/issues via plataforma</b> — descartado pelo risco de poluir os repositórios.</span></div>
           <div class="oos-item"><span><b>Timeline e perfil</b> — como trilhas aparecem no perfil e na timeline fica para um esforço posterior.</span></div>
         </div>
@@ -791,7 +672,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
             <div class="sub">novo</div>
             <ul>
               <li>models Track · Module · Lesson</li>
-              <li>TrackContributor · UserTrackState</li>
+              <li>TrackContributor</li>
               <li>TrackCapabilities</li>
               <li>comando <b>tracks:sync</b></li>
               <li>actions Star · Watch · Follow</li>
@@ -825,16 +706,19 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
           <span class="leg-file">docs/adr/0003</span>
         </div>
         <h2 class="leg-title">Modelo de dados</h2>
-        <p>Escolha central: <strong>sem tabelas polimórficas separadas</strong>. <code>source_type</code> + <code>source_data</code> JSONB cobre GitHub e tracks nativas sem JOINs opcionais nem migrações por nova fonte. Módulos e aulas usam <strong>UUID v5 determinístico</strong> (namespace da track + path): renomear um path muda o UUID e o registro antigo ganha <code>replaced_by_uuid</code>. Interações de usuário sempre amarram ao UUID, nunca ao path.</p>
+        <p>Escolha central: <strong>sem tabelas polimórficas separadas</strong>. Discriminador <code>source_type</code> (enum único <code>github</code> hoje; <code>native</code> reservado em docs — E-D10) + metadados de fonte em <strong>colunas planas</strong> (<code>repo_owner</code>, <code>repo_name</code>, <code>repo_url</code>, <code>default_branch</code>, <code>language</code>, <code>category</code>, stars/forks/watchers) — sem <code>source_data</code> JSONB (flatten do agregador, E-D11) e sem JOINs opcionais nem migrações por nova fonte. Módulos e aulas usam <strong>UUID v5 determinístico</strong> (namespace da track + path): renomear um path muda o UUID e o registro antigo ganha <code>replaced_by_uuid</code>. Interações de usuário sempre amarram ao UUID, nunca ao path.</p>
         <div class="model-grid">
           <div class="mcard">
             <div class="mcard-head"><h3>tracks</h3><span class="mc-k">fonte de conteúdo</span></div>
             <table>
               <tr><td>id</td><td>uuid</td></tr>
-              <tr><td>source_type</td><td>enum <span class="k">github | native</span></td></tr>
-              <tr><td>source_data</td><td>jsonb · repo_owner, repo_name, stars, language, default_branch</td></tr>
+              <tr><td>source_type</td><td>enum <span class="k">github</span></td></tr>
+              <tr><td>repo_owner · repo_name</td><td>varchar</td></tr>
+              <tr><td>repo_url · default_branch</td><td>varchar · nullable, api-resolved</td></tr>
+              <tr><td>language</td><td>varchar · nullable</td></tr>
+              <tr><td>stars · forks · watchers</td><td>int · default 0</td></tr>
+              <tr><td>category</td><td>varchar · categoria no README central (ETL, atualiza por sync)</td></tr>
               <tr><td>title · description</td><td>text</td></tr>
-              <tr><td>xp_reward</td><td class="q">nullable · futuro gamificação</td></tr>
             </table>
           </div>
           <div class="mcard">
@@ -852,31 +736,22 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
               <tr><td>id</td><td>uuid <span class="k">v5</span></td></tr>
               <tr><td>module_id</td><td>fk</td></tr>
               <tr><td>processed_content</td><td>html pós-ETL</td></tr>
-              <tr><td>word_count · est. minutes</td><td class="q">≈ ceil(word/200)</td></tr>
-              <tr><td>xp_reward · replaced_by_uuid</td><td class="q">futuro · rename</td></tr>
+              <tr><td>replaced_by_uuid</td><td class="q">rename · soft-delete</td></tr>
             </table>
           </div>
           <div class="mcard">
             <div class="mcard-head"><h3>track_contributors</h3><span class="mc-k">autoria é entidade</span></div>
             <table>
-              <tr><td>track_id · user_id</td><td>fk · <span class="q">nullable, seam nativo</span></td></tr>
+              <tr><td>track_id · user_id</td><td>fk · <span class="q">nullable, seam de vinculação futura</span></td></tr>
               <tr><td>github_username</td><td class="q">fonte da verdade p/ follow</td></tr>
               <tr><td>is_owner</td><td>exatamente 1 por track</td></tr>
               <tr><td>contribution_role</td><td>enum <span class="k">author · co-author · contributor</span></td></tr>
             </table>
           </div>
           <div class="mcard">
-            <div class="mcard-head"><h3>user_track_state</h3><span class="mc-k">estado pessoal</span></div>
-            <table>
-              <tr><td>user_id · track_id</td><td>fk</td></tr>
-              <tr><td>bookmarked · progress</td><td>bool · int</td></tr>
-              <tr><td>feedback · rating</td><td class="q">local, nunca no GitHub</td></tr>
-            </table>
-          </div>
-          <div class="mcard">
             <div class="mcard-head"><h3>track_capabilities</h3><span class="mc-k">ações por fonte</span></div>
             <table>
-              <tr><td>source_type</td><td><span class="k">github | native</span></td></tr>
+              <tr><td>source_type</td><td><span class="k">github</span></td></tr>
               <tr><td>capabilities</td><td class="q">star · watch · follow · share · sponsor (extensível)</td></tr>
             </table>
           </div>
@@ -915,7 +790,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
           <div class="flow-step">
             <div class="fn">4 · persistir</div>
             <h4>Banco</h4>
-            <p>UUID v5; rename → <b>replaced_by_uuid</b>; autores via <b>.all-contributorsrc</b> → config.json → README → avatares.</p>
+            <p>UUID v5; rename → <b>replaced_by_uuid</b>; autores endpoint-first — <b>GET /repos/{owner}/{repo}/contributors</b> (all-time, <code>additions</code>), fallback .all-contributorsrc → config.json → README → avatares.</p>
           </div>
         </div>
         <p class="flow-note">orquestração — fase 1: manual + observer · fase 2 (futuro): agendada + webhook · <code>tracks:sync</code> faz sync + normalize em um passo, com <code>--force</code> para refresh completo.</p>
@@ -966,11 +841,11 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
         <div class="model-grid">
           <div class="mcard">
             <div class="mcard-head"><h3>Listagem · variante C</h3><span class="mc-k">TracksPage</span></div>
-            <p style="font-size:12.5px;color:var(--ink-2)">Tema dark GitHub (<code>#0D1117</code>/<code>#161B22</code>), Inter, hero + busca, stats bar (47h / 12h / concluídas / andamento), ordem, filtros, banner de destaque e grid de cards com progresso e badges de interação.</p>
+            <p style="font-size:12.5px;color:var(--ink-2)">Tema dark GitHub (<code>#0D1117</code>/<code>#161B22</code>), Inter, hero + busca, ordem, filtros (categoria/status), banner de destaque e grid de cards com badges de interação. Sem stats pessoais nem progresso.</p>
           </div>
           <div class="mcard">
             <div class="mcard-head"><h3>Detalhe · TrackAside</h3><span class="mc-k">render hook LAYOUT_END</span></div>
-            <p style="font-size:12.5px;color:var(--ink-2)">Abre por <code>selectTrack</code> (evento <code>tracks-aside.sync</code>): stats do repo, criador, descrição, badges, progresso, módulos/aulas, contribuidores e ações.</p>
+            <p style="font-size:12.5px;color:var(--ink-2)">Abre por <code>selectTrack</code> (evento <code>tracks-aside.sync</code>): stats do repo, criador, descrição, badges, módulos/aulas, contribuidores e ações.</p>
           </div>
           <div class="mcard">
             <div class="mcard-head"><h3>Leitor · variante A "Focus Reader"</h3><span class="mc-k">LessonReader</span></div>
@@ -978,7 +853,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
           </div>
           <div class="mcard">
             <div class="mcard-head"><h3>Interações</h3><span class="mc-k">eventos Livewire</span></div>
-            <p style="font-size:12.5px;color:var(--ink-2)">Estrelar/salvar sincronizados entre listagem e aside via <code>tracks-page.*</code>/<code>tracks-aside.*</code>. XP/streak aceitos como mock no protótipo.</p>
+            <p style="font-size:12.5px;color:var(--ink-2)">Estrelar/watch sincronizados entre listagem e aside via <code>tracks-page.*</code>/<code>tracks-aside.*</code>. Interações são stateless — o estado exibido é verificado contra a API; sem estado local ("salvar") e sem XP/streak.</p>
           </div>
         </div>
         <button class="jump" data-act="goto-tab" data-tab="poc">Ver a interface funcionando</button>
@@ -1009,7 +884,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
         </div>
         <div class="doc-note">
           <span class="dn-dia"></span>
-          <p><b>Bom teste = comportamento externo.</b> A regra: GitHub API → registros normalizados no banco; interação de usuário → estado persistido / ação no GitHub. Nunca detalhes de implementação.</p>
+          <p><b>Bom teste = comportamento externo.</b> A regra: GitHub API → registros normalizados no banco; interação de usuário → ação real no GitHub, com estado verificado contra a API. Nunca detalhes de implementação.</p>
         </div>
       </div>
     </div>
@@ -1019,7 +894,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     <div class="panel-hero poc-panel-hero">
       <div class="panel-eyebrow">POC · o terreno</div>
       <h1 class="panel-title">A interface escolhida, em HTML puro</h1>
-      <p class="panel-lead">Variante C (tema dark GitHub), o <code>TrackAside</code> e o leitor "Focus Reader" — portados do protótipo do ticket <b>Protótipo UX/UI</b>. Sem backend: mock data em memória, como no protótipo original. Interaja — busque, filtre, estrela, salve, abra uma trilha e leia uma aula.</p>
+      <p class="panel-lead">Variante C (tema dark GitHub), o <code>TrackAside</code> e o leitor "Focus Reader" — portados do protótipo do ticket <b>Protótipo UX/UI</b>. Sem backend: mock data em memória, como no protótipo original. Interaja — busque, filtre, estrela, acompanhe, abra uma trilha e leia uma aula.</p>
     </div>
 
     <div class="poc-frame" id="pocFrame">
@@ -1048,8 +923,8 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
 
     <div class="poc-footer-note">
       <span><i></i> mock data em memória</span>
-      <span><i></i> eventos: estrelar · salvar · abrir · ler</span>
-      <span><i></i> toggle acima simula conta GitHub não vinculada (história 14)</span>
+      <span><i></i> eventos: estrelar · watch · seguir · abrir · ler</span>
+      <span><i></i> toggle acima simula conta GitHub não vinculada (história 13)</span>
       <span><i></i> portado do blade `tracks-prototype` / `track-aside` / `lesson-reader`</span>
     </div>
   </section>
@@ -1059,7 +934,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
 <footer>
   <div class="footer-in">
     <span class="fl">he4rt · app-modules/tracks · trilhas 4noobs</span>
-    <span class="fr"><span><i></i> fonte: .scratch/4noobs-module</span><span><i></i> 6 tickets · 0 pendências</span></span>
+    <span class="fr"><span><i></i> fonte: .scratch/4noobs-module</span><span><i></i> 11 tickets · 0 pendências</span></span>
   </div>
 </footer>
 
@@ -1068,26 +943,20 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
   var root = document.documentElement;
 
   var IC = {
-    search: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1.007 1.007 0 00-.115-.1zM12 6.5a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0z"/></svg>',
-    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
     book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M8 11h8"/><path d="M8 7h6"/></svg>',
-    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
-    circleCheck: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>',
+    search: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1.007 1.007 0 00-.115-.1zM12 6.5a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0z"/></svg>',
+    eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
     star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg>',
     eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
-    bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',
     share: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></svg>',
     heart: '<svg height="16" width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
     sponser: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-handshake-icon lucide-heart-handshake"><path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/></svg>',
     github: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 1.7 2.7 1.2 3.3.9.1-.7.4-1.2.7-1.5-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17.9 4.3 18.9 4.6 18.9 4.6c.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5A11 11 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>',
     arrowL: '<svg height="16" width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>',
     arrowR: '<svg height="16" width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
-    users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
     code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>',
     copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>',
     play: '<svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zM6.5 5.5v5a.5.5 0 00.75.43l4-2.5a.5.5 0 000-.86l-4-2.5a.5.5 0 00-.75.43z"/></svg>',
-    trend: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>',
-    cert: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M2.5 1.75a.25.25 0 01.25-.25h10.5a.25.25 0 01.25.25v10.5a.25.25 0 01-.25.25H2.75a.25.25 0 01-.25-.25V1.75zM6 10a2 2 0 100-4 2 2 0 000 4z"/></svg>',
     activity: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity-icon lucide-activity"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>',
     userPlus: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-plus-icon lucide-user-round-plus"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg>',
     panelRight:'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-right-icon lucide-panel-right"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg>',
@@ -1110,44 +979,34 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
   ];
 
   var TRACKS = [
-    { id:'track-1', title:'JavaScript 4noobs', icon:'JS', color:260, creator:'joaopedro', github:'joaopedrodev', category:'Front-end', level:'Iniciante', language:'JavaScript', tags:['JavaScript','Web','ES6','DOM'], duration:5, modules:12, lessons:48, stars:142, forks:55, status:'in_progress', progress:35, starred:true, saved:true, next:'Funções e Escopo', updated:'3 dias atrás' },
-    { id:'track-2', title:'Python 4noobs', icon:'PY', color:235, creator:'mariasilva', github:'mariasilva', category:'Back-end', level:'Iniciante', language:'Python', tags:['Python','Automação','Scripts','CLI'], duration:8, modules:15, lessons:62, stars:98, forks:32, status:'not_started', progress:0, starred:false, saved:true, next:'Introdução ao Python', updated:'1 semana atrás' },
-    { id:'track-3', title:'React 4noobs', icon:'RX', color:295, creator:'lucasdev', github:'lucasdev', category:'Front-end', level:'Intermediário', language:'TypeScript', tags:['React','TypeScript','Hooks','SPA'], duration:10, modules:18, lessons:75, stars:215, forks:89, status:'completed', progress:100, starred:true, saved:false, updated:'2 meses atrás', xp:350, nota:4.9 },
-    { id:'track-4', title:'Go 4noobs', icon:'GO', color:155, creator:'anabeatriz', github:'anabeatriz', category:'Back-end', level:'Intermediário', language:'Go', tags:['Go','Concorrência','CLI','APIs'], duration:6, modules:10, lessons:40, stars:76, forks:21, status:'not_started', progress:0, starred:false, saved:false, updated:'5 dias atrás', isNew:true },
-    { id:'track-5', title:'CSS 4noobs', icon:'CS', color:200, creator:'pedroh', github:'pedroh', category:'Front-end', level:'Iniciante', language:'CSS', tags:['CSS','Layout','Flexbox','Grid'], duration:4, modules:8, lessons:32, stars:54, forks:18, status:'in_progress', progress:60, starred:false, saved:true, next:'Flexbox e Grid', updated:'1 dia atrás' },
-    { id:'track-6', title:'Node.js 4noobs', icon:'NJ', color:145, creator:'rafaelt', github:'rafaelt', category:'Back-end', level:'Avançado', language:'JavaScript', tags:['Node.js','Express','API','Banco de Dados'], duration:12, modules:20, lessons:85, stars:187, forks:73, status:'not_started', progress:0, starred:true, saved:false, updated:'3 semanas atrás' }
+    { id:'track-1', title:'JavaScript 4noobs', icon:'JS', color:260, creator:'joaopedro', github:'joaopedrodev', category:'Front-end', language:'JavaScript', tags:['JavaScript','Web','ES6','DOM'], modules:12, lessons:48, stars:142, forks:55, starred:true, next:'Funções e Escopo', updated:'3 dias atrás' },
+    { id:'track-2', title:'Python 4noobs', icon:'PY', color:235, creator:'mariasilva', github:'mariasilva', category:'Back-end', language:'Python', tags:['Python','Automação','Scripts','CLI'], modules:15, lessons:62, stars:98, forks:32, starred:false, next:'Introdução ao Python', updated:'1 semana atrás' },
+    { id:'track-3', title:'React 4noobs', icon:'RX', color:295, creator:'lucasdev', github:'lucasdev', category:'Front-end', language:'TypeScript', tags:['React','TypeScript','Hooks','SPA'], modules:18, lessons:75, stars:215, forks:89, starred:true, updated:'2 meses atrás' },
+    { id:'track-4', title:'Go 4noobs', icon:'GO', color:155, creator:'anabeatriz', github:'anabeatriz', category:'Back-end', language:'Go', tags:['Go','Concorrência','CLI','APIs'], modules:10, lessons:40, stars:76, forks:21, updated:'5 dias atrás', isNew:true },
+    { id:'track-5', title:'CSS 4noobs', icon:'CS', color:200, creator:'pedroh', github:'pedroh', category:'Front-end', language:'CSS', tags:['CSS','Layout','Flexbox','Grid'], modules:8, lessons:32, stars:54, forks:18, starred:false, next:'Flexbox e Grid', updated:'1 dia atrás' },
+    { id:'track-6', title:'Node.js 4noobs', icon:'NJ', color:145, creator:'rafaelt', github:'rafaelt', category:'Back-end', language:'JavaScript', tags:['Node.js','Express','API','Banco de Dados'], modules:20, lessons:85, stars:187, forks:73, starred:true, updated:'3 semanas atrás' }
   ];
 
   var state = {
-    tab: 'explorar',
     search: '',
     order: 'recentes',
     cat: 'todas',
-    levels: { iniciante: false, intermediario: false, avancado: false },
-    durs: { ate3: false, de3a6: false, de6a10: false, '10mais': false },
-    progressOrder: null,
     statusFilter: { novas: false, populares: false, recentes: false },
     starred: {},
-    saved: {},
     account: true,
     aside: null,
     openModule: null,
     reader: null,
-    lessonIndex: 0,
-    completed: {},
-    completedLessons: {}
+    lessonIndex: 0
   };
 
-  TRACKS.forEach(function (t) { if (t.starred) state.starred[t.id] = true; if (t.saved) state.saved[t.id] = true; });
+  TRACKS.forEach(function (t) { if (t.starred) state.starred[t.id] = true; });
 
   var $ = function (sel) { return document.querySelector(sel); };
   var listEl = $('#pocListWrap');
   var readerEl = $('#pocReader');
   var asideEl = $('#pocAside');
   var toastEl = $('#pocToast');
-
-  function durLabel(d) { return d >= 10 ? '10h+' : d >= 6 ? '6h–10h' : d >= 3 ? '3h–6h' : '~' + d + 'h'; }
-  function durKey(d) { return d >= 10 ? '10mais' : d >= 6 ? 'de6a10' : d >= 3 ? 'de3a6' : 'ate3'; }
 
   function matches(t) {
     if (state.search) {
@@ -1156,15 +1015,6 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
       if (hay.indexOf(q) === -1) return false;
     }
     if (state.cat !== 'todas' && t.category !== state.cat) return false;
-    var anyLevel = state.levels.iniciante || state.levels.intermediario || state.levels.avancado;
-    if (anyLevel) {
-      var lv = t.level === 'Iniciante' ? 'iniciante' : t.level === 'Intermediário' ? 'intermediario' : 'avancado';
-      if (!state.levels[lv]) return false;
-    }
-    var anyDur = state.durs.ate3 || state.durs.de3a6 || state.durs.de6a10 || state.durs['10mais'];
-    if (anyDur) {
-      if (!state.durs[durKey(t.duration)]) return false;
-    }
     var anyStatus = state.statusFilter.novas || state.statusFilter.populares || state.statusFilter.recentes;
     if (anyStatus) {
       var isNew = !!t.isNew;
@@ -1181,14 +1031,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
   function filtered() {
     var arr = TRACKS.filter(matches);
     var o = state.order;
-    var pMap = { 'nao-iniciadas': 'not_started', 'em-andamento': 'in_progress', 'concluidas': 'completed' };
     arr.sort(function (a, b) {
-      if (state.progressOrder) {
-        var aMatch = a.status === pMap[state.progressOrder] ? 0 : 1;
-        var bMatch = b.status === pMap[state.progressOrder] ? 0 : 1;
-        if (aMatch !== bMatch) return aMatch - bMatch;
-      }
-      if (o === 'curta') return a.duration - b.duration;
       if (o === 'popular') return b.stars - a.stars;
       return 0;
     });
@@ -1199,11 +1042,9 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
 
   function actionBtns(t) {
     var starOn = state.starred[t.id] ? ' on' : '';
-    var saveOn = state.saved[t.id] ? ' on' : '';
     return '<div class="tcard-actions">' +
       '<button class="int-btn" data-act="watch" data-id="' + t.id + '" title="Acompanhar" aria-label="Acompanhar">' + IC.eye + '</button>' +
       '<button class="int-btn' + starOn + '" data-act="star" data-id="' + t.id + '" title="Estrelar" aria-label="Estrelar">' + IC.star + '</button>' +
-      '<button class="int-btn" data-act="save" data-id="' + t.id + '" title="Salvar" aria-label="Salvar">' + IC.bookmark + '</button>' +
       '</div>';
   }
 
@@ -1219,18 +1060,12 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
       '</div>' +
       '<div class="tcard-meta">' +
         '<span>' + IC.book + ' ' + t.modules + ' módulos</span>' +
-        '<span>' + IC.clock + ' ' + durLabel(t.duration) + '</span>' +
         '<span>' + IC.star + ' ' + t.stars + '</span>' +
       '</div>' +
       '<div class="tcard-desc">' + t.language + ' — conteúdo do zero ao avançado, com exemplos práticos.</div>' +
       '<div class="tcard-tags">' + t.tags.map(function (g) { return '<span>' + g + '</span>'; }).join('') + '</div>' +
       '<div class="tcard-foot">' +
-        '<div class="prog">' + 
-          '<div class="bar"><i style="width:' + t.progress + '%;' + 
-            (t.progress === 100? 'background:#3FB950;':'') + 
-            '"></i></div>' + 
-          '<div class="activity">' + IC.activity + '<small>' + (t.stars + t.forks) + ' Interações</small></div>' + 
-        '</div>' +
+        '<div class="prog"><div class="activity">' + IC.activity + '<small>' + (t.stars + t.forks) + ' Interações</small></div></div>' +
         '<button class="tcard-btn" data-stop="1" data-act="open" data-id="' + t.id + '">' + IC.arrowR + ' Visualizar</button>' +
       '</div>' +
     '</div>';
@@ -1246,10 +1081,9 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
         '<p>Do zero ao avançado em ' + t.language + ', com conteúdo gratuito da comunidade He4rt.</p>' +
         '<div class="bz-meta">' +
           '<span>' + IC.book + ' ' + t.modules + ' módulos</span>' +
-          '<span>' + IC.clock + ' ' + durLabel(t.duration) + '</span>' +
-          '<span>' + IC.users + ' 234 inscritos</span>' +
+          '<span>' + IC.star + ' ' + t.stars + '</span>' +
         '</div>' +
-        '<button class="btn-iniciar" data-stop="1" data-act="open" data-id="' + t.id + '">Começar agora ' + IC.play + '</button>' +
+        '<button class="btn-iniciar" data-stop="1" data-act="open" data-id="' + t.id + '">Ver trilha ' + IC.play + '</button>' +
       '</div>' +
     '</div>';
   }
@@ -1262,129 +1096,24 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     return html;
   }
 
-  function renderAndamento() {
-    var list = filtered().filter(function (t) { return t.status === 'in_progress'; });
-    if (!list.length) return '<div class="empty">Nada em andamento — explore uma trilha para começar.</div>';
-    var html = '<div class="and-stats">' +
-      '<div class="pstat-card"><div class="lbl">Trilhas ativas</div><div class="val">' + TRACKS.filter(function (t) { return t.status === 'in_progress'; }).length + '</div><div class="sub">em andamento</div></div>' +
-      '<div class="pstat-card"><div class="lbl">Horas esta semana</div><div class="val">12h</div><div class="sub green">' + IC.trend + ' +3h vs semana passada</div></div>' +
-      '<div class="pstat-card"><div class="lbl">Próxima conquista</div><div class="val">📚</div><div class="sub">Complete 2 trilhas para "Estudante Dedicado"</div></div>' +
-      '</div>';
-    html += list.map(function (t) {
-      var segCount = Math.min(6, t.modules);
-      var done = Math.floor(t.modules * t.progress / 100);
-      var segs = '';
-      for (var i = 1; i <= segCount; i++) {
-        var cls = i <= done ? 'done' : (i === done + 1 ? 'active' : '');
-        segs += '<div class="acard-seg ' + cls + '"><div class="seg-bar"></div><small>' + (i <= done ? '✓' : 'M' + i) + '</small></div>';
-      }
-      return '<div class="acard" data-act="open" data-id="' + t.id + '">' +
-        '<div class="ac-grid">' +
-          '<div class="acard-left">' +
-            '<div><div class="al-ic">' + IC.book + ' <h4>' + t.title + '</h4></div><div class="al-who">' + t.creator + '</div></div>' +
-            '<div class="al-pct"><b>' + t.progress + '%</b><span>concluído</span></div>' +
-          '</div>' +
-          '<div class="acard-right">' +
-            '<div class="acard-head"><span class="xp">+' + (t.stars + 50) + ' XP</span><span class="meta">' + t.modules + ' módulos · ' + durLabel(t.duration) + '</span></div>' +
-            '<div class="acard-segs-label">Progresso dos módulos</div>' +
-            '<div class="acard-segs">' + segs + '</div>' +
-            '<div class="acard-next"><div class="nl">Próxima aula</div><div class="nt">' + (t.next || 'Iniciar módulo') + '</div><div class="nm">Módulo ' + Math.min(done + 1, t.modules) + ' de ' + t.modules + '</div></div>' +
-            '<div class="acard-btns">' +
-              '<button class="b primary" data-stop="1" data-act="open" data-id="' + t.id + '">Continuar de onde parou</button>' +
-              '<button class="b ghost" data-stop="1" data-act="open" data-id="' + t.id + '">Ver módulos</button>' +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-      '</div>';
-    }).join('');
-    return html;
-  }
-
-  function renderConcluidas() {
-    var list = filtered().filter(function (t) { return t.status === 'completed'; });
-    if (!list.length) return '<div class="empty">Nenhuma trilha concluída ainda — continue estudando.</div>';
-    var totalXp = list.reduce(function (a, t) { return a + (t.xp || 0); }, 0);
-    var html = '<div class="and-stats">' +
-      '<div class="pstat-card"><div class="lbl">Total concluídas</div><div class="val">' + list.length + '</div><div class="sub">trilha(s) finalizada(s)</div></div>' +
-      '<div class="pstat-card"><div class="lbl">XP conquistado</div><div class="val" style="color:var(--gh-green)">' + totalXp + '</div><div class="sub">em trilhas concluídas</div></div>' +
-      '<div class="pstat-card"><div class="lbl">Tempo investido</div><div class="val">~' + list.reduce(function (a, t) { return a + t.duration; }, 0) + 'h</div><div class="sub">de estudo acumulado</div></div>' +
-      '</div>';
-    html += '<div class="poc-grid">' + list.map(function (t) {
-      return '<div class="ccard">' +
-        '<div class="top-line"></div>' +
-        '<div class="cc-body">' +
-          '<div class="ccard-head">' +
-            '<div class="ccard-check">' + IC.check + '</div>' +
-            '<div><div class="ccard-title">' + t.title + '</div><div class="ccard-creator">' + t.creator + '</div></div>' +
-            '<div class="ccard-xp"><b>+' + t.xp + ' XP</b><span>conquistado</span></div>' +
-          '</div>' +
-          '<div class="ccard-cols">' +
-            '<div class="ccard-col"><div class="cl">Módulos</div><div class="cv">' + t.modules + '/' + t.modules + '</div></div>' +
-            '<div class="ccard-col"><div class="cl">Duração</div><div class="cv">' + durLabel(t.duration) + '</div></div>' +
-            '<div class="ccard-col"><div class="cl">Nota</div><div class="cv gold">⭐ ' + t.nota + '</div></div>' +
-          '</div>' +
-          '<div class="ccard-badges"><span class="done">✓ Concluída</span><span class="when">' + t.updated + '</span></div>' +
-          '<div class="ccard-dots">' + new Array(Math.min(t.modules, 8)).fill(0).map(function () { return '<i></i>'; }).join('') + '</div>' +
-          '<div class="ccard-btns"><button class="b">' + IC.cert + ' Ver certificado</button><button class="b">Revisar trilha</button></div>' +
-        '</div>' +
-      '</div>';
-    }).join('') + '</div>';
-    return html;
-  }
-
-  function subTabCounts() {
-    var all = TRACKS;
-    return {
-      explorar: all.length,
-      andamento: all.filter(function (t) { return t.status === 'in_progress'; }).length,
-      concluidas: all.filter(function (t) { return t.status === 'completed'; }).length
-    };
-  }
-
   function renderList() {
-    var counts = subTabCounts();
     var hero = '<div class="poc-hero"><div class="z">' +
       '<h2>Encontre sua próxima trilha</h2>' +
-      '<p>Aprenda na prática com trilhas criadas por membros da comunidade. Cada trilha concluída garante XP e evolução no ranking.</p>' +
+      '<p>Aprenda na prática com trilhas criadas por membros da comunidade. Conteúdo aberto, atribuído a quem cria — leia e apoie direto no GitHub.</p>' +
       '<div class="poc-search"><div class="search-box">' + IC.search + '<input id="pocSearch" type="text" placeholder="Buscar por nome, tecnologia ou autor..." value="' + state.search.replace(/"/g, '&quot;') + '"></div><button class="btn-buscar">Buscar</button></div>' +
     '</div></div>';
-
-    var stats = '<div class="poc-stats">' +
-      '<div class="pstat"><span>' + IC.clock + '</span><b>47h</b><span>estudadas</span></div>' +
-      '<span class="pstat-sep"></span>' +
-      '<div class="pstat green">' + IC.trend + '<b>12h</b><span>esta semana</span></div>' +
-      '<span class="pstat-sep"></span>' +
-      '<div class="pstat green">' + IC.check + '<b>' + counts.concluidas + '</b><span>trilha(s) concluída(s)</span></div>' +
-      '<span class="pstat-sep"></span>' +
-      '<div class="pstat purple">' + IC.book + '<b>' + counts.andamento + '</b><span>em andamento</span></div>' +
-    '</div>';
 
     var filters = '<div class="poc-filters">' +
       '<h4>Ordenar por</h4>' +
         '<div class="fgroup">' +
-          [['recentes','Mais recentes'], ['popular','Mais populares'], ['curta','Menor duração']].map(function (c) {
+          [['recentes','Mais recentes'], ['popular','Mais populares']].map(function (c) {
             return '<label><input type="radio" name="ord" data-act="ord" data-v="' + c[0] + '"' + (state.order === c[0] ? ' checked' : '') + '> ' + c[1] + '</label>';
-          }).join('') +
-        '</div>' +
-        '<div class="fgroup"><div class="fgroup-title">Progresso</div>' +
-          [['nao-iniciadas','Não iniciadas'], ['em-andamento', 'Em andamento'], ['concluidas', 'Concluídas']].map(function (s) {
-            return '<label><input type="radio" name="prog" data-act="progress-order" data-v="' + s[0] + '"' + (state.progressOrder === s[0] ? ' checked' : '') + '> ' + s[1] + '</label>';
           }).join('') +
         '</div>' +
       '<h4>Filtros <span class="limpar" data-act="clear-filters">Limpar</span></h4>' +
       '<div class="fgroup"><div class="fgroup-title">Categoria</div>' +
         [['todas','Todas'],['Front-end','Frontend'],['Back-end','Backend'],['Mobile','Mobile'],['DevOps','DevOps'],['Design','Design'],['Data','Data'],['QA','QA']].map(function (c) {
           return '<label><input type="radio" name="cat" data-act="cat" data-v="' + c[0] + '"' + (state.cat === c[0] ? ' checked' : '') + '> ' + c[1] + '</label>';
-        }).join('') +
-      '</div>' +
-      '<div class="fgroup"><div class="fgroup-title">Nível</div>' +
-        [['iniciante','Iniciante'],['intermediario','Intermediário'],['avancado','Avançado']].map(function (l) {
-          return '<label><input type="checkbox" data-act="level" data-v="' + l[0] + '"' + (state.levels[l[0]] ? ' checked' : '') + '> ' + l[1] + '</label>';
-        }).join('') +
-      '</div>' +
-      '<div class="fgroup"><div class="fgroup-title">Duração</div>' +
-        [['ate3','Até 3h'],['de3a6','3h – 6h'],['de6a10','6h – 10h'],['10mais','10h+']].map(function (d) {
-          return '<label><input type="checkbox" data-act="dur" data-v="' + d[0] + '"' + (state.durs[d[0]] ? ' checked' : '') + '> ' + d[1] + '</label>';
         }).join('') +
       '</div>' +
       '<div class="fgroup"><div class="fgroup-title">Status</div>' +
@@ -1396,7 +1125,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
 
     const content = renderExplore();
 
-    listEl.innerHTML = '<div class="poc-inner">' + hero + stats +
+    listEl.innerHTML = '<div class="poc-inner">' + hero +
       '<div class="poc-layout">' + filters + '<div class="poc-content">' + content + '</div></div></div>';
   }
 
@@ -1405,9 +1134,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     var out = [];
     for (var i = 0; i < count; i++) {
       var m = MODS[i];
-      var prog = Math.max(0, Math.min(100, Math.round(t.progress - i * Math.floor(t.progress / count))));
-      if (i === 0) prog = t.progress;
-      out.push({ id: i + 1, title: m.t, lessons: m.lessons, progress: prog, minutes: m.lessons.length * 9 });
+      out.push({ id: i + 1, title: m.t, lessons: m.lessons });
     }
     return out;
   }
@@ -1416,7 +1143,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     var out = [];
     modulesOf(t).forEach(function (m) {
       m.lessons.forEach(function (l) {
-        out.push({ id: 'l' + m.id + '-' + m.lessons.indexOf(l), title: l, moduleId: m.id, module: m.title, minutes: 9 });
+        out.push({ id: 'l' + m.id + '-' + m.lessons.indexOf(l), title: l, moduleId: m.id, module: m.title });
       });
     });
     return out;
@@ -1452,26 +1179,18 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     var lockedAttr = state.account ? '' : ' disabled tabindex="-1"';
     var starBtn = '<button class="a-btn' + starOn + '" data-act="star" data-id="' + id + '"' + lockedAttr + '>' + IC.star + ' <span>' + (state.starred[id] ? 'Estrelado' : 'Estrela') + '</span> <span class="cnt">' + t.stars + '</span></button>';
     var watchBtn = '<button class="a-btn" data-act="watch" data-id="' + id + '"' + lockedAttr + '>' + IC.eye + ' Watch <span class="cnt">' + Math.round(t.stars * 0.27) + '</span></button>';
-    var bookmarkBtn = '<button class="a-btn" data-act="watch" data-id="' + id + '"' + lockedAttr + '>' + IC.bookmark + ' Favoritados <span class="cnt">' + Math.round(t.stars * 0.27) + '</span></button>';
-    var subscribersBtn = '<button class="a-btn" data-act="subscribers" data-id="' + id + '"' + lockedAttr + '>' + IC.users + ' Inscritos <span class="cnt">' + Math.round(t.stars * 0.27) + '</span></button>';
 
     var modulesHTML = mods.map(function (m, mi) {
       var lessonsHTML = m.lessons.map(function (l, j) {
-        var lk = id + '-' + m.id + '-' + j;
-        var done = state.completedLessons[lk] || j < Math.ceil(m.progress / 100 * m.lessons.length);
-        var icon = done ? IC.circleCheck : IC.clock;
-        var cls = done ? ' completed' : '';
         return '<button data-stop="1" data-act="open-reader" data-id="' + id + '" data-lesson="' + m.id + '-' + j + '">' +
           '<div class="l-left"><span class="ln">' + (j + 1) + '</span><span class="pname">' + l + '</span></div>' +
-          '<span class="lstatus' + cls + '" data-act="toggle-lesson" data-lk="' + lk + '">' + icon + '<span class="lring"></span></span>' +
         '</button>';
       }).join('');
       var open = state.openModule === m.id;
       return '<div class="amodule' + (open ? '' : ' collapsed') + '">' +
         '<button class="amodule-toggle" data-stop="1" data-act="toggle-module">' +
           '<div class="amodule-num">' + (mi + 1) + '</div>' +
-          '<div class="amodule-info"><div class="mtitle">' + m.title + '</div><div class="msub">' + m.lessons.length + ' aulas · ~' + m.minutes + ' min</div></div>' +
-          '<div class="amodule-pbar"><i style="width:' + m.progress + '%' + (m.progress === 100 ? ';background:#3FB950' : '') + '"></i></div>' +
+          '<div class="amodule-info"><div class="mtitle">' + m.title + '</div><div class="msub">' + m.lessons.length + ' aulas</div></div>' +
         '</button>' +
         '<div class="amodule-lessons">' + lessonsHTML + '</div>' +
       '</div>';
@@ -1494,19 +1213,10 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     '<div class="aside-body">' +
       '<p class="aside-desc">Aprenda do zero com conteúdo gratuito criado pela comunidade He4rt. Aborda de conceitos básicos a tópicos avançados, com exemplos práticos e exercícios.</p>' +
       '<div class="aside-badges">' +
-        '<span>' + t.language + '</span><span>' + t.level + '</span><span>' + t.category + '</span><span>' + durLabel(t.duration) + '</span><span>' + t.modules + ' módulos</span><span>atualizado ' + t.updated + '</span>' +
+        '<span>' + t.language + '</span><span>' + t.category + '</span><span>' + t.modules + ' módulos</span><span>atualizado ' + t.updated + '</span>' +
       '</div>' +
-      '<div class="aside-actions">' + starBtn + watchBtn + bookmarkBtn + subscribersBtn + '</div>' +
-      '<div class="trillha-prog">' +
-          '<div class="label-trillha-prog">' +
-              '<span style="color:#8B949E">Seu progresso</span>' +
-              '<small >' + t.progress + '%</small>' +
-          '</div>' +
-          '<div class="bar" style="position:relative;"><i style="width:' + t.progress + '%;' + 
-            (t.progress === 100? 'background:#3FB950;':'') + 
-            '"></i></div>' +
-      '</div>' +
-      '<div class="aside-section-title">Progresso dos módulos</div>' +
+      '<div class="aside-actions">' + starBtn + watchBtn + '</div>' +
+      '<div class="aside-section-title">Módulos</div>' +
       '<div class="aside-modules">' + modulesHTML + '</div>' +
       '<div class="aside-section-title">Contribuidores</div>' +
       '<div class="aside-contrib">' + contribHTML + '</div>' +
@@ -1539,7 +1249,7 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
         '</tbody></table>' +
       '</div>' +
       '<div class="rb"><h2 id="sec-' + slug + '-resumo">Resumo</h2>' +
-        '<p>Se você saiu desta aula sabendo explicar <b>' + lessonTitle.toLowerCase() + '</b> para outra pessoa, o objetivo foi cumprido. Marque como concluída e siga para a próxima — o conteúdo encadeia.</p>' +
+        '<p>Se você saiu desta aula sabendo explicar <b>' + lessonTitle.toLowerCase() + '</b> para outra pessoa, o objetivo foi cumprido. Siga para a próxima — o conteúdo encadeia.</p>' +
       '</div>';
   }
 
@@ -1565,7 +1275,6 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     var cur = ls[state.lessonIndex];
     var prev = ls[state.lessonIndex - 1] || null;
     var next = ls[state.lessonIndex + 1] || null;
-    var done = state.completed[cur.id];
 
     var indexHtml = '<div class="reader-side-top reader-topbar">' +
       '<button style="display:flex;" data-act="close-reader-guide">' + IC.panelRightClose + '</button>' + 
@@ -1586,7 +1295,6 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
         '<div class="reader-topbar" style="padding: 14px 44px;">' +
           '<div class="reader-crumb"><button id="open-reader-guide" class="hidden" data-act="open-reader-guide">' + IC.panelLeft + '</button><button class="back" data-act="reader-back"><b>Trilhas</b></button><span class="sep">/</span><span>' + t.title + '</span><span class="sep">/</span>' + cur.module + '<span class="sep">/</span><span>' + cur.title + '</span></div>' +
           '<div class="reader-top-actions">' +
-            '<span class="pos">Progresso </span>' +
             '<button style="display:flex;" data-stop="1" data-act="open" data-id="' + t.id + '">' + IC.panelRight + '</button>' + 
           '</div>' +
         '</div>' +
@@ -1595,7 +1303,6 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
           '<div class="reader-github">' + IC.github + ' <span>Ver material no GitHub</span></div>' +
           '<div class="reader-subtabs"><span class="on">Conteúdo</span><span>Extra</span></div>' +
           buildBlocks(cur.title, cur.module) +
-          '<div class="complete-row"><button class="complete-btn' + (done ? ' on' : '') + '" data-act="toggle-complete">' + (done ? '✓ Concluída' : 'Marcar como concluída') + '</button></div>' +
           '<div class="reader-nav">' +
             (prev ? '<button class="rnav" data-act="reader-lesson" data-id="' + (state.lessonIndex - 1) + '"><div class="rl">' + IC.arrowL + ' Anterior</div><div class="rt">' + prev.title + '</div></button>' : '<span></span>') +
             (next ? '<button class="rnav next" data-act="reader-lesson" data-id="' + (state.lessonIndex + 1) + '"><div class="rl">Próxima ' + IC.arrowR + '</div><div class="rt">' + next.title + '</div></button>' : '<span></span>') +
@@ -1607,30 +1314,6 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     listEl.classList.add('hidden');
     readerEl.classList.remove('hidden');
     renderAside(state.aside);
-
-    var t2 = TRACKS.find(function (x) { return x.id === state.reader; });
-    if (t2) {
-      var ls2 = lessonsOf(t2);
-      readerEl.querySelectorAll('.rnav').forEach(function (btn) {
-        btn.addEventListener('mouseenter', function () {
-          var idx = parseInt(btn.getAttribute('data-id'), 10);
-          var target = ls2[idx];
-          if (!target) return;
-          var mod = modulesOf(t2).find(function (m) { return m.id === target.moduleId; });
-          if (!mod || mod.progress === 100) return;
-          var lk = state.reader + '-' + target.moduleId + '-' + mod.lessons.indexOf(target.title);
-          var lessonBtn = asideEl.querySelector('[data-lk="' + lk + '"]');
-          if (!lessonBtn) return;
-          var row = lessonBtn.closest('button');
-          if (!row) return;
-          row.classList.remove('highlight', 'highlight-out');
-          void row.offsetWidth;
-          row.classList.add('highlight');
-          setTimeout(function () { row.classList.remove('highlight'); row.classList.add('highlight-out'); }, 3000);
-          setTimeout(function () { row.classList.remove('highlight-out'); }, 6000);
-        });
-      });
-    }
   }
 
   function toast(msg) {
@@ -1662,53 +1345,6 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     b.addEventListener('click', function () { showTab(b.getAttribute('data-tab')); });
   });
 
-  var holdTimer = null;
-  var holdAnim = null;
-  var holdLk = null;
-
-  document.addEventListener('pointerdown', function (e) {
-    var status = e.target.closest('.lstatus[data-act="toggle-lesson"]');
-    if (!status) return;
-    e.preventDefault();
-    e.stopPropagation();
-    holdLk = status.getAttribute('data-lk');
-    var ring = status.querySelector('.lring');
-    var pct = 0;
-    status.classList.add('holding');
-    holdAnim = setInterval(function () {
-      pct += 100 / 30;
-      ring.style.setProperty('--pct', pct + '%');
-      if (pct >= 100) {
-        clearInterval(holdAnim);
-        holdAnim = null;
-        status.classList.remove('holding');
-        ring.style.setProperty('--pct', '0%');
-        state.completedLessons[holdLk] = !state.completedLessons[holdLk];
-        renderAside(state.aside);
-      }
-    }, 100);
-  });
-
-  document.addEventListener('pointerup', function () {
-    if (holdAnim) {
-      clearInterval(holdAnim);
-      holdAnim = null;
-      var el = document.querySelector('.lstatus.holding');
-      if (el) { el.classList.remove('holding'); el.querySelector('.lring').style.setProperty('--pct', '0%'); }
-    }
-    holdLk = null;
-  });
-
-  document.addEventListener('pointercancel', function () {
-    if (holdAnim) {
-      clearInterval(holdAnim);
-      holdAnim = null;
-      var el = document.querySelector('.lstatus.holding');
-      if (el) { el.classList.remove('holding'); el.querySelector('.lring').style.setProperty('--pct', '0%'); }
-    }
-    holdLk = null;
-  });
-
   document.addEventListener('click', function (e) {
     var el = e.target.closest('[data-act]');
     if (!el) return;
@@ -1719,20 +1355,12 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
     if (act === 'goto-tab') { showTab(el.getAttribute('data-tab')); return; }
 
     if (act === 'toggle-module') { el.closest('.amodule').classList.toggle('collapsed'); return; }
-    if (act === 'toggle-lesson') { return; }
 
-    if (act === 'tab') { state.tab = el.getAttribute('data-v'); render(); return; }
     if (act === 'cat') { state.cat = el.getAttribute('data-v'); render(); return; }
-    if (act === 'level') { var lv = el.getAttribute('data-v'); state.levels[lv] = !state.levels[lv]; render(); return; }
-    if (act === 'dur') { var du = el.getAttribute('data-v'); state.durs[du] = !state.durs[du]; render(); return; }
-    if (act === 'progress-order') { var pv = el.getAttribute('data-v'); state.progressOrder = state.progressOrder === pv ? null : pv; render(); return; }
     if (act === 'status-filter') { var sf = el.getAttribute('data-v'); state.statusFilter[sf] = !state.statusFilter[sf]; render(); return; }
     if (act === 'ord') { state.order = el.getAttribute('data-v'); render(); return; }
     if (act === 'clear-filters') {
       state.cat = 'todas';
-      state.levels = { iniciante: false, intermediario: false, avancado: false };
-      state.durs = { ate3: false, de3a6: false, de6a10: false, '10mais': false };
-      state.progressOrder = null;
       state.statusFilter = { novas: false, populares: false, recentes: false };
       state.order = 'recentes';
       render(); return;
@@ -1743,11 +1371,6 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
       if (!state.account) { toast('Conecte sua conta GitHub para interagir'); return; }
       var on = !!state.starred[id];
       state.starred[id] = !on;
-      render(); return;
-    }
-    if (act === 'save') {
-      var sid = el.getAttribute('data-id');
-      state.saved[sid] = !state.saved[sid];
       render(); return;
     }
     if (act === 'follow') {
@@ -1780,14 +1403,6 @@ footer{max-width:1120px;margin:0 auto;padding:0 28px 60px;border-top:1px solid v
       var sec = document.getElementById(el.getAttribute('data-id'));
       if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
-    }
-    if (act === 'toggle-complete') {
-      var t = TRACKS.find(function (x) { return x.id === state.reader; });
-      var ls = lessonsOf(t);
-      var c = ls[state.lessonIndex];
-      if (state.completed[c.id]) delete state.completed[c.id];
-      else state.completed[c.id] = true;
-      renderReader(); return;
     }
     if (act === 'copy') {
       var pre = el.closest('.rb-code').querySelector('pre');

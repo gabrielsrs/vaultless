@@ -9,11 +9,11 @@ As trilhas vêm de fontes externas (hoje GitHub), mas o domínio `tracks` **não
 
 A solução da casa: **o domínio define os contratos, quem implementa se registra**. O que uma fonte sabe fazer vira interface opcional ("capability"), checada com `instanceof` — nunca flag de config nem método devolvendo array vazio. Este ticket materializa essa inversão para trilhas.
 
-**Referência para implementação**: o dev segue a cascata [`../spec.md`](../spec.md) (seção "Implementation Decisions" → contratos) → [`../adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md`](../adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md) (D1–D4) → [`../schema.md`](../schema.md) (seção "Contratos PHP" e "DTOs") → este ticket.
+**Referência para implementação**: o dev segue a cascata [`../spec.md`](../spec.md) (seção "Decisões de implementação" → contratos) → [`../adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md`](../adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md) (D1–D4) → [`../schema.md`](../schema.md) (seção "Contratos PHP" e "DTOs") → este ticket.
 
 ## O que construir
 
-- Enum `TrackSourceType` com caso único real hoje: `github`. Caso `native` fica documentado no enum como reservado — trilha nativa da plataforma **não tem provider** (não é conta de ninguém, análogo ao RSS no contents).
+- Enum `TrackSourceType` com o único caso real: `github`. O caso `native` **não entra no enum** — fica reservado apenas em docs (emenda E-D10 no ADR 0005); trilha nativa da plataforma **não tem provider** (não é conta de ninguém, análogo ao RSS no contents).
 - Contratos no namespace do tracks:
 
 ```php
@@ -38,11 +38,18 @@ interface ProvidesWorkingCopy extends TrackSourceProvider
     /** shallow clone na 1ª vez / pull incremental nas seguintes; retorna path local */
     public function workingCopy(TrackSourceDTO $source): string;
 }
+
+interface FetchesContributors extends TrackSourceProvider    // NOVO (ADR 0005, E-D5)
+{
+    /** @return iterable<TrackContributorDTO>   # GET /repos/{owner}/{repo}/contributors, all-time */
+    public function fetchContributors(TrackSourceDTO $source): iterable;
+}
 ```
 
 - DTOs de fronteira (tradução anti-corrupção: vocabulário da fonte não entra no domínio):
   - `TrackSourceDTO`: `externalId` (ex.: `owner/repo`), `owner`, `name`, `url`
   - `RepoMetadataDTO`: `defaultBranch`, `language`, `stars`, `forks`, `watchers`, `description`
+  - `TrackContributorDTO`: `githubUsername`, `contributions`, `avatarUrl` (NOVO, E-D5)
 - `TrackSourceRegistry` singleton registrado no `TracksServiceProvider::register()`; providers entram via `boot()` de quem implementa.
 - Comando `tracks:sync` esqueleto: itera o registry, pergunta capacidades com `instanceof`, loga o que encontrou. **Nunca cita um provider pelo nome.**
 - Teste de conformidade: provider fake satisfaz as capabilities que declara; provider sem determinada capability é simplesmente pulado.

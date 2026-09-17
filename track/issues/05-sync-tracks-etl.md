@@ -16,8 +16,10 @@ O conteúdo de uma trilha é uma **árvore de markdown**: o pipeline deve mapear
 
 Duas decisões estruturais já consolidadas nos ADRs do módulo guiam este ticket:
 
-1. **Identidade estável (ADR 0001):** módulo e aula recebem UUID determinístico (v5) derivado do namespace UUID da trilha + source path. Progresso/interações vinculam ao UUID — nunca ao caminho. Rename de path → registro antigo soft-deleted com ponteiro `replaced_by_uuid`.
+1. **Identidade estável (ADR 0001):** módulo e aula recebem UUID determinístico (v5) derivado do namespace UUID da trilha + source path. Rename de path → registro antigo soft-deleted com ponteiro `replaced_by_uuid`. A estabilidade do UUID existe para a leitura e para os vínculos de autoria/interação — nunca o caminho.
 2. **Flat + override (ADR 0002):** detecção de engine foi recusada como frágil; variação estrutural se resolve com mapa de override configurável por repo.
+
+> **Escopo v3 (agregador, ADR 0005):** duração estimada **removida** (E-D3). `word_count` também **removido** — só alimentava a projeção `estimated_minutes`, sem consumidor no agregador.
 
 ## O que construir
 
@@ -31,7 +33,7 @@ Duas decisões estruturais já consolidadas nos ADRs do módulo guiam este ticke
   - Links relativos de imagem reescritos para `raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}`
   - Em casos de borda (aulas com seção extra de conteúdo complementar), lesson pode ter um campo `extra_content` para esse conteúdo adicional sem quebrar o modelo — ver [`../schema.md`](../schema.md)
   - Markdown → HTML sanitizado em `lessons.processed_content`
-  - Métricas: `word_count`; `estimated_minutes = ceil(word_count / 200)`
+  - Sem métricas de duração/tamanho: `estimated_minutes` e `word_count` fora (E-D3)
 - Ordenação heurística em cascata: seções numeradas do ROADMAP do README → alfabética → ordem da git tree; resultado persistido em coluna de posição
 - Identidade: UUIDv5 estável; rename entre syncs → soft-delete + `replaced_by_uuid` apontando ao sucessor
 
@@ -40,14 +42,14 @@ Schema resumido das duas tabelas novas (`tracks` já existe do ticket 04):
 ```
 modules: id uuid pk · track_id fk · title · slug · position int · replaced_by_uuid null · timestampsTz
 lessons: id uuid pk · module_id fk · title · position int · processed_content text
-         · word_count int · estimated_minutes int · replaced_by_uuid null · timestampsTz
+         · replaced_by_uuid null · timestampsTz
 ```
 
 ## Critérios de aceite
 
 - [ ] Primeiro sync de uma trilha real popula módulos e aulas na ordem correta, com HTML processado legível
 - [ ] UUIDs são determinísticos: mesmo input produz mesmos ids (testado contra fixtures)
-- [ ] Rename de arquivo/diretório preserva progresso via ponteiro de substituição
+- [ ] Rename de arquivo/diretório preserva a árvore via ponteiro de substituição
 - [ ] Sync incremental não refaz clone; flag de refresh completo existe
 - [ ] Override map aplicado quando configurado; sem config, regra flat padrão vale
 - [ ] Idempotência: segunda passada sem mudanças na fonte = zero alterações estruturais
@@ -64,13 +66,13 @@ Funcionalidade: Sincronização de conteúdo das trilhas
   Cenário: Primeiro sync de uma trilha
     Quando o sync roda para uma trilha recém-catalogada
     Então módulos e aulas nascem com UUIDs determinísticos e posições da heurística do README
-    E cada aula guarda HTML processado, word_count e duração estimada
+    E cada aula guarda HTML processado (sem duração estimada)
 
   Cenário: Aula renomeada entre syncs
     Dado que "introducao.md" virou "fundamentos.md" no repo
     Quando o sync roda novamente
     Então a aula antiga fica inativa apontando para a nova
-    E qualquer progresso existente continua válido pelo UUID imutável
+    E a árvore de leitura permanece estável pelo UUID imutável
 
   Cenário: Repo com estrutura atípica
     Dado que uma trilha guarda o conteúdo sob "Content/" em vez de diretórios de topo
