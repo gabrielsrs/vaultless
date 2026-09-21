@@ -1,0 +1,17 @@
+{
+	"name": "scripts",
+	"private": true,
+	"devDependencies": {
+		"@biomejs/biome": "2.5.11",
+		"@types/bun": "1.4.0"
+	},
+	"peerDependencies": {
+		"typescript": "^7"
+	},
+	"scripts": {
+		"lint": "biome check .",
+		"lint:fix": "biome check . --write",
+		"lint:fix:unsafe": "biome check . --write --unsafe",
+		"validate": "bun run validate.ts"
+	}
+}

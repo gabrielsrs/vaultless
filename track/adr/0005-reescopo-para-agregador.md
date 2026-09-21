@@ -1,6 +1,16 @@
+---
+type: ADR
+title: "ADR 0005 — Reescopo para agregador: o tracks deixa de ser LMS"
+description: "Emendas E-D1–E-D11 e E-E que removem o estado pessoal do escopo, definem curation por allowlist e o modelo transporte × domínio."
+tags: [tracks, adr, reescopo, agregador]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-09T00:00:00Z
+---
 # ADR 0005 — Reescopo para agregador: o `tracks` deixa de ser LMS
 
-[← README do módulo](../README.md)
+[← README do módulo](../index.md)
 
 - **Status:** Proposto
 - **Data:** 2026-09-09

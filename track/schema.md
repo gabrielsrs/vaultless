@@ -1,6 +1,16 @@
+---
+type: Technical Reference
+title: "Schema de Referência — Módulo tracks"
+description: "Tabelas, enums, contratos PHP, DTOs e eventos do agregador de trilhas — consulta do dev ao implementar as issues."
+tags: [tracks, schema, dados, php]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # Schema de Referência — Módulo `tracks`
 
-[← README do módulo](README.md) (agregador)
+[← índice do módulo](index.md) (agregador)
 
 Referência técnica consolidada: tabelas, enums, contratos, DTOs e eventos. As issues desta pasta apontam para este arquivo quando precisam detalhar estruturas de dados.
 

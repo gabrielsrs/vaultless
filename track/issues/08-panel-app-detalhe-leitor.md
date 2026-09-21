@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "08 — Detalhe da trilha (TrackAside) + leitor de aulas focado"
+description: "Constrói a página de detalhe com aside da trilha e o leitor focado de aulas em markdown."
+tags: [panel-app, issue, ui, leitor]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 08 — feat(panel-app): detalhe da trilha (`TrackAside`) + leitor de aulas focado
 
 **Labels (GitHub):** `type:feat` · `mod:panel-app` · `mod:tracks` · `difficulty:hard`
@@ -74,4 +84,4 @@ Funcionalidade: Ler uma trilha no leitor focado
 
 ---
 
-[← Anterior: 07](07-panel-app-listagem-trilhas.md) · [issues/README](README.md) · [Próxima: 09 →](09-github-interaction-endpoints.md)
+[← Anterior: 07](07-panel-app-listagem-trilhas.md) · [índice das issues](index.md) · [Próxima: 09 →](09-github-interaction-endpoints.md)

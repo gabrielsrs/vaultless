@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "02 — Evento ExternalIdentityConnected nos caminhos de conexão"
+description: "Emite ExternalIdentityConnected no identity para viabilizar adoção retroativa de contribuidores órfãos."
+tags: [identity, issue, evento, compartilhado]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-08-27T00:00:00Z
+---
 # 02 — feat(identity): evento `ExternalIdentityConnected` nos caminhos de conexão
 
 **Labels (GitHub):** `type:feat` · `mod:identity` · `difficulty:small`
@@ -67,4 +77,4 @@ Nada — pode começar imediatamente (paralela ao scaffold do tracks).
 
 ---
 
-[← Anterior: 01](01-scaffold-modulo-tracks.md) · [issues/README](README.md) · [Próxima: 03 →](03-provider-contract-e-registry.md)
+[← Anterior: 01](01-scaffold-modulo-tracks.md) · [índice das issues](index.md) · [Próxima: 03 →](03-provider-contract-e-registry.md)

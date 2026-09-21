@@ -1,6 +1,16 @@
+---
+type: ADR
+title: "ADR 0004 — Decisões do módulo tracks e alinhamento com o contents"
+description: "Registro consolidado das decisões D1–D9 do desenho do tracks, com alternativas recusadas e alinhamento às regras do módulo contents."
+tags: [tracks, adr, arquitetura, contents]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-08-24T00:00:00Z
+---
 # ADR 0004 — Registro consolidado das decisões do módulo `tracks` e alinhamento com o `contents`
 
-[← README do módulo](../README.md)
+[← README do módulo](../index.md)
 
 - **Status:** Proposto
 - **Data:** 2026-08-24

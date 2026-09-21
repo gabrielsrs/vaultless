@@ -1,8 +1,8 @@
 # Issues — Módulo `tracks`
 
-Índice dos 11 tickets (tracer bullets) que implementam o módulo `tracks`, no formato das issues `type:feat` da casa (padrão stherzada). Dependências entre tickets: ver o [grafo no README do módulo](../README.md).
+Índice dos 11 tickets (tracer bullets) que implementam o módulo `tracks`, no formato das issues `type:feat` da casa (padrão stherzada). Dependências entre tickets: ver o [grafo no README do módulo](../index.md).
 
-[← README do módulo](../README.md)
+[← README do módulo](../index.md)
 
 | # | Documento | Título |
 |---|---|---|

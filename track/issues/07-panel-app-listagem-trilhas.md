@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "07 — Listagem de trilhas real substituindo o protótipo mockado"
+description: "Liga a listagem de trilhas do panel-app aos dados reais do agregador, substituindo o mock do protótipo."
+tags: [panel-app, issue, ui, listagem]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 07 — feat(panel-app): listagem de trilhas real substituindo o protótipo mockado
 
 **Labels (GitHub):** `type:feat` · `mod:panel-app` · `mod:tracks` · `difficulty:medium`
@@ -67,4 +77,4 @@ Funcionalidade: Descobrir trilhas na plataforma
 
 ---
 
-[← Anterior: 06](06-contribuidores-adocao-orfaos.md) · [issues/README](README.md) · [Próxima: 08 →](08-panel-app-detalhe-leitor.md)
+[← Anterior: 06](06-contribuidores-adocao-orfaos.md) · [índice das issues](index.md) · [Próxima: 08 →](08-panel-app-detalhe-leitor.md)

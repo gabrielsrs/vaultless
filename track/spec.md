@@ -7,11 +7,13 @@ date: 2026-09-09
 author: GabrielFVDev
 supersedes: ../spec.md
 labels: ready-for-agent, type:feat, mod:tracks (a criar)
+description: "Spec v3 do módulo tracks: agregador do acervo 4noobs — problema, solução, 22 user stories e decisões de implementação/teste."
+tags: [tracks, spec, agregador, upstream]
 ---
 
 # Spec: Módulo `tracks` — v3 (agregador)
 
-[← README do módulo](README.md)
+[← Índice do módulo](index.md)
 
 > **Escopo reduzido pós-review.** A v2 (LMS) foi enviada para review upstream; o retorno reduziu o escopo para um **agregador**: catálogo + leitura + valorização de criadores, sem rastreamento pessoal. Esta spec registra o escopo v3. Ver ADR [0005](adr/0005-reescopo-para-agregador.md) para as emendas a 0004.
 

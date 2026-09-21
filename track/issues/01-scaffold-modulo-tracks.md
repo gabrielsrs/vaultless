@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "01 — Scaffold do módulo de trilhas"
+description: "Scaffold do módulo tracks como contexto irmão do contents, com fronteiras e composer próprios."
+tags: [tracks, issue, scaffold]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 01 — feat(tracks): scaffold do módulo de trilhas
 
 **Labels (GitHub):** `type:feat` · `mod:tracks` (a criar) · `difficulty:medium`
@@ -50,4 +60,4 @@ Nada — pode começar imediatamente.
 
 ---
 
-[← issues/README](README.md) · [Próxima: 02 →](02-identity-evento-conexao.md)
+[← Índice das issues](index.md) · [Próxima: 02 →](02-identity-evento-conexao.md)

@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "06 — Contribuidores da trilha + ciclo de órfãos com adoção retroativa"
+description: "Modela autoria como entidade com github_username sempre gravado e adoção automática quando o autor conecta a conta."
+tags: [tracks, issue, contribuidores, adoção]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 06 — feat(tracks): contribuidores da trilha + ciclo de órfãos com adoção retroativa
 
 **Labels (GitHub):** `type:feat` · `mod:tracks` · `difficulty:medium`
@@ -71,4 +81,4 @@ Funcionalidade: Adoção de contribuidores órfãos
 
 ---
 
-[← Anterior: 05](05-sync-tracks-etl.md) · [issues/README](README.md) · [Próxima: 07 →](07-panel-app-listagem-trilhas.md)
+[← Anterior: 05](05-sync-tracks-etl.md) · [índice das issues](index.md) · [Próxima: 07 →](07-panel-app-listagem-trilhas.md)

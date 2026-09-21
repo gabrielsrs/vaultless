@@ -1,6 +1,16 @@
+---
+type: PRD
+title: "Issue-mãe — Módulo tracks (agregador)"
+description: "PRD para abrir no GitHub (type:prd): problem statement, user stories, modelo de dados e subtarefas dos 11 tickets."
+tags: [tracks, prd, upstream]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 **Título sugerido para o GitHub:** `prd(tracks): agregador de trilhas 4noobs, leitura focado e interações GitHub`
 
-[← README do módulo](README.md)
+[← índice do módulo](index.md)
 
 **Labels:** `type:prd` · `mod:tracks` · `difficulty:hard` · `ready-for-agent`
 
