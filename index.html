@@ -1,0 +1,333 @@
+<!doctype html>
+<!--
+  viewer do bundle OKF — vaultless
+  Carrega todos os concepts do bundle via fetch, renderiza frontmatter como
+  metadados estruturados (type, status, trust tier, tags) + corpo markdown.
+  Sem build; única dependência: marked + js-yaml via jsdelivr (padrão do repo).
+  Deep-links: #/<caminho-do-arquivo.md>. Exige servir os .md crus (.nojekyll).
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vaultless — catálogo OKF</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232f81f7' d='M4 3h13a3 3 0 0 1 3 3v14H7a3 3 0 0 1-3-3V3zm2 0v14a1 1 0 0 0 1 1h11V6a1 1 0 0 0-1-1H6z'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<style>
+:root{
+  --bg:#0d1117; --surface:#161b22; --surface-2:#21262d; --border:#30363d;
+  --text:#e6edf3; --muted:#8d96a0; --faint:#6e7681;
+  --link:#2f81f7; --green:#3fb950; --amber:#d29922; --red:#f85149;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"Inter",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 var(--sans)}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+#app{display:flex;min-height:100vh}
+
+/* sidebar */
+aside{width:300px;flex:none;border-right:1px solid var(--border);background:var(--surface);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{padding:16px 16px 12px;border-bottom:1px solid var(--border)}
+.brand b{font-size:15px;letter-spacing:.01em}
+.brand span{display:block;font:11px/1.4 var(--mono);color:var(--muted);margin-top:2px}
+#search{margin:12px 16px;padding:7px 10px;background:var(--bg);color:var(--text);
+  border:1px solid var(--border);border-radius:6px;font:13px var(--sans);outline:none}
+#search:focus{border-color:var(--link)}
+nav{flex:1;overflow-y:auto;padding:0 8px 12px}
+.grp{font:600 11px/1 var(--mono);color:var(--faint);text-transform:uppercase;
+  letter-spacing:.06em;padding:14px 8px 6px}
+.item{display:flex;align-items:baseline;gap:8px;padding:5px 8px;border-radius:6px;
+  border-left:2px solid transparent;cursor:pointer;font-size:13.5px}
+.item:hover{background:var(--surface-2);text-decoration:none}
+.item.on{background:var(--surface-2);border-left-color:var(--link)}
+.item .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .ty{font:600 10px var(--mono);color:var(--faint);flex:none}
+#treefoot{padding:10px 16px;border-top:1px solid var(--border);font:11px var(--mono);color:var(--faint)}
+
+/* main */
+main{flex:1;min-width:0;display:flex;flex-direction:column}
+#topbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;
+  padding:10px 24px;background:rgba(13,17,23,.92);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--border);font:12px var(--mono);color:var(--muted)}
+#topbar .sp{flex:1}
+#topbar a{color:var(--muted)}#topbar a:hover{color:var(--text)}
+#menu{display:none;background:none;border:1px solid var(--border);border-radius:6px;
+  color:var(--text);font:16px/1 var(--mono);padding:4px 9px;cursor:pointer}
+article{max-width:880px;padding:28px 24px 80px;width:100%}
+
+/* meta card */
+.meta{border:1px solid var(--border);border-radius:8px;background:var(--surface);
+  padding:14px 16px;margin-bottom:28px}
+.meta .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+.meta .desc{color:var(--muted);font-size:14px;margin-bottom:10px}
+.badge{font:600 11px var(--mono);border:1px solid var(--border);border-radius:2em;
+  padding:2px 10px;color:var(--muted);background:var(--bg)}
+.badge.status-proposed,.badge.status-draft{color:var(--amber);border-color:#9e6a03}
+.badge.status-stable{color:var(--green);border-color:#238636}
+.badge.status-deprecated,.badge.status-review-needed{color:var(--red);border-color:#da3633}
+.badge.tier{color:var(--faint)}
+.badge.tier.human-reviewed{color:var(--green);border-color:#238636}
+.badge.tier.machine-confirmed{color:var(--link);border-color:#1f6feb}
+.kv{font:11.5px var(--mono);color:var(--faint)}
+.stale{margin-top:8px;font-size:13px;color:var(--amber)}
+
+/* markdown body */
+#body h1,#body h2,#body h3{line-height:1.3;margin:1.6em 0 .5em}
+#body h1{font-size:1.55em;border-bottom:1px solid var(--border);padding-bottom:.3em}
+#body h2{font-size:1.25em;border-bottom:1px solid var(--border);padding-bottom:.3em}
+#body h3{font-size:1.05em}
+#body{overflow-wrap:break-word}
+#body :not(pre)>code{font:.85em var(--mono);background:var(--surface-2);
+  border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+#body pre{background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:12px 14px;overflow-x:auto}
+#body pre code{font:12.5px/1.6 var(--mono)}
+#body table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%;margin:14px 0}
+#body th,#body td{border:1px solid var(--border);padding:6px 12px;font-size:13.5px}
+#body th{background:var(--surface);font-weight:600}
+#body blockquote{margin:14px 0;padding:2px 14px;border-left:3px solid var(--border);color:var(--muted)}
+#body hr{border:0;border-top:1px solid var(--border);margin:28px 0}
+#body ul,#body ol{padding-left:1.6em}
+#body li{margin:3px 0}
+#body img{max-width:100%}
+#body input[type=checkbox]{accent-color:var(--link)}
+
+/* states */
+#load,#err{padding:60px 24px;color:var(--muted);font:13px var(--mono)}
+.backdrop{display:none}
+@media (max-width:720px){
+  aside{position:fixed;left:0;top:0;transform:translateX(-105%);transition:transform .18s;z-index:10}
+  aside.open{transform:none}
+  .backdrop{position:fixed;inset:0;background:rgba(1,4,9,.6);z-index:9}
+  .backdrop.on{display:block}
+  #menu{display:block}
+  article{padding:20px 16px 80px}
+  #topbar{padding:10px 14px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="side">
+    <div class="brand"><b>vaultless</b><span>catálogo de conhecimento · OKF</span></div>
+    <input id="search" placeholder="buscar no bundle  ( / )" autocomplete="off">
+    <nav id="tree"><div id="load">carregando bundle…</div></nav>
+    <div id="treefoot"></div>
+  </aside>
+  <div class="backdrop" id="bd"></div>
+  <main>
+    <header id="topbar">
+      <button id="menu" aria-label="menu">≡</button>
+      <span id="crumb"></span>
+      <span class="sp"></span>
+      <a id="lraw" target="_blank" rel="noopener">raw</a>
+      <a id="lgh" target="_blank" rel="noopener">GitHub ↗</a>
+    </header>
+    <article>
+      <section class="meta" id="meta" hidden></section>
+      <div id="body"></div>
+    </article>
+  </main>
+</div>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const REPO = "https://github.com/joaovjo/vaultless", BRANCH = "master";
+  const ROOT = location.pathname.replace(/[^/]*$/, "");
+  const GROUPS = [
+    ["Raiz", ["index.md", "log.md", "README.md"]],
+    ["Módulo tracks", ["track/index.md", "track/parent-issue.md", "track/spec.md", "track/schema.md"]],
+    ["ADRs", ["track/adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md",
+              "track/adr/0005-reescopo-para-agregador.md"]],
+    ["Issues", ["track/issues/index.md",
+      "track/issues/01-scaffold-modulo-tracks.md",
+      "track/issues/02-identity-evento-conexao.md",
+      "track/issues/03-provider-contract-e-registry.md",
+      "track/issues/04-github-provider-descoberta-metadados.md",
+      "track/issues/05-sync-tracks-etl.md",
+      "track/issues/06-contribuidores-adocao-orfaos.md",
+      "track/issues/07-panel-app-listagem-trilhas.md",
+      "track/issues/08-panel-app-detalhe-leitor.md",
+      "track/issues/09-github-interaction-endpoints.md",
+      "track/issues/10-panel-app-acoes-github-ui.md",
+      "track/issues/11-agendamento-descoberta-automatica.md"]],
+    ["Protótipos", ["prototipos/index.md"]],
+  ];
+  const FILES = GROUPS.flatMap(([, fs]) => fs);
+  const docs = new Map(); // path -> {fm, body, title, hay}
+
+  marked.setOptions({ gfm: true });
+  const $ = (id) => document.getElementById(id);
+
+  const fileURL = (p) => new URL(p.replace(/^\/+/, ""), location.href);
+
+  function splitFM(text) {
+    const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    if (!m) return { fm: null, body: text };
+    let fm = null;
+    try { fm = jsyaml.load(m[1]) || {}; } catch { fm = { type: "(yaml inválido)" }; }
+    return { fm, body: text.slice(m[0].length) };
+  }
+
+  function trustTier(fm) {
+    const v = fm && Array.isArray(fm.verified) ? fm.verified : [];
+    if (v.some((e) => e && String(e.by || "").startsWith("human:"))) return "human-reviewed";
+    if (v.length) return "machine-confirmed";
+    return "unverified";
+  }
+
+  async function load(p) {
+    if (docs.has(p)) return docs.get(p);
+    const r = await fetch(fileURL(p));
+    if (!r.ok) throw new Error(r.status);
+    const { fm, body } = splitFM(await r.text());
+    const d = {
+      fm, body,
+      title: (fm && fm.title) || body.match(/^#\s+(.+)$/m)?.[1]?.replace(/[`*]/g, "") || p,
+      hay: [p, fm?.title, fm?.description, (fm?.tags || []).join(" ")].join(" ").toLowerCase(),
+    };
+    docs.set(p, d);
+    return d;
+  }
+  /* ---------- sidebar ---------- */
+  function itemEl(p) {
+    const d = docs.get(p), fm = d?.fm;
+    const el = document.createElement("a");
+    el.className = "item"; el.href = "#/" + p; el.dataset.path = p;
+    const t = document.createElement("span"); t.className = "t";
+    t.textContent = d ? d.title : p;
+    el.appendChild(t);
+    if (fm?.type && p !== "README.md") {
+      const ty = document.createElement("span"); ty.className = "ty";
+      const ACR = { "Technical Reference": "REF", Issue: "ISSUE", ADR: "ADR", PRD: "PRD", spec: "SPEC", README: "DOC" };
+      ty.textContent = ACR[fm.type] || String(fm.type).toUpperCase().split(/\s+/)[0].slice(0, 6);
+      el.appendChild(ty);
+    }
+    return el;
+  }
+  function renderTree(q) {
+    const nav = $("tree");
+    nav.innerHTML = "";
+    if (q) {
+      const hits = FILES.filter((p) => docs.get(p)?.hay.includes(q));
+      for (const p of hits) nav.appendChild(itemEl(p));
+      if (!hits.length) nav.innerHTML = '<div class="grp">nada encontrado</div>';
+      mark(); return;
+    }
+    for (const [label, fs] of GROUPS) {
+      const g = document.createElement("div"); g.className = "grp"; g.textContent = label;
+      nav.appendChild(g);
+      for (const p of fs) nav.appendChild(itemEl(p));
+    }
+    mark();
+  }
+  function mark() {
+    document.querySelectorAll(".item").forEach((e) =>
+      e.classList.toggle("on", e.dataset.path === current));
+  }
+  $("search").addEventListener("input", (e) => renderTree(e.target.value.trim().toLowerCase()));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault(); $("search").focus();
+    }
+  });
+
+  /* ---------- document render ---------- */
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const day = (s) => String(s).slice(0, 10);
+
+  function metaHTML(p, fm) {
+    if (!fm || !fm.type) return "";
+    const row = document.createElement("div"); row.className = "row";
+    const chips = [];
+    chips.push(`<span class="badge">${esc(fm.type)}</span>`);
+    if (fm.status) chips.push(`<span class="badge status-${esc(fm.status)}">status: ${esc(fm.status)}</span>`);
+    chips.push(`<span class="badge tier ${trustTier(fm)}">${trustTier(fm)}</span>`);
+    for (const t of fm.tags || []) chips.push(`<span class="badge">#${esc(t)}</span>`);
+    row.innerHTML = chips.join("");
+    const desc = fm.description ? `<div class="desc">${esc(fm.description)}</div>` : "";
+    const gen = fm.generated
+      ? `<div class="kv">gerado por ${esc(fm.generated.by || "?")} · ${esc(day(fm.generated.at || ""))}</div>` : "";
+    const ver = Array.isArray(fm.verified) && fm.verified.length
+      ? `<div class="kv">verificado por ${fm.verified.map((v) => esc(v.by || "?")).join(", ")}</div>` : "";
+    let stale = "";
+    if (fm.stale_after && new Date(fm.stale_after) < new Date())
+      stale = `<div class="stale">⚠ vencido em ${esc(day(fm.stale_after))} — concept requer revisão.</div>`;
+    const box = $("meta"); box.innerHTML = desc + row.outerHTML + gen + ver + stale;
+    box.hidden = false;
+  }
+
+  function resolveHref(href, from) {
+    const u = new URL(href, new URL(from, location.href));
+    return decodeURIComponent(u.pathname.slice(ROOT.length));
+  }
+
+  async function render(p) {
+    current = p;
+    history.replaceState(null, "", "#/" + p);
+    $("crumb").textContent = p;
+    $("lraw").href = fileURL(p);
+    $("lgh").href = `${REPO}/blob/${BRANCH}/${encodeURI(p)}`;
+    $("meta").hidden = true; $("meta").innerHTML = "";
+    const body = $("body");
+    let d;
+    try { d = await load(p); }
+    catch {
+      body.innerHTML = `<h2>404</h2><p><code>${esc(p)}</code> não existe (ainda?) no bundle.
+        A spec OKF tolera links para documentos não criados.</p>
+        <p><a href="${REPO}/tree/${BRANCH}" target="_blank" rel="noopener">abrir repositório ↗</a></p>`;
+      mark(); return;
+    }
+    document.title = d.title + " · vaultless";
+    if (d.fm) metaHTML(p, d.fm);
+    body.innerHTML = marked.parse(d.body);
+    body.querySelectorAll("a[href]").forEach((a) => {
+      const h = a.getAttribute("href") || "";
+      if (/^https?:/i.test(h) || h.startsWith("mailto:")) { a.target = "_blank"; a.rel = "noopener"; return; }
+      if (h.startsWith("#")) return;                       // âncora interna fica no documento
+      if (h.endsWith(".md")) a.href = "#/" + resolveHref(h, p);
+      else a.href = new URL(h, new URL(p, location.href)); // .html do bundle: cru, nova aba
+      if (!h.endsWith(".md") && !h.startsWith("http")) a.target = "_blank";
+    });
+    mark();
+    $("side").classList.remove("open"); $("bd").classList.remove("on");
+    scrollTo(0, 0);
+  }
+
+  const go = (p) => { if (p !== current) render(p); };
+  window.addEventListener("hashchange", () => go(fromHash()));
+  const fromHash = () => decodeURIComponent(location.hash.replace(/^#\/?/, "")) || "index.md";
+
+  /* links internos clicados no corpo (delegação cobre re-render) */
+  $("body").addEventListener("click", (e) => {
+    const a = e.target.closest("a"); if (!a) return;
+    const h = a.getAttribute("href") || "";
+    if (h.startsWith("#/")) { e.preventDefault(); go(h.slice(2)); }
+    else if (h.startsWith("#")) {
+      e.preventDefault();
+      document.getElementById(decodeURIComponent(h.slice(1)))?.scrollIntoView({ behavior: "smooth" });
+    }
+  });
+
+  /* menu mobile */
+  $("menu").addEventListener("click", () => { $("side").classList.add("open"); $("bd").classList.add("on"); });
+  $("bd").addEventListener("click", () => { $("side").classList.remove("open"); $("bd").classList.remove("on"); });
+
+  /* ---------- boot ---------- */
+  let current = "";
+  render(fromHash());
+  Promise.allSettled(FILES.map((p) => load(p))).then((rs) => {
+    const ok = rs.filter((r) => r.status === "fulfilled").length;
+    renderTree("");
+    $("treefoot").textContent = `${ok}/${FILES.length} concepts · formato OKF v0.2`;
+  });
+});
+</script>
+</body>
+</html>

@@ -7,6 +7,12 @@ Este repositório guarda a documentação das propostas upstream da comunidade H
 * [Módulo tracks](track/index.md) — proposta upstream do agregador de trilhas 4noobs: spec v3, ADRs, schema, PRD e 11 issues tracer-bullet. A cascata de leitura começa lá.
 * [Protótipos](prototipos/index.md) — HTMLs exploratórios de UI (timeline de eventos; versão 2 do artefato tracks-docs, deprecada).
 
+## Web
+
+O bundle abre como site: `index.html` na raiz é o viewer. Ele carrega todos os concepts via fetch, mostra o frontmatter como metadados (badges de `type`, `status`, trust tier, tags) e mantém a navegação progressiva dos `index.md`, com busca e deep-link (`#/track/spec.md`). Sem build.
+
+Para publicar no GitHub Pages: Settings → Pages → *Deploy from a branch* → `master` + `/ (root)`. O `.nojekyll` garante que os `.md` sejam servidos crus — sem ele, o Jekyll converteria os documents e quebraria o fetch do viewer. Endereço: `https://joaovjo.github.io/vaultless/`.
+
 ## Conformidade do bundle
 
 ```bash
