@@ -73,8 +73,8 @@ Funcionalidade: Descobrir trilhas na plataforma
 
 ## Bloqueada por
 
-- #05 — ETL populando módulos e aulas (progresso precisa de conteúdo)
+- #05 — ETL populando módulos e aulas (listagem precisa de conteúdo)
 
 ---
 
-[← Anterior: 06](06-contribuidores-adocao-orfaos.md) · [índice das issues](index.md) · [Próxima: 08 →](08-panel-app-detalhe-leitor.md)
+[← Anterior: 06](06-contribuidores-adocao-orfaos.md) · [Índice das issues](index.md) · [Próxima: 08 →](08-panel-app-detalhe-leitor.md)

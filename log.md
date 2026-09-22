@@ -2,10 +2,11 @@
 
 ## 2026-09-21
 
-* **Reestruturação**: repositório reorganizado como Knowledge Bundle OKF — frontmatter adicionado a todos os concepts, `README.md` de `track/` e `track/issues/` convertidos em `index.md`, criado `index.md` na raiz e este `log.md`.
+* **Humanização**: textos do bundle revisados com a skill `humanizar` — períodos longos divididos, voz passiva e nominal reduzidas; correções pontuais (frase quebrada no reader da issue 08, resquício de "progresso" na issue 07, acentuação e concordância no PRD, `end-point`→`endpoint`, anchors "README"→"Índice", referência à spec v2 sem caminho fantasma). Fatos, números, tabelas, gherkin e código intocados.
+* **Reestruturação**: o repositório virou Knowledge Bundle OKF — frontmatter em todos os concepts, `README.md` de `track/` e `track/issues/` renomeados para `index.md`, `index.md` da raiz e este `log.md` criados.
 * **Move**: `timeline.html` → [prototipos/timeline-eventos.html](prototipos/timeline-eventos.html); `tracks-docs.html` da raiz (versão antiga, deprecada) → [prototipos/tracks-docs-v2.html](prototipos/tracks-docs-v2.html).
 * **Fix**: referências de navegação atualizadas para os `index.md`; menção à spec v1 (`../spec.md`, arquivo nunca versionado aqui) corrigida em [track/index.md](track/index.md).
-* **Create**: `scripts/validar-okf.ts` (validador do bundle, ignorando tooling vendada) e `.gitignore`.
+* **Create**: `scripts/validar-okf.ts` (valida o bundle sem tocar na tooling vendada) e `.gitignore`.
 
 ## 2026-09-16
 

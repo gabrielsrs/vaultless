@@ -1,6 +1,6 @@
 # Protótipos
 
-HTMLs descartáveis de exploração de UI, versionados fora dos pacotes de documentação para não serem confundidos com material de referência. Abra cada arquivo direto no navegador — não há build; fontes e ícones vêm de CDN.
+HTMLs descartáveis de exploração de UI, versionados fora dos pacotes de documentação para não virarem material de referência. Abra cada arquivo direto no navegador — não há build; fontes e ícones vêm de CDN.
 
 | Arquivo | Pergunta que respondeu | Estado |
 |---|---|---|

@@ -1,7 +1,7 @@
 ---
 type: Issue
 title: "02 — Evento ExternalIdentityConnected nos caminhos de conexão"
-description: "Emite ExternalIdentityConnected no identity para viabilizar adoção retroativa de contribuidores órfãos."
+description: "Emite ExternalIdentityConnected no identity para permitir a adoção retroativa de contribuidores órfãos."
 tags: [identity, issue, evento, compartilhado]
 status: proposed
 generated:
@@ -77,4 +77,4 @@ Nada — pode começar imediatamente (paralela ao scaffold do tracks).
 
 ---
 
-[← Anterior: 01](01-scaffold-modulo-tracks.md) · [índice das issues](index.md) · [Próxima: 03 →](03-provider-contract-e-registry.md)
+[← Anterior: 01](01-scaffold-modulo-tracks.md) · [Índice das issues](index.md) · [Próxima: 03 →](03-provider-contract-e-registry.md)

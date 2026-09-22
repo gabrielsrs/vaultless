@@ -67,4 +67,4 @@ Funcionalidade: Catálogo vivo por agendamento
 
 ---
 
-[← Anterior: 10](10-panel-app-acoes-github-ui.md) · [índice das issues](index.md)
+[← Anterior: 10](10-panel-app-acoes-github-ui.md) · [Índice das issues](index.md)

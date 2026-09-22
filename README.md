@@ -1,13 +1,13 @@
 ---
 type: README
 title: vaultless — fachada do repositório
-description: "Porta de entrada humana do repositório; o catálogo de navegação do bundle vive em index.md."
+description: "Fachada do repositório; a navegação do bundle começa em index.md."
 tags: [meta]
 status: stable
 ---
 
 # vaultless
 
-Documentação e protótipos das propostas upstream da comunidade He4rt Devs, organizados como Knowledge Bundle no formato OKF.
+Documentação das propostas upstream da comunidade He4rt Devs e protótipos de UI, organizada como Knowledge Bundle no formato OKF.
 
-→ Comece pelo [índice do bundle](index.md): contextos, cascata de leitura e validação de conformidade.
+→ Comece pelo [índice do bundle](index.md).

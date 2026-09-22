@@ -78,4 +78,4 @@ Funcionalidade: Interações GitHub dentro do aside
 
 ---
 
-[← Anterior: 09](09-github-interaction-endpoints.md) · [índice das issues](index.md) · [Próxima: 11 →](11-agendamento-descoberta-automatica.md)
+[← Anterior: 09](09-github-interaction-endpoints.md) · [Índice das issues](index.md) · [Próxima: 11 →](11-agendamento-descoberta-automatica.md)

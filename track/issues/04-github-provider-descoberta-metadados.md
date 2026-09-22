@@ -73,4 +73,4 @@ Funcionalidade: Catálogo de trilhas alimentado pelo GitHub
 
 ---
 
-[← Anterior: 03](03-provider-contract-e-registry.md) · [índice das issues](index.md) · [Próxima: 05 →](05-sync-tracks-etl.md)
+[← Anterior: 03](03-provider-contract-e-registry.md) · [Índice das issues](index.md) · [Próxima: 05 →](05-sync-tracks-etl.md)

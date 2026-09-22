@@ -97,4 +97,4 @@ Funcionalidade: Descoberta de fontes via contratos
 
 ---
 
-[← Anterior: 02](02-identity-evento-conexao.md) · [índice das issues](index.md) · [Próxima: 04 →](04-github-provider-descoberta-metadados.md)
+[← Anterior: 02](02-identity-evento-conexao.md) · [Índice das issues](index.md) · [Próxima: 04 →](04-github-provider-descoberta-metadados.md)

@@ -81,4 +81,4 @@ Nada — pode começar imediatamente (paralela ao ETL).
 
 ---
 
-[← Anterior: 08](08-panel-app-detalhe-leitor.md) · [índice das issues](index.md) · [Próxima: 10 →](10-panel-app-acoes-github-ui.md)
+[← Anterior: 08](08-panel-app-detalhe-leitor.md) · [Índice das issues](index.md) · [Próxima: 10 →](10-panel-app-acoes-github-ui.md)

@@ -10,16 +10,16 @@ generated:
 ---
 # ADR 0005 — Reescopo para agregador: o `tracks` deixa de ser LMS
 
-[← README do módulo](../index.md)
+[← Índice do módulo](../index.md)
 
 - **Status:** Proposto
 - **Data:** 2026-09-09
-- **Relaciona:** [0004](0004-decisoes-do-modulo-e-alinhamento-com-contents.md) (D1–D9); `integration-github` ADR-0001; `onboarding` ADR-0002 (`purpose`); spec v2 (`../spec.md`)
+- **Relaciona:** [0004](0004-decisoes-do-modulo-e-alinhamento-com-contents.md) (D1–D9); `integration-github` ADR-0001; `onboarding` ADR-0002 (`purpose`); spec v2 (não versionada neste repo)
 - **Procedência:** revisão de 2026-09-09 da proposta pós-upstream, com escopo reduzido
 
 ## Contexto
 
-A proposta v2 (ADR 0004, D1–D9) definia `tracks` como um contexto com comportamento de LMS: `user_track_state` (bookmark/rating), `lesson_feedback` (útil/desatualizada), `user_completed_lessons` (progresso) e uma hierarquia sincronizada para servir um leitor com marcação de conclusão. Após envio para review upstream, a decisão foi **reduzir o escopo para um agregador**: a plataforma indexa e apresenta o acervo 4noobs — leitura focado e apoio ao criador — sem rastrear progresso pessoal nem colher feedback.
+A proposta v2 (ADR 0004, D1–D9) definia `tracks` como um contexto com comportamento de LMS: `user_track_state` (bookmark/rating), `lesson_feedback` (útil/desatualizada), `user_completed_lessons` (progresso) e uma hierarquia sincronizada para servir um leitor com marcação de conclusão. Após envio para review upstream, a decisão foi **reduzir o escopo para um agregador**. A plataforma indexa e apresenta o acervo 4noobs — leitura focado e apoio ao criador — sem rastrear progresso pessoal nem colher feedback.
 
 Este documento consolida o reescopo como **emendas aos D1–D9**, mantendo o histórico de cada decisão e marcando onde o novo escopo os altera. Onde o agregador mantém, registra-se "mantido"; onde remove, registra-se a emenda.
 
@@ -57,12 +57,12 @@ A sincronização segue o **padrão do backfill** (job por repo, idempotente, re
 
 ### E-D5 — Autoria: reescrivada com **endpoint de contribuidores como fonte primária**
 
-A cadeia de extração de contribuidores é **reordenada e simplificada**: o endpoint **`GET /repos/{owner}/{repo}/contributors`** (all-time; atualmente `selectedMetric=additions` como recomendação validada) vira a **fonte primária**; as fontes de autoria `.all-contributorsrc` → `.github/config.json` → autores do README → avatares inline **permanecem como fallback por trás**, para não perder quem contribui fora de código (docs/review — o valor real num ecossistema de tutoriais markdown).
+A cadeia de extração de contribuidores é **reordenada e simplificada**: o endpoint **`GET /repos/{owner}/{repo}/contributors`** (all-time; atualmente `selectedMetric=additions` como recomendação validada) vira a **fonte primária**. As fontes de autoria `.all-contributorsrc` → `.github/config.json` → autores do README → avatares inline **permanecem como fallback por trás**, para não perder quem contribui fora de código (docs/review — o valor real num ecossistema de tutoriais markdown).
 
 - `is_owner` = owner do repo.
 - A seta de contribuidores continua: `github_username` sempre gravado (memória + chave de adoção); `user_id` nullable; adoção retroativa via `ExternalIdentityConnected` → `TrackMaintainersLinked` mantida.
 
-> Nota de revisão: a recomendação `selectedMetric=additions` sub-pondera contribuidores de não-código (exatamente quem o `.all-contributorsrc` credita). Decisão de produto a validar contra repos reais; se confirmado o viés, end-point passa a virar primário só para o ranking de código e o `.all-contributorsrc` volta a ser a autoridade de autoria. Sem mudança estrutural — é só coluna/captura.
+> Nota de revisão: a recomendação `selectedMetric=additions` sub-pondera contribuidores de não-código (exatamente quem o `.all-contributorsrc` credita). Decisão de produto a validar contra repos reais; se confirmado o viés, o endpoint passa a ser primário só para o ranking de código e o `.all-contributorsrc` volta a ser a autoridade de autoria. Sem mudança estrutural — é só coluna/captura.
 
 ### E-D6 — Interações GitHub: **removido o Grupo B**, mantido o Grupo A
 
