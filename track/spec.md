@@ -7,21 +7,23 @@ date: 2026-09-09
 author: GabrielFVDev
 supersedes: ../spec.md
 labels: ready-for-agent, type:feat, mod:tracks (a criar)
+description: "Spec v3 do agregador do acervo 4noobs: problema, solução, 22 user stories e decisões de implementação/teste."
+tags: [tracks, spec, agregador, upstream]
 ---
 
 # Spec: Módulo `tracks` — v3 (agregador)
 
-[← README do módulo](README.md)
+[← Índice do módulo](index.md)
 
 > **Escopo reduzido pós-review.** A v2 (LMS) foi enviada para review upstream; o retorno reduziu o escopo para um **agregador**: catálogo + leitura + valorização de criadores, sem rastreamento pessoal. Esta spec registra o escopo v3. Ver ADR [0005](adr/0005-reescopo-para-agregador.md) para as emendas a 0004.
 
 ## Problema
 
-A comunidade He4rt produz conteúdo educacional open-source em repositórios `4noobs` hospedados no GitHub (`{topic}4noobs`, mantidos por membros individuais). Hoje esse conteúdo é fragmentado: cada repositório tem sua própria estrutura, metadados e convenções, e não há uma experiência unificada de navegação, leitura ou valorização dos criadores na plataforma.
+A comunidade He4rt produz conteúdo educacional open-source em repositórios `4noobs` hospedados no GitHub (`{topic}4noobs`, mantidos por membros individuais). Hoje esse conteúdo é fragmentado: cada repositório tem estrutura, metadados e convenções próprias. A plataforma não oferece uma experiência unificada de navegação, leitura ou valorização dos criadores.
 
 Quem consome não consegue descobrir nem acompanhar trilhas; quem cria não recebe reconhecimento além do próprio GitHub. E quando o mantenedor finalmente conecta a conta dele na plataforma, nada do histórico é creditado a ele.
 
-Além disso, o acervo canônico de conteúdo externo da casa agora é o módulo `contents` — e qualquer novo domínio de conteúdo que ignore suas regras (direção de dependência, ciclo de órfãos, separação de recompensa) nasce divergente do padrão estabelecido.
+O acervo canônico de conteúdo externo da casa agora é o módulo `contents`. Qualquer novo domínio de conteúdo que ignore suas regras (direção de dependência, ciclo de órfãos, separação de recompensa) nasce divergente do padrão estabelecido.
 
 ## Solução
 
@@ -120,7 +122,7 @@ Registry singleton resolvido pelo ServiceProvider do tracks; `GithubTrackProvide
 
 ### Modelo de dados
 
-- **`tracks`**: `source_type` enum (`github`) + colunas de fonte planas — `repo_owner`, `repo_name` (NOT NULL), `repo_url` nullable, `default_branch` nullable (api-resolved), `language` nullable, `category` nullable (categoria no README central — resolvida no ETL, atualizada a cada sync), stars/forks/watchers (default 0). Sem `source_data` JSONB: o payload de fonte foi promovido a colunas consultáveis (emenda E-D11); e não há delegated types como o contents, porque o agregado é uniforme por nível da hierarquia. (ADR 0004 D2, emendado por E-D11; `native` reservado em docs — emenda E-D10).
+- **`tracks`**: `source_type` enum (`github`) + colunas de fonte planas — `repo_owner`, `repo_name` (NOT NULL), `repo_url` nullable, `default_branch` nullable (api-resolved), `language` nullable, `category` nullable (categoria no README central, resolvida no ETL e atualizada a cada sync), stars/forks/watchers (default 0). Sem `source_data` JSONB: o payload de fonte foi promovido a colunas consultáveis (emenda E-D11). Não há delegated types como no contents, porque o agregado é uniforme por nível da hierarquia (ADR 0004 D2, emendado por E-D11; `native` reservado em docs — emenda E-D10).
 - **`modules`** e **`lessons`**: identidade determinística **UUIDv5** (namespace da trilha + source path). Rename → soft-delete + `replaced_by_uuid`; interações e progresso vinculam ao UUID imutável, nunca ao path. (D1)
 - **`lessons.processed_content`** (HTML pós-ETL). **Sem `estimated_minutes` nem `word_count`** (emenda E-D3 — duração removida do agregador). **Sem coluna de XP.**
 - **`track_contributors`**: autoria como entidade própria — `github_username` SEMPRE gravado (memória e chave de adoção), `user_id` nullable (órfão é estado normal), `is_owner` (exatamente um por trilha), `contribution_role` enum. **Fonte primária de autoria: endpoint de contribuidores (`GET /repos/{owner}/{repo}/contributors`, all-time, `selectedMetric=additions`) — a validar contra repos reais; as fontes de autoria (.all-contributorsrc → config.json → autores do README → avatares) permanecem como fallback por trás.** (E-D5)

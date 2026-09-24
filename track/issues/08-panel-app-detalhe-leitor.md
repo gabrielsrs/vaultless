@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "08 — Detalhe da trilha (TrackAside) + leitor de aulas focado"
+description: "Constrói a página de detalhe com aside da trilha e o leitor focado de aulas em markdown."
+tags: [panel-app, issue, ui, leitor]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 08 — feat(panel-app): detalhe da trilha (`TrackAside`) + leitor de aulas focado
 
 **Labels (GitHub):** `type:feat` · `mod:panel-app` · `mod:tracks` · `difficulty:hard`
@@ -5,7 +15,7 @@
 
 ## Contexto
 
-O detalhe da trilha foi desenhado como um **aside sobreposto** (não página própria): o usuário navega a listagem e abre a trilha sem perder o contexto do grid. A leitura acontece numa segunda superfície, o **"Focus Reader"** — variante aprovada entre quatro protótipos —, que serve o HTML já processado pelo ETL com foco total no texto. Ambos foram prototipados no fork com dados em memória; este ticket torna-os reais.
+O detalhe da trilha foi desenhado como um **aside sobreposto** (não página própria): o usuário navega a listagem e abre a trilha sem perder o contexto do grid. A leitura acontece numa segunda superfície: o **"Focus Reader"**, variante aprovada entre quatro protótipos, que serve o HTML já processado pelo ETL com foco total no texto. Ambos foram prototipados no fork com dados em memória; este ticket torna-os reais.
 
 Visual de referência completo em [`../artefatos/tracks-docs.html?poc=1`](../artefatos/tracks-docs.html?poc=1) (POC em tela cheia), seções "Detalhe · TrackAside" e "Leitor · variante Focus Reader". Resumo (emendado pelo reescopo agregador — ADR 0005, E-D8):
 
@@ -22,7 +32,7 @@ Visual de referência completo em [`../artefatos/tracks-docs.html?poc=1`](../art
   - reader pode abrir outro aside direto (`tracks-aside.open`)
   - fechar o aside devolve estado à listagem (`tracks-page.clear`)
 - Leitor servindo `lessons.processed_content` com os blocos tipados estilizados
-- Navegação prev/next pela coluna de posição persistida; apenas existindo casos haja prev/next.
+- Navegação prev/next pela coluna de posição persistida; os botões só aparecem quando há aula anterior ou próxima.
 - Estados vazios: trilha sem conteúdo sincronizado ainda, aula removida entre syncs (ponteiro `replaced_by_uuid` redireciona)
 
 ## Critérios de aceite
@@ -74,4 +84,4 @@ Funcionalidade: Ler uma trilha no leitor focado
 
 ---
 
-[← Anterior: 07](07-panel-app-listagem-trilhas.md) · [issues/README](README.md) · [Próxima: 09 →](09-github-interaction-endpoints.md)
+[← Anterior: 07](07-panel-app-listagem-trilhas.md) · [Índice das issues](index.md) · [Próxima: 09 →](09-github-interaction-endpoints.md)

@@ -1,0 +1,293 @@
+<!doctype html>
+<!--
+  viewer do bundle OKF — vaultless
+  Carrega todos os concepts do bundle via fetch, renderiza frontmatter como
+  metadados estruturados (type, status, trust tier, tags) + corpo markdown.
+  Estilo: Tailwind CSS v4 (Play CDN) — tema (paleta GitHub dark aprovada na
+  variante C, ADR 0004 D8 / Inter / JetBrains Mono / animações) registrado
+  inline em @theme; sem CSS customizado à mão. Animações: animate-pulse
+  (skeleton), animate-fadein (troca de doc), transition-transform (drawer).
+  Deep-links: #/<caminho-do-arquivo.md>. Exige servir os .md crus (.nojekyll).
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vaultless — catálogo OKF</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232f81f7' d='M4 3h13a3 3 0 0 1 3 3v14H7a3 3 0 0 1-3-3V3zm2 0v14a1 1 0 0 0 1 1h11V6a1 1 0 0 0-1-1H6z'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style type="text/tailwindcss">
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-bg: #0d1117;
+  --color-surface: #161b22;
+  --color-surface2: #21262d;
+  --color-line: #30363d;
+  --color-ink: #e6edf3;
+  --color-mut: #8d96a0;
+  --color-faint: #6e7681;
+  --color-accent: #2f81f7;
+  --color-ok: #3fb950;
+  --color-warn: #d29922;
+  --color-bad: #f85149;
+  --animate-fadein: fadein .18s ease-out both;
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+</style>
+<script defer src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+</head>
+<body class="bg-bg font-sans text-ink antialiased">
+<div class="flex min-h-screen">
+
+  <aside id="side" class="fixed inset-y-0 left-0 z-50 flex h-screen w-[300px] -translate-x-full flex-col border-r border-line bg-surface transition-transform duration-200 motion-reduce:transition-none lg:static lg:translate-x-0">
+    <div class="border-b border-line px-4 pb-3 pt-4">
+      <b class="text-[15px] font-semibold tracking-wide">vaultless</b>
+      <span class="mt-0.5 block font-mono text-[11px] text-mut">catálogo de conhecimento · OKF</span>
+    </div>
+    <input id="search" placeholder="buscar no bundle  ( / )" autocomplete="off"
+      class="mx-4 my-3 rounded-md border border-line bg-bg px-2.5 py-1.5 text-[13px] outline-none placeholder:text-faint focus:border-accent">
+    <nav id="tree" class="flex-1 overflow-y-auto px-2 pb-3"></nav>
+    <div id="treefoot" class="border-t border-line px-4 py-2.5 font-mono text-[11px] text-faint"></div>
+  </aside>
+  <div id="bd" class="fixed inset-0 z-40 hidden bg-black/60"></div>
+
+  <main class="flex min-w-0 flex-1 flex-col">
+    <header class="sticky top-0 z-30 flex items-center gap-3 border-b border-line bg-bg/90 px-6 py-2.5 font-mono text-xs text-mut backdrop-blur">
+      <button id="menu" aria-label="menu" class="rounded-md border border-line px-2.5 py-1 text-base leading-none text-ink lg:hidden">≡</button>
+      <span id="crumb" class="truncate"></span>
+      <span class="flex-1"></span>
+      <a id="lraw" target="_blank" rel="noopener" class="transition-colors hover:text-ink">raw</a>
+      <a id="lgh" target="_blank" rel="noopener" class="transition-colors hover:text-ink">GitHub ↗</a>
+    </header>
+    <article class="w-full max-w-[880px] px-6 pb-20 pt-7 max-lg:px-4">
+      <section id="meta" class="mb-7 hidden rounded-lg border border-line bg-surface p-4"></section>
+      <div id="body" class="animate-fadein motion-reduce:animate-none max-w-none text-[15px] leading-[1.65]
+        [&_h1]:mt-7 [&_h1]:mb-4 [&_h1]:text-[1.55em] [&_h1]:font-bold [&_h1]:leading-tight [&_h1]:border-b [&_h1]:border-line [&_h1]:pb-2
+        [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:text-[1.25em] [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:border-b [&_h2]:border-line [&_h2]:pb-1.5
+        [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:text-[1.05em] [&_h3]:font-semibold
+        [&_p]:my-3 [&_ul]:my-3 [&_ol]:my-3 [&_li]:my-1 [&_ul]:list-disc [&_ol]:list-decimal [&_ul]:pl-6 [&_ol]:pl-6
+        [&_hr]:my-7 [&_hr]:border-line
+        [&_a]:text-accent [&_a]:no-underline [&_a:hover]:underline
+        [&_strong]:text-ink
+        [&_:not(pre)>code]:rounded [&_:not(pre)>code]:border [&_:not(pre)>code]:border-line [&_:not(pre)>code]:bg-surface2 [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-[0.82em]
+        [&_pre]:my-3 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-line [&_pre]:bg-surface [&_pre]:px-3.5 [&_pre]:py-3 [&_pre]:text-[12.5px] [&_pre]:leading-[1.6] [&_pre_code]:font-mono [&_pre_code]:bg-transparent [&_pre_code]:border-0 [&_pre_code]:p-0 [&_pre_code]:text-[1em]
+        [&_table]:my-4 [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:border-collapse
+        [&_th]:border [&_th]:border-line [&_th]:bg-surface [&_th]:px-3 [&_th]:py-1.5 [&_th]:text-left [&_th]:font-semibold
+        [&_td]:border [&_td]:border-line [&_td]:px-3 [&_td]:py-1.5 [&_td]:text-[13.5px]
+        [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:border-line [&_blockquote]:pl-3.5 [&_blockquote]:text-mut
+        [&_img]:max-w-full
+        [&_input[type=checkbox]]:accent-accent"></div>
+    </article>
+  </main>
+</div>
+<noscript><p class="p-6 text-mut">Este viewer precisa de JavaScript: ele carrega o bundle via fetch. Os <code>.md</code> também abrem crus direto no repositório.</p></noscript>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const REPO = "https://github.com/joaovjo/vaultless", BRANCH = "master";
+  const ROOT = location.pathname.replace(/[^/]*$/, "");
+  const GROUPS = [
+    ["Raiz", ["index.md", "log.md", "README.md"]],
+    ["Módulo tracks", ["track/index.md", "track/parent-issue.md", "track/spec.md", "track/schema.md"]],
+    ["ADRs", ["track/adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md",
+              "track/adr/0005-reescopo-para-agregador.md"]],
+    ["Issues", ["track/issues/index.md",
+      "track/issues/01-scaffold-modulo-tracks.md",
+      "track/issues/02-identity-evento-conexao.md",
+      "track/issues/03-provider-contract-e-registry.md",
+      "track/issues/04-github-provider-descoberta-metadados.md",
+      "track/issues/05-sync-tracks-etl.md",
+      "track/issues/06-contribuidores-adocao-orfaos.md",
+      "track/issues/07-panel-app-listagem-trilhas.md",
+      "track/issues/08-panel-app-detalhe-leitor.md",
+      "track/issues/09-github-interaction-endpoints.md",
+      "track/issues/10-panel-app-acoes-github-ui.md",
+      "track/issues/11-agendamento-descoberta-automatica.md"]],
+    ["Protótipos", ["prototipos/index.md"]],
+  ];
+  const FILES = GROUPS.flatMap(([, fs]) => fs);
+  const docs = new Map(); // path -> {fm, body, title, hay}
+  let current = "";
+
+  marked.setOptions({ gfm: true });
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const day = (s) => String(s).slice(0, 10);
+  const fileURL = (p) => new URL(p.replace(/^\/+/, ""), location.href);
+
+  const B = "rounded-full border bg-bg px-2.5 py-0.5 font-mono text-[11px] font-semibold"; // unslop-ignore: pill e o formato canonico de label no GitHub dark
+  const ST = {
+    proposed: "text-warn border-warn/50", draft: "text-warn border-warn/50",
+    stable: "text-ok border-ok/50", deprecated: "text-bad border-bad/50",
+    "review-needed": "text-bad border-bad/50",
+  };
+  const TIER = { "human-reviewed": "text-ok border-ok/50", "machine-confirmed": "text-accent border-accent/50" };
+  const ACR = { "Technical Reference": "REF", Issue: "ISSUE", ADR: "ADR", PRD: "PRD", spec: "SPEC", README: "DOC" };
+  const SKELETON = `<div class="space-y-2 p-2">` + ["w-1/3", "w-2/3", "w-1/2", "w-3/4", "w-1/2", "w-2/3", "w-1/3", "w-3/5", "w-1/2", "w-2/3"]
+    .map((w) => `<div class="h-3 animate-pulse rounded ${w} bg-surface2"></div>`).join("") + `</div>`;
+
+  function splitFM(text) {
+    const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    if (!m) return { fm: null, body: text };
+    let fm = null;
+    try { fm = jsyaml.load(m[1]) || {}; } catch { fm = { type: "(yaml inválido)" }; }
+    return { fm, body: text.slice(m[0].length) };
+  }
+
+  function trustTier(fm) {
+    const v = fm && Array.isArray(fm.verified) ? fm.verified : [];
+    if (v.some((e) => e && String(e.by || "").startsWith("human:"))) return "human-reviewed";
+    if (v.length) return "machine-confirmed";
+    return "unverified";
+  }
+
+  async function load(p) {
+    if (docs.has(p)) return docs.get(p);
+    const r = await fetch(fileURL(p));
+    if (!r.ok) throw new Error(r.status);
+    const { fm, body } = splitFM(await r.text());
+    const d = {
+      fm, body,
+      title: (fm && fm.title) || body.match(/^#\s+(.+)$/m)?.[1]?.replace(/[`*]/g, "") || p,
+      hay: [p, fm?.title, fm?.description, (fm?.tags || []).join(" ")].join(" ").toLowerCase(),
+    };
+    docs.set(p, d);
+    return d;
+  }
+
+  /* ---------- sidebar ---------- */
+  const itemHTML = (p) => {
+    const d = docs.get(p), fm = d?.fm;
+    const ty = fm?.type && p !== "README.md"
+      ? `<span class="shrink-0 font-mono text-[10px] font-semibold text-faint">${esc(ACR[fm.type] || String(fm.type).toUpperCase().split(/\s+/)[0].slice(0, 6))}</span>`
+      : "";
+    return `<a class="item flex items-baseline gap-2 rounded-md border-l-2 border-transparent px-2 py-1 text-[13.5px] text-accent transition-colors hover:bg-surface2" href="#/${encodeURI(p)}" data-path="${p}"><span class="min-w-0 flex-1 truncate">${esc(d ? d.title : p)}</span>${ty}</a>`;
+  };
+  const groupHTML = (label) => `<div class="pb-1 pl-2 pt-3.5 font-mono text-[11px] font-semibold uppercase tracking-[.06em] text-faint">${esc(label)}</div>`;
+  function renderTree(q) {
+    const nav = $("tree");
+    if (q) {
+      const hits = FILES.filter((p) => docs.get(p)?.hay.includes(q));
+      nav.innerHTML = hits.length ? hits.map(itemHTML).join("") : groupHTML("nada encontrado");
+    } else {
+      nav.innerHTML = GROUPS.map(([label, fs]) => groupHTML(label) + fs.map(itemHTML).join("")).join("");
+    }
+    mark();
+  }
+  function mark() {
+    document.querySelectorAll(".item").forEach((e) => {
+      const on = e.dataset.path === current;
+      e.classList.toggle("bg-surface2", on);
+      e.classList.toggle("border-accent", on);
+    });
+  }
+  $("search").addEventListener("input", (e) => renderTree(e.target.value.trim().toLowerCase()));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault(); $("search").focus();
+    }
+  });
+
+  /* ---------- meta card ---------- */
+  function showMeta(fm) {
+    const chips = [`<span class="${B} border-line text-mut">${esc(fm.type)}</span>`];
+    if (fm.status) chips.push(`<span class="${B} ${ST[fm.status] || "text-mut border-line"}">status: ${esc(fm.status)}</span>`);
+    const tt = trustTier(fm);
+    chips.push(`<span class="${B} ${TIER[tt] || "text-faint border-line"}">${tt}</span>`);
+    for (const t of fm.tags || []) chips.push(`<span class="${B} border-transparent bg-surface2 text-faint">#${esc(t)}</span>`);
+    const gen = fm.generated
+      ? `<div class="mt-1.5 font-mono text-[11px] text-faint">gerado por ${esc(fm.generated.by || "?")} · ${esc(day(fm.generated.at || ""))}</div>` : "";
+    const ver = Array.isArray(fm.verified) && fm.verified.length
+      ? `<div class="mt-1 font-mono text-[11px] text-faint">verificado por ${fm.verified.map((v) => esc(v.by || "?")).join(", ")}</div>` : "";
+    const stale = fm.stale_after && new Date(fm.stale_after) < new Date()
+      ? `<div class="mt-2 text-[13px] text-warn">⚠ vencido em ${esc(day(fm.stale_after))} — concept requer revisão.</div>` : "";
+    const box = $("meta");
+    box.innerHTML =
+      (fm.description ? `<p class="mb-2.5 text-sm text-mut">${esc(fm.description)}</p>` : "") +
+      `<div class="flex flex-wrap items-center gap-2">${chips.join("")}</div>` + gen + ver + stale;
+    box.classList.remove("hidden");
+  }
+
+  /* ---------- document render ---------- */
+  function resolveHref(href, from) {
+    const u = new URL(href, new URL(from, location.href));
+    return decodeURIComponent(u.pathname.slice(ROOT.length));
+  }
+  function replayFade(el, anim) {
+    el.classList.remove(anim);
+    void el.offsetWidth;
+    el.classList.add(anim);
+  }
+
+  async function render(p) {
+    current = p;
+    history.replaceState(null, "", "#/" + p);
+    $("crumb").textContent = p;
+    $("lraw").href = fileURL(p);
+    $("lgh").href = `${REPO}/blob/${BRANCH}/${encodeURI(p)}`;
+    $("meta").classList.add("hidden"); $("meta").innerHTML = "";
+    const body = $("body");
+    if (!docs.has(p)) body.innerHTML = SKELETON;
+    let d;
+    try { d = await load(p); }
+    catch {
+      body.innerHTML = `<h2>404</h2><p><code>${esc(p)}</code> não existe (ainda?) no bundle.
+        A spec OKF tolera links para documentos não criados.</p>
+        <p><a href="${REPO}/tree/${BRANCH}">abrir repositório ↗</a></p>`;
+      replayFade(body, "animate-fadein");
+      mark(); return;
+    }
+    document.title = d.title + " · vaultless";
+    if (d.fm) showMeta(d.fm);
+    body.innerHTML = marked.parse(d.body);
+    body.querySelectorAll("a[href]").forEach((a) => {
+      const h = a.getAttribute("href") || "";
+      if (/^https?:/i.test(h) || h.startsWith("mailto:")) { a.target = "_blank"; a.rel = "noopener"; return; }
+      if (h.startsWith("#")) return;                       // âncora interna fica no documento
+      if (h.endsWith(".md")) a.href = "#/" + resolveHref(h, p);
+      else a.href = new URL(h, new URL(p, location.href)); // .html do bundle: cru, nova aba
+      if (!h.endsWith(".md") && !h.startsWith("http")) a.target = "_blank";
+    });
+    replayFade(body, "animate-fadein");
+    mark();
+    closeDrawer();
+    scrollTo(0, 0);
+  }
+
+  const fromHash = () => decodeURIComponent(location.hash.replace(/^#\/?/, "")) || "index.md";
+  const go = (p) => { if (p !== current) render(p); };
+  window.addEventListener("hashchange", () => go(fromHash()));
+
+  /* âncoras internas no corpo: rolagem suave, sem quebrar o router por hash */
+  $("body").addEventListener("click", (e) => {
+    const a = e.target.closest("a[href^='#']");
+    if (a && !a.getAttribute("href").startsWith("#/")) {
+      e.preventDefault();
+      document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1)))?.scrollIntoView({ behavior: "smooth" });
+    }
+  });
+
+  /* menu mobile */
+  const closeDrawer = () => { $("side").classList.add("-translate-x-full"); $("side").classList.remove("translate-x-0"); $("bd").classList.add("hidden"); };
+  $("menu").addEventListener("click", () => { $("side").classList.remove("-translate-x-full"); $("side").classList.add("translate-x-0"); $("bd").classList.remove("hidden"); });
+  $("bd").addEventListener("click", closeDrawer);
+
+  /* ---------- boot ---------- */
+  $("tree").innerHTML = SKELETON;
+  render(fromHash());
+  Promise.allSettled(FILES.map((p) => load(p))).then((rs) => {
+    const ok = rs.filter((r) => r.status === "fulfilled").length;
+    renderTree("");
+    $("treefoot").textContent = `${ok}/${FILES.length} concepts · formato OKF v0.2`;
+  });
+});
+</script>
+</body>
+</html>

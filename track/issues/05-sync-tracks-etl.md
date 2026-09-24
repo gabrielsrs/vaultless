@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "05 — SyncTracks: ETL de conteúdo"
+description: "ETL que transforma a working copy do repo em trilhas, módulos e aulas normalizadas no banco."
+tags: [tracks, issue, etl, sync]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 05 — feat(tracks): `SyncTracks` — ETL de conteúdo (working copy → módulos e aulas normalizadas)
 
 **Labels (GitHub):** `type:feat` · `mod:tracks` · `difficulty:hard`
@@ -92,4 +102,4 @@ Funcionalidade: Sincronização de conteúdo das trilhas
 
 ---
 
-[← Anterior: 04](04-github-provider-descoberta-metadados.md) · [issues/README](README.md) · [Próxima: 06 →](06-contribuidores-adocao-orfaos.md)
+[← Anterior: 04](04-github-provider-descoberta-metadados.md) · [Índice das issues](index.md) · [Próxima: 06 →](06-contribuidores-adocao-orfaos.md)

@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "11 — Agendamento do sync + descoberta automática de novas trilhas"
+description: "Agenda o tracks:sync com descoberta integrada: trilha nova é proposta pendente e passa por curadoria."
+tags: [tracks, issue, agendamento, descoberta]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 11 — feat(tracks): agendamento do sync + descoberta automática de novas trilhas
 
 **Labels (GitHub):** `type:feat` · `mod:tracks` · `difficulty:small`
@@ -57,4 +67,4 @@ Funcionalidade: Catálogo vivo por agendamento
 
 ---
 
-[← Anterior: 10](10-panel-app-acoes-github-ui.md) · [issues/README](README.md)
+[← Anterior: 10](10-panel-app-acoes-github-ui.md) · [Índice das issues](index.md)

@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "03 — Contratos de fonte (TrackSourceProvider) + registry"
+description: "Define os contratos de fonte de trilhas no domínio tracks e o registry onde providers de transporte se inscrevem."
+tags: [tracks, issue, contratos, provider]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 03 — feat(tracks): contratos de fonte (`TrackSourceProvider`) + registry
 
 **Labels (GitHub):** `type:feat` · `mod:tracks` · `difficulty:medium`
@@ -87,4 +97,4 @@ Funcionalidade: Descoberta de fontes via contratos
 
 ---
 
-[← Anterior: 02](02-identity-evento-conexao.md) · [issues/README](README.md) · [Próxima: 04 →](04-github-provider-descoberta-metadados.md)
+[← Anterior: 02](02-identity-evento-conexao.md) · [Índice das issues](index.md) · [Próxima: 04 →](04-github-provider-descoberta-metadados.md)

@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "10 — Ações GitHub na UI do aside com matriz de estados"
+description: "Expõe as ações de star/watch/follow na UI do aside com matriz de estados de autenticação e resultado."
+tags: [panel-app, issue, ui, github]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 10 — feat(panel-app): ações GitHub na UI do aside com matriz de estados
 
 **Labels (GitHub):** `type:feat` · `mod:panel-app` · `mod:integration-github` · `difficulty:medium`
@@ -68,4 +78,4 @@ Funcionalidade: Interações GitHub dentro do aside
 
 ---
 
-[← Anterior: 09](09-github-interaction-endpoints.md) · [issues/README](README.md) · [Próxima: 11 →](11-agendamento-descoberta-automatica.md)
+[← Anterior: 09](09-github-interaction-endpoints.md) · [Índice das issues](index.md) · [Próxima: 11 →](11-agendamento-descoberta-automatica.md)

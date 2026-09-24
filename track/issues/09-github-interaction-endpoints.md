@@ -1,3 +1,13 @@
+---
+type: Issue
+title: "09 — Requests de interação (star, watch, follow) com escopo elevado"
+description: "Adiciona à integration-github os endpoints de escrita para ações de apoio ao criador, com escopo OAuth elevado."
+tags: [integration-github, issue, endpoints, interação]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 # 09 — feat(integration-github): requests de interação (star, watch, follow) com escopo elevado
 
 **Labels (GitHub):** `type:feat` · `mod:integration-github` · `difficulty:medium`
@@ -71,4 +81,4 @@ Nada — pode começar imediatamente (paralela ao ETL).
 
 ---
 
-[← Anterior: 08](08-panel-app-detalhe-leitor.md) · [issues/README](README.md) · [Próxima: 10 →](10-panel-app-acoes-github-ui.md)
+[← Anterior: 08](08-panel-app-detalhe-leitor.md) · [Índice das issues](index.md) · [Próxima: 10 →](10-panel-app-acoes-github-ui.md)

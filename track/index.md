@@ -1,6 +1,6 @@
 # Proposta upstream — Módulo `tracks` (v3, agregador)
 
-Pacote de documentos para propor o módulo de trilhas ao `he4rt/heartdevs.com`, alinhado às regras arquiteturais consolidadas pelo módulo `contents` no branch 4.x. **Escopo v3 (agregador):** após review upstream, o tracks deixa de ser LMS — sem estado pessoal do aluno (E-D6/E-D8 no ADR 0005). Substitui a spec v1 (`../spec.md`), que permanece aqui como histórico.
+Pacote de documentos para propor o módulo de trilhas ao `he4rt/heartdevs.com`, alinhado às regras arquiteturais consolidadas pelo módulo `contents` no branch 4.x. **Escopo v3 (agregador):** após review upstream, o tracks deixa de ser LMS — sem estado pessoal do aluno (E-D6/E-D8 no ADR 0005). Substitui a spec v1, que não é versionada neste repositório — o histórico do reescopo está registrado no [ADR 0005](adr/0005-reescopo-para-agregador.md).
 
 ## Conteúdo
 
@@ -11,7 +11,7 @@ Pacote de documentos para propor o módulo de trilhas ao `he4rt/heartdevs.com`, 
 | [parent-issue.md](parent-issue.md) | Issue-mãe para abrir no GitHub (`type:prd`): problem statement, 16 user stories, modelo de dados completo, subtarefas com placeholder para links dos 11 tickets |
 | [adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md](adr/0004-decisoes-do-modulo-e-alinhamento-com-contents.md) | ADR consolidado: D1–D9 com alternativas recusadas de cada decisão + alinhamento ao contents |
 | [adr/0005-reescopo-para-agregador.md](adr/0005-reescopo-para-agregador.md) | **ADR do reescopo (emendas E-D1–E-D11 + E-E)**: o que sai do LMS, curation por allowlist (`purpose=Tracks`), endpoint de contribuidores primário, flatten do JSONB (E-D11), Model 2 transporte × domínio |
-| [issues/README.md](issues/README.md) | 11 tickets tracer-bullet com dependências, no formato das issues `type:feat` da casa (o estado pessoal — 09 da v2 — foi removido no reescopo) |
+| [índice das issues](issues/index.md) | 11 tickets tracer-bullet com dependências, no formato das issues `type:feat` da casa (o estado pessoal — 09 da v2 — foi removido no reescopo) |
 | [artefatos/tracks-docs.html](artefatos/tracks-docs.html) | PRD + system design navegável com os mockups aprovados — anexar às issues de UI (#07, #08, #10); as issues referenciam este arquivo e não dependem de nada fora da pasta |
 
 ## Sobre as issues desta pasta

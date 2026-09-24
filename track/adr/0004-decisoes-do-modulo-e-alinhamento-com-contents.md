@@ -1,6 +1,16 @@
+---
+type: ADR
+title: "ADR 0004 — Decisões do módulo tracks e alinhamento com o contents"
+description: "Registro consolidado das decisões D1–D9 do desenho do tracks, com alternativas recusadas e alinhamento às regras do módulo contents."
+tags: [tracks, adr, arquitetura, contents]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-08-24T00:00:00Z
+---
 # ADR 0004 — Registro consolidado das decisões do módulo `tracks` e alinhamento com o `contents`
 
-[← README do módulo](../README.md)
+[← Índice do módulo](../index.md)
 
 - **Status:** Proposto
 - **Data:** 2026-08-24
@@ -9,15 +19,15 @@
 
 ## Contexto
 
-O desenho do `tracks` nasceu de um ciclo estruturado de decisão: pesquisa empírica sobre 9 repositórios `{topic}4noobs` (css, php, cpp, rust, python, typescript, swift, git, qa — owners individuais), auditoria do que a `integration-github` já oferece (10 requests, todos GET; nenhuma interação de escrita), três rodadas de decisão (modelo de dados, ETL, interações) e um protótipo aprovado entre seis variantes.
+O desenho do `tracks` nasceu de um ciclo estruturado de decisão. A pesquisa empírica cobriu 9 repositórios `{topic}4noobs` (css, php, cpp, rust, python, typescript, swift, git, qa — owners individuais). A auditoria mapeou o que a `integration-github` já oferece: 10 requests, todos GET; nenhuma interação de escrita. O ciclo seguiu com três rodadas de decisão (modelo de dados, ETL, interações) e um protótipo aprovado entre seis variantes.
 
-Esse desenho antecedeu a consolidação do módulo `contents` no upstream, que fixou as regras da casa para conteúdo de fontes externas. Este documento consolida **todas** as decisões num lugar só — para proposta upstream e para onboard de contribuidores — marcando onde o alinhamento ao `contents` alterou o desenho original e onde o tracks deliberadamente difere. Os ADRs 0001–0003 permanecem válidos como registros focados; este os referencia e registra suas emendas.
+Esse desenho antecedeu a consolidação do módulo `contents` no upstream, que fixou as regras da casa para conteúdo de fontes externas. Este documento consolida **todas** as decisões num lugar só, para a proposta upstream e para o onboard de contribuidores. Ele marca onde o alinhamento ao `contents` alterou o desenho original e onde o tracks deliberadamente difere. Os ADRs 0001–0003 permanecem válidos como registros focados; este os referencia e registra suas emendas.
 
 ---
 
 ## D1 — Identidade do conteúdo: UUIDv5 determinístico *(ADR 0001)*
 
-**Decisão:** trilha, módulo e aula recebem UUID imutável na primeira sincronização, gerado deterministicamente (RFC 4122 v5) a partir do namespace UUID da trilha + source path. Progresso, feedback e interações vinculam ao UUID — nunca ao caminho nem ao hash. Rename de path → registro antigo soft-deleted com ponteiro `replaced_by_uuid` (refinamento da ADR 0003).
+**Decisão:** trilha, módulo e aula recebem UUID imutável na primeira sincronização, gerado deterministicamente (RFC 4122 v5) a partir do namespace UUID da trilha + source path. Progresso, feedback e interações vinculam ao UUID — nunca ao caminho nem ao hash. Rename de path → registro antigo soft-deleted com ponteiro `replaced_by_uuid` (refinamento do ADR 0003).
 
 **Recusado:** identidade por path (rename apaga histórico do usuário — renomear é evento normal na vida de um repo 4noobs); por hash de conteúdo (qualquer edição de texto quebraria referências).
 
@@ -56,7 +66,14 @@ Esse desenho antecedeu a consolidação do módulo `contents` no upstream, que f
 - **Grupo A — `TrackCapabilities`:** ações ligadas À FONTE — star, watch, follow (escritas reais via API) + share e sponsor (links externos). Extensível por tipo de fonte; trilha que migre de `github` para nativa perde essas features de UI graciosamente.
 - **Grupo B — `UserTrackState`:** estado pessoal LOCAL — bookmarked, feedback por aula, progresso, rating. Nunca escreve no GitHub; nunca exige conta vinculada.
 
-Transporte: 9 endpoints REST novos (PUT/DELETE/GET de `/user/starred/{owner}/{repo}`, `/repos/{owner}/{repo}/subscription`, `/user/following/{username}`), token per-request recuperado de `ExternalIdentity` (padrão `GetCurrentUser`). Scopes OAuth atuais insuficientes — acrescentar `public_repo` e `user:follow`. Matriz de estados desabilitados: conta não vinculada → botão off + tooltip "Conecte sua conta GitHub para interagir"; repo deletado/transferido → off + tooltip informativa; token expirado → pré-validação via GET check. Posicionamento: Star/Watch/Sponsor/Share compactos no header do detalhe; Follow por contribuidor após o conteúdo, verificando estado real antes de marcar ativo.
+Transporte: 9 endpoints REST novos (PUT/DELETE/GET de `/user/starred/{owner}/{repo}`, `/repos/{owner}/{repo}/subscription`, `/user/following/{username}`), token per-request recuperado de `ExternalIdentity` (padrão `GetCurrentUser`). Scopes OAuth atuais insuficientes — acrescentar `public_repo` e `user:follow`.
+
+Matriz de estados desabilitados:
+- Conta não vinculada → botão off + tooltip "Conecte sua conta GitHub para interagir".
+- Repo deletado/transferido → off + tooltip informativa.
+- Token expirado → pré-validação via GET check.
+
+Posicionamento: Star/Watch/Sponsor/Share compactos no header do detalhe; Follow por contribuidor após o conteúdo, verificando estado real antes de marcar ativo.
 
 **Recusado:** Fork via plataforma (sem benefício direto ao criador); área de comentários/issues via plataforma (polui repos de terceiros — feedback fica no UserTrackState).
 

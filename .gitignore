@@ -1,0 +1,6 @@
+# Dependências das skills em .agents/
+node_modules/
+
+# Artefatos locais
+.DS_Store
+*.log

@@ -1,6 +1,16 @@
+---
+type: PRD
+title: "Issue-mãe — Módulo tracks (agregador)"
+description: "PRD para abrir no GitHub (type:prd): problem statement, user stories, modelo de dados e subtarefas dos 11 tickets."
+tags: [tracks, prd, upstream]
+status: proposed
+generated:
+  by: human:GabrielFVDev
+  at: 2026-09-16T00:00:00Z
+---
 **Título sugerido para o GitHub:** `prd(tracks): agregador de trilhas 4noobs, leitura focado e interações GitHub`
 
-[← README do módulo](README.md)
+[← Índice do módulo](index.md)
 
 **Labels:** `type:prd` · `mod:tracks` · `difficulty:hard` · `ready-for-agent`
 
@@ -14,15 +24,15 @@
 
 ## Problema
 
-A comunidade He4rt mantém o programa **4noobs**: repositórios `{topic}4noobs` espalhados por owners individuais (`he4rt/css4noobs`, `danielhe4rt/php4noobs`, …), cada um com conteúdo educacional 100% markdown em português. Hoje esse acervo não existe para a plataforma: não há catálogo, navegação, nem valorização de criadores. Quem quer aprender precisa navegar repos soltos no GitHub, sem descoberta guiada e sem reconhecimento de quem escreveu. A comunidade precisa de um **agregador vivo** que una valor ao criador e experiência de leitura ao estudante — e que se mantenha atualizado sem intervenção manual a cada trilha nova.
+A comunidade He4rt mantém o programa **4noobs**: repositórios `{topic}4noobs` espalhados por owners individuais (`he4rt/css4noobs`, `danielhe4rt/php4noobs`, …), cada um com conteúdo educacional 100% markdown em português. Hoje esse acervo não existe para a plataforma: não há catálogo, navegação, nem valorização de criadores. Quem quer aprender precisa navegar repos soltos no GitHub, sem descoberta guiada e sem reconhecimento de quem escreveu. A comunidade precisa de um **agregador vivo**: ele une valor ao criador e experiência de leitura ao estudante, e se mantém atualizado sem intervenção manual a cada trilha nova.
 
 ## Solução
 
 Um novo bounded context `tracks` que:
 
-1. **Catálogo automático**: sincroniza os repos 4noobs como trilhas hierárquicas (trilha → módulo → aula), identificadas por UUIDs determinísticos estáveis, atualizado por agendamento com descoberta automática de novas trilhas — **com curadoria**: add à allowlist e publish/unpublish pelo admin.
+1. **Catálogo automático**: sincroniza os repos 4noobs como trilhas hierárquicas (trilha → módulo → aula). A identidade usa UUIDs determinísticos estáveis, e o agendamento mantém as trilhas atualizadas e descobre novas automaticamente — **com curadoria**: add à allowlist e publish/unpublish pelo admin.
 2. **Leitura focado**: listagem com busca/filtros/ordenação, detalhe em aside sobreposto e leitor "Focus Reader" servindo conteúdo processado. Sem marcação de conclusão.
-3. **Valorizar criadores**: contribuidores vindos do **endpoint de contribuidores GitHub** (fonte primária) com fallback para `.all-contributorsrc` → `config.json` → README → avatares; ciclo de órfãos — handle sempre gravado, adoção retroativa automática quando o autor conecta a conta GitHub.
+3. **Valorizar criadores**: contribuidores vindos do **endpoint de contribuidores GitHub** (fonte primária), com fallback para `.all-contributorsrc` → `config.json` → README → avatares. Ciclo de órfãos: handle sempre gravado, adoção retroativa automática quando o autor conecta a conta GitHub.
 4. **Interações GitHub**: estrelar/watch/follow a trilhas e mantenedores a partir da plataforma, escrevendo no GitHub em nome do usuário conectado; **stateless** (estado verificado contra a API); controles com matriz de estados (conta ausente, repo morto, token expirado).
 
 O módulo é **contexto irmão** do `contents` (decisão Opção B) e adota suas regras (contratos invertidos, ciclo de órfãos, sem recompensa no domínio, capacidades por interface).
@@ -50,7 +60,7 @@ O módulo é **contexto irmão** do `contents` (decisão Opção B) e adota suas
 
 ## Decisões de implementação
 
-**Módulo**: new domain module `tracks` em `app-modules/tracks/`. ServiceProvider bootável, composer constraint `^1.0.0` desde o primeiro commit (lição do contents). Label `mod:tracks` a criar no GitHub espelhando `mod:contents`.
+**Módulo**: módulo de domínio novo, `tracks`, em `app-modules/tracks/`. ServiceProvider bootável, composer constraint `^1.0.0` desde o primeiro commit (lição do contents). Label `mod:tracks` a criar no GitHub espelhando `mod:contents`.
 
 **Contratos invertidos** (regra consolidada pelo contents): tracks define as interfaces; `integration-github` implementa e se registra no boot. Tracks nunca importa HTTP/Saloon/git — zero dependência de transporte. Providers são checados via `instanceof` para capacidades opcionais.
 
@@ -98,7 +108,7 @@ O módulo é **contexto irmão** do `contents` (decisão Opção B) e adota suas
 
 **ETL** (`tracks:sync`, agendado por padrão a cada 1 semana, configurável):
 - Intake via allowlist: lê `GithubRepository::where('purpose', Tracks)` (tenant-scoped), padrão backfill (job por repo, idempotente, resumível, rate-limit-aware)
-- Reads `ProvidesWorkingCopy` do provider → path local
+- Lê `ProvidesWorkingCopy` do provider → path local
 - Normalização: módulos = diretórios topo ignorando `.github/` e configs; aulas = arquivos `.md`/`.MD` (normalizado)
 - Override map por repo para desvios estruturais (ex.: `Content/`)
 - Branch via `RepoMetadataDTO.default_branch` (nunca hardcoded `main`)
@@ -154,7 +164,7 @@ Prior art: action/feature tests em `identity` e `moderation`; `BackfillRepositor
 
 ## Notas adicionais
 
-- **Alinhamento ao contents**: quatro regras adotadas do contents (contratos invertidos, orfãos, XP fora, sem flag vazio); quatro mantidas diferentes por natureza do tracks (arvore hierárquica, ETL git incremental, source_type + colunas planas ao invés de delegated types — flatten do JSONB, E-D11 —, publish/unpublish no track)
+- **Alinhamento ao contents**: quatro regras adotadas do contents (contratos invertidos, órfãos, XP fora, sem flag vazio). Quatro mantidas diferentes por natureza do tracks: árvore hierárquica, ETL git incremental, source_type + colunas planas em vez de delegated types (flatten do JSONB, E-D11), publish/unpublish no track
 - **Fronteira de módulo explícita (Model 2)**: transporte devolve DTOs; domínio persiste. Documentada no ADR 0005 (E-E)
 - **`purpose=Tracks`**: novo caso do `PurposeType` no allowlist, padrão ADR-0002 do onboarding; `enabled` ≠ `published`
 - **Autoria a validar**: `selectedMetric=additions` pode sub-ponderar quem contribui sem código; validar contra repos reais
